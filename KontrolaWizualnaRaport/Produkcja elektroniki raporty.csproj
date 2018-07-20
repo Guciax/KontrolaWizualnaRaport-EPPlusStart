@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6E1A1896-8976-4D48-B93A-DEF7B5C5818D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>KontrolaWizualnaRaport</RootNamespace>
+    <AssemblyName>ProdukcjaElektronikiRaporty</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ico_w2w_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EPPlus">
+      <HintPath>.\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="dgvTools.cs" />
+    <Compile Include="TabOperations\BoxingOperations.cs" />
+    <Compile Include="TabOperations\ChangeOverTools.cs" />
+    <Compile Include="Charting.cs" />
+    <Compile Include="TabOperations\ViDataLoader.cs" />
+    <Compile Include="dataStructure.cs" />
+    <Compile Include="DateTimeParser.cs" />
+    <Compile Include="dateTools.cs" />
+    <Compile Include="Forms\Drukuj.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Drukuj.Designer.cs">
+      <DependentUpon>Drukuj.cs</DependentUpon>
+    </Compile>
+    <Compile Include="excelOperations.cs" />
+    <Compile Include="Forms\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TabOperations\KittingOperations.cs" />
+    <Compile Include="Forms\LedWasteDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LedWasteDetails.Designer.cs">
+      <DependentUpon>LedWasteDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LotSummary.cs" />
+    <Compile Include="MesModels.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms\showViOperatorDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\showViOperatorDetails.Designer.cs">
+      <DependentUpon>showViOperatorDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SimpleDetailsDT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SimpleDetailsDT.Designer.cs">
+      <DependentUpon>SimpleDetailsDT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TabOperations\Rework.cs" />
+    <Compile Include="TabOperations\SMTOperations.cs" />
+    <Compile Include="Forms\SmtShiftDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SmtShiftDetails.Designer.cs">
+      <DependentUpon>SmtShiftDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TabOperations\SplittingOperations.cs" />
+    <Compile Include="SQLoperations.cs" />
+    <Compile Include="TabOperations\TestOperations.cs" />
+    <Compile Include="TabOperations\VIOperations.cs" />
+    <Compile Include="wastePerReasonStructure.cs" />
+    <Compile Include="Forms\WasteReasonDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WasteReasonDetails.Designer.cs">
+      <DependentUpon>WasteReasonDetails.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\Drukuj.resx">
+      <DependentUpon>Drukuj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LedWasteDetails.resx">
+      <DependentUpon>LedWasteDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Forms\showViOperatorDetails.resx">
+      <DependentUpon>showViOperatorDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SimpleDetailsDT.resx">
+      <DependentUpon>SimpleDetailsDT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SmtShiftDetails.resx">
+      <DependentUpon>SmtShiftDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WasteReasonDetails.resx">
+      <DependentUpon>WasteReasonDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ReelID.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\load.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ico_w2w_icon.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
