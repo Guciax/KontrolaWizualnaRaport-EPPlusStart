@@ -64,6 +64,7 @@ namespace KontrolaWizualnaRaport
             foreach (var smtLine in smtLines)
             {
                 checkedListBoxViWasteLevelSmtLines.Items.Add(smtLine, true);
+
                 checkedListBoxViReasons.Items.Add(smtLine, true);
                 cBListViReasonAnalysesSmtLines.Items.Add(smtLine, true);
                 cBListViModelAnalysesSmtLines.Items.Add(smtLine, true);

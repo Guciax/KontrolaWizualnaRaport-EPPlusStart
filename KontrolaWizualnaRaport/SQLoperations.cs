@@ -390,6 +390,7 @@ namespace KontrolaWizualnaRaport
 
             return result;
         }
+
         public static DataTable GetSmtRecordsForLot(string lot)
         {
             DataTable result = new DataTable();

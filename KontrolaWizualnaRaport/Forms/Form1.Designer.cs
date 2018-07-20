@@ -111,7 +111,6 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.radioButtonViLinesCumulated = new System.Windows.Forms.RadioButton();
-            this.checkedListBoxViWasteLevelSmtLines = new System.Windows.Forms.CheckedListBox();
             this.groupBoxFrequency = new System.Windows.Forms.GroupBox();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButtonDaily = new System.Windows.Forms.RadioButton();
@@ -330,6 +329,13 @@
             this.timerTestLoadDone = new System.Windows.Forms.Timer(this.components);
             this.timerBoxLoadDone = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
+            this.panel43 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.tabPage27 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvTestWaitingForTest = new System.Windows.Forms.DataGridView();
+            this.panel45 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.chartEfficiency)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -466,6 +472,10 @@
             this.tableLayoutPanel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReworkDailyReport)).BeginInit();
             this.panel15.SuspendLayout();
+            this.panel43.SuspendLayout();
+            this.tabPage27.SuspendLayout();
+            this.tableLayoutPanel14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTestWaitingForTest)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBoxViOperatorsCapa
@@ -797,6 +807,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.panel43);
             this.tabPage3.Controls.Add(this.chartWasteLevel);
             this.tabPage3.Controls.Add(this.dataGridViewWasteLevel);
             this.tabPage3.Controls.Add(this.panel5);
@@ -812,7 +823,6 @@
             chartArea4.Name = "ChartArea1";
             this.chartWasteLevel.ChartAreas.Add(chartArea4);
             this.chartWasteLevel.ContextMenuStrip = this.contextMenuStripPrintPoziomOdpadu;
-            this.chartWasteLevel.Dock = System.Windows.Forms.DockStyle.Fill;
             legend4.Name = "Legend1";
             this.chartWasteLevel.Legends.Add(legend4);
             this.chartWasteLevel.Location = new System.Drawing.Point(240, 39);
@@ -821,7 +831,7 @@
             series4.Legend = "Legend1";
             series4.Name = "Series1";
             this.chartWasteLevel.Series.Add(series4);
-            this.chartWasteLevel.Size = new System.Drawing.Size(1089, 521);
+            this.chartWasteLevel.Size = new System.Drawing.Size(989, 521);
             this.chartWasteLevel.TabIndex = 6;
             this.chartWasteLevel.Text = "chartWasteLevel";
             this.chartWasteLevel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chartWasteLevel_MouseDown);
@@ -872,7 +882,6 @@
             // 
             this.groupBox3.Controls.Add(this.radioButton6);
             this.groupBox3.Controls.Add(this.radioButtonViLinesCumulated);
-            this.groupBox3.Controls.Add(this.checkedListBoxViWasteLevelSmtLines);
             this.groupBox3.Location = new System.Drawing.Point(820, 1);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(276, 35);
@@ -903,18 +912,6 @@
             this.radioButtonViLinesCumulated.Text = "Łączny";
             this.radioButtonViLinesCumulated.UseVisualStyleBackColor = true;
             this.radioButtonViLinesCumulated.CheckedChanged += new System.EventHandler(this.radioButtonDaily_CheckedChanged_1);
-            // 
-            // checkedListBoxViWasteLevelSmtLines
-            // 
-            this.checkedListBoxViWasteLevelSmtLines.CheckOnClick = true;
-            this.checkedListBoxViWasteLevelSmtLines.FormattingEnabled = true;
-            this.checkedListBoxViWasteLevelSmtLines.Location = new System.Drawing.Point(140, 11);
-            this.checkedListBoxViWasteLevelSmtLines.Name = "checkedListBoxViWasteLevelSmtLines";
-            this.checkedListBoxViWasteLevelSmtLines.Size = new System.Drawing.Size(120, 19);
-            this.checkedListBoxViWasteLevelSmtLines.TabIndex = 7;
-            this.checkedListBoxViWasteLevelSmtLines.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxViWasteLevel_SelectedIndexChanged);
-            this.checkedListBoxViWasteLevelSmtLines.MouseEnter += new System.EventHandler(this.checkedListBox1_MouseEnter);
-            this.checkedListBoxViWasteLevelSmtLines.MouseLeave += new System.EventHandler(this.checkedListBox1_MouseLeave);
             // 
             // groupBoxFrequency
             // 
@@ -2092,7 +2089,6 @@
             this.dataGridViewSmtProduction.TabIndex = 0;
             this.dataGridViewSmtProduction.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridViewSmtProduction.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridViewSmtProduction_CellPainting);
-            ///this.dataGridViewSmtProduction.CellPainting += (sender, e) => dataGridViewSmtProduction_CellPainting(sender, e, "");// new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridViewSmtProduction_CellPainting);
             this.dataGridViewSmtProduction.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // panel18
@@ -2947,6 +2943,7 @@
             // 
             this.tabControl6.Controls.Add(this.tabPage25);
             this.tabControl6.Controls.Add(this.tabPage26);
+            this.tabControl6.Controls.Add(this.tabPage27);
             this.tabControl6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl6.Location = new System.Drawing.Point(3, 32);
             this.tabControl6.Name = "tabControl6";
@@ -3464,6 +3461,81 @@
             // 
             this.timerBoxLoadDone.Tick += new System.EventHandler(this.timerBoxLoadDone_Tick);
             // 
+            // vScrollBar1
+            // 
+            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vScrollBar1.Location = new System.Drawing.Point(0, 0);
+            this.vScrollBar1.Name = "vScrollBar1";
+            this.vScrollBar1.Size = new System.Drawing.Size(15, 521);
+            this.vScrollBar1.TabIndex = 7;
+            // 
+            // panel43
+            // 
+            this.panel43.Controls.Add(this.checkBox1);
+            this.panel43.Controls.Add(this.vScrollBar1);
+            this.panel43.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel43.Location = new System.Drawing.Point(1314, 39);
+            this.panel43.Name = "panel43";
+            this.panel43.Size = new System.Drawing.Size(15, 521);
+            this.panel43.TabIndex = 8;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox1.Location = new System.Drawing.Point(0, 0);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(15, 14);
+            this.checkBox1.TabIndex = 8;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // tabPage27
+            // 
+            this.tabPage27.Controls.Add(this.tableLayoutPanel14);
+            this.tabPage27.Controls.Add(this.panel45);
+            this.tabPage27.Location = new System.Drawing.Point(4, 22);
+            this.tabPage27.Name = "tabPage27";
+            this.tabPage27.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage27.Size = new System.Drawing.Size(1329, 502);
+            this.tabPage27.TabIndex = 2;
+            this.tabPage27.Text = "Przed testem";
+            this.tabPage27.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel14
+            // 
+            this.tableLayoutPanel14.ColumnCount = 2;
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.Controls.Add(this.dgvTestWaitingForTest, 0, 0);
+            this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel14.Location = new System.Drawing.Point(3, 39);
+            this.tableLayoutPanel14.Name = "tableLayoutPanel14";
+            this.tableLayoutPanel14.RowCount = 1;
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(1323, 460);
+            this.tableLayoutPanel14.TabIndex = 7;
+            // 
+            // dgvTestWaitingForTest
+            // 
+            this.dgvTestWaitingForTest.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTestWaitingForTest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTestWaitingForTest.Location = new System.Drawing.Point(3, 3);
+            this.dgvTestWaitingForTest.Name = "dgvTestWaitingForTest";
+            this.dgvTestWaitingForTest.Size = new System.Drawing.Size(655, 454);
+            this.dgvTestWaitingForTest.TabIndex = 4;
+            // 
+            // panel45
+            // 
+            this.panel45.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel45.Location = new System.Drawing.Point(3, 3);
+            this.panel45.Name = "panel45";
+            this.panel45.Size = new System.Drawing.Size(1323, 36);
+            this.panel45.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3644,6 +3716,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReworkDailyReport)).EndInit();
             this.panel15.ResumeLayout(false);
             this.panel15.PerformLayout();
+            this.panel43.ResumeLayout(false);
+            this.panel43.PerformLayout();
+            this.tabPage27.ResumeLayout(false);
+            this.tableLayoutPanel14.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTestWaitingForTest)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3839,7 +3916,6 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.DateTimePicker dateTimePickerViOperatorEfiiciencyStart;
         private System.Windows.Forms.DateTimePicker dateTimePickerViOperatorEfiiciencyEnd;
-        private System.Windows.Forms.CheckedListBox checkedListBoxViWasteLevelSmtLines;
         private System.Windows.Forms.CheckedListBox checkedListBoxViReasons;
         private System.Windows.Forms.TabPage tabPage22;
         private System.Windows.Forms.DataGridView dataGridViewMstOrders;
@@ -3905,6 +3981,13 @@
         private System.Windows.Forms.ComboBox comboBoxKittingModels;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridView dataGridViewKittingHistory;
+        private System.Windows.Forms.Panel panel43;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.TabPage tabPage27;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
+        private System.Windows.Forms.DataGridView dgvTestWaitingForTest;
+        private System.Windows.Forms.Panel panel45;
     }
 }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -474,7 +475,7 @@ namespace KontrolaWizualnaRaport
             public Dictionary<string, Tuple<int, int>> scrapToolTip { get; set; }
         }
 
-        public static DataTable DrawWasteLevel(string frequency, Chart chartWasteLevel, List<WasteDataStructure> inputData, DateTime dateBegin, DateTime dateEnd, Dictionary<string, string> modelDictionary, ComboBox comboModel, string[] smtLines, bool linesCumulated, bool customerLGI, List<excelOperations.order12NC> mstOrders)
+        public static DataTable DrawWasteLevel(string frequency, Chart chartWasteLevel, List<WasteDataStructure> inputData, DateTime dateBegin, DateTime dateEnd, Dictionary<string, string> modelDictionary, ComboBox comboModel, string[] smtLines, bool linesCumulated, bool customerLGI, List<excelOperations.order12NC> mstOrders, Dictionary<string, Color> lineColors)
         {
             DataTable result = new DataTable();
             Dictionary<string, Dictionary<string, WasteLevelChartStruct>> lineDateWaste = new Dictionary<string, Dictionary<string, WasteLevelChartStruct>>();
@@ -607,16 +608,24 @@ namespace KontrolaWizualnaRaport
             {
                 string line = lineEntry.Key;
 
+                Color seriesColor = Color.Blue;
+                lineColors.TryGetValue(lineEntry.Key, out seriesColor);
+
                 Series ngSeries = new Series();
                 Series scrapSeries = new Series();
                 ngSeries.ChartType = SeriesChartType.Line;
                 ngSeries.BorderWidth = 3;
                 ngSeries.Name = line + " NG [%]";
+                ngSeries.Color = seriesColor;
+                ngSeries.MarkerStyle = MarkerStyle.Circle;
+                ngSeries.MarkerSize = 10;
 
                 scrapSeries.ChartType = SeriesChartType.Line;
                 scrapSeries.BorderWidth = 3;
                 scrapSeries.Name = line + " SCRAP [%]";
-
+                scrapSeries.Color = seriesColor;
+                scrapSeries.MarkerStyle = MarkerStyle.Square;
+                scrapSeries.MarkerSize = 10;
 
                 foreach (var frequencyEntry in lineEntry.Value)
                 {
@@ -657,21 +666,6 @@ namespace KontrolaWizualnaRaport
             chartWasteLevel.Legends[0].Position.Auto = false;
             chartWasteLevel.Legends[0].Position = new ElementPosition(8, 0, 30, 10);
             chartWasteLevel.Legends[0].BackColor = System.Drawing.Color.Transparent;
-
-            foreach (var point in chartWasteLevel.Series[2].Points)
-            {
-                point.MarkerStyle = MarkerStyle.Circle;
-                point.MarkerSize = 10;
-            }
-
-            foreach (var point in chartWasteLevel.Series[1].Points)
-            {
-                point.MarkerStyle = MarkerStyle.Circle;
-                point.MarkerSize = 10;
-            }
-
-
-
 
             return result;
         }

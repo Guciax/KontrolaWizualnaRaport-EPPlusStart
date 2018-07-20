@@ -25,6 +25,15 @@ namespace KontrolaWizualnaRaport
         {
             InitializeComponent();
             sqloperations = new SQLoperations(this, textBox1);
+            checkedListBoxViWasteLevelSmtLines.MouseEnter += checkedListBox1_MouseEnter;
+            checkedListBoxViWasteLevelSmtLines.MouseLeave += checkedListBox1_MouseLeave;
+            checkedListBoxViWasteLevelSmtLines.Size = new Size(120, 20);
+            checkedListBoxViWasteLevelSmtLines.Parent = tabPage3;
+            checkedListBoxViWasteLevelSmtLines.BringToFront();
+            checkedListBoxViWasteLevelSmtLines.Location = new Point(965, 13);
+            checkedListBoxViWasteLevelSmtLines.ForeColor = Color.Black;
+            checkedListBoxViWasteLevelSmtLines.CheckOnClick = true;
+            checkedListBoxViWasteLevelSmtLines.SelectedIndexChanged += checkedListBoxViWasteLevel_SelectedIndexChanged;
         }
 
         DataTable masterVITable = new DataTable();
@@ -42,11 +51,12 @@ namespace KontrolaWizualnaRaport
         Dictionary<DateTime, SortedDictionary<int, Dictionary<string, DataTable>>> boxingData = new Dictionary<DateTime, SortedDictionary<int, Dictionary<string, DataTable>>>();
         Dictionary<string, MesModels> mesModels = new Dictionary<string, MesModels>();
         //SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary = new SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>>();
-        Dictionary<string, Color> lineColors = new Dictionary<string, Color>();
+        static Dictionary<string, Color> lineColors = new Dictionary<string, Color>();
+        CustomCheckedListBox checkedListBoxViWasteLevelSmtLines = new CustomCheckedListBox();
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dateTimePickerSmtStart.Value = DateTime.Now.Date.AddDays(-40);
+            dateTimePickerSmtStart.Value = DateTime.Now.Date.AddDays(-60);
             smtRecords = SQLoperations.GetSmtRecordsFromDb(dateTimePickerSmtStart.Value, dateTimePickerSmtEnd.Value);
             lotTable = SQLoperations.lotTable();
             Dictionary<string, string>[] lotList = VIOperations.lotArray(lotTable);
@@ -75,10 +85,8 @@ namespace KontrolaWizualnaRaport
             lineColors.Add("SMT7", Color.SteelBlue);
             lineColors.Add("SMT8", Color.MediumTurquoise);
 
-            //CustomCheckedListBox checkedListBoxViWasteLevelSmtLines = new CustomCheckedListBox();
-            checkedListBoxViWasteLevelSmtLines.Parent = tabPage3;
-            checkedListBoxViWasteLevelSmtLines.BringToFront();
-            checkedListBoxViWasteLevelSmtLines.Location = new Point(965,13);
+            
+            
             
         }
 
@@ -220,6 +228,26 @@ namespace KontrolaWizualnaRaport
             }
         }
 
+        bool loadDone = false;
+        private void timerTestLoadDone_Tick(object sender, EventArgs e)
+        {
+            if (loadDone)
+            {
+                if (testData.Count > 0)
+                {
+                    TestOperations.FillOutTesterTable(testData, dataGridViewTestProdReport, lotModelDictionary);
+                    timerTestLoadDone.Enabled = false;
+                    PictureBox loadPB = (PictureBox)dataGridViewTestProdReport.Tag;
+                    dataGridViewTestProdReport.Controls.Remove(loadPB);
+                    var tag = TestOperations.InspectionTimeByMachineModel(testData, lotModelDictionary);
+                    chartTestEfficiencyModel.Tag = tag;
+                    comboBoxTestEfficiencyModels.Items.AddRange(tag.SelectMany(t => t.Value.Select(m => m.Key)).Distinct().ToArray());
+                    TestOperations.FillOutGridWaitingForTest(dgvTestWaitingForTest, testData, smtRecords);
+
+                }
+            }
+        }
+
         private void buttonSmtRefresh_Click(object sender, EventArgs e)
         {
             smtRecords = SQLoperations.GetSmtRecordsFromDb(dateTimePickerSmtStart.Value, dateTimePickerSmtEnd.Value);
@@ -242,24 +270,7 @@ namespace KontrolaWizualnaRaport
                                 panelSmtLedWasteCheckContainer);
         }
 
-        bool loadDone = false;
-        private void timerTestLoadDone_Tick(object sender, EventArgs e)
-        {
-            if (loadDone)
-            {
-                if (testData.Count > 0)
-                {
-                    TestOperations.FillOutTesterTable(testData, dataGridViewTestProdReport, lotModelDictionary);
-                    timerTestLoadDone.Enabled = false;
-                    PictureBox loadPB = (PictureBox)dataGridViewTestProdReport.Tag;
-                    dataGridViewTestProdReport.Controls.Remove(loadPB);
-                    var tag = TestOperations.InspectionTimeByMachineModel(testData, lotModelDictionary);
-                    chartTestEfficiencyModel.Tag = tag;
-                    comboBoxTestEfficiencyModels.Items.AddRange(tag.SelectMany(t => t.Value.Select(m => m.Key)).Distinct().ToArray());
-                    
-                }
-            }
-        }
+        
 
         private void timerBoxLoadDone_Tick(object sender, EventArgs e)
         {
@@ -349,7 +360,7 @@ namespace KontrolaWizualnaRaport
 
         private void dateTimePickerWasteLevelBegin_ValueChanged(object sender, EventArgs e)
         {
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked,  radioButtonWasteLevelLG.Checked, mstOrders);
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked,  radioButtonWasteLevelLG.Checked, mstOrders, lineColors);
             dgvTools.ColumnsAutoSize(dataGridViewWasteLevel, DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader);
         }
 
@@ -887,7 +898,7 @@ namespace KontrolaWizualnaRaport
 
         private void radioButtonWasteLevelLG_CheckedChanged(object sender, EventArgs e)
         {
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders);
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors);
         }
 
         private void dataGridViewChangeOvers_SelectionChanged(object sender, EventArgs e)
@@ -1266,7 +1277,7 @@ namespace KontrolaWizualnaRaport
 
             if (smtLines.Length > 0)
             {
-                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders);
+                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors);
                 foreach (DataGridViewColumn col in dataGridViewWasteLevel.Columns)
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -1510,7 +1521,7 @@ namespace KontrolaWizualnaRaport
 
             if (smtLines.Length > 0)
             {
-                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders);
+                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors);
                 foreach (DataGridViewColumn col in dataGridViewWasteLevel.Columns)
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -1529,35 +1540,27 @@ namespace KontrolaWizualnaRaport
 
         public class CustomCheckedListBox : CheckedListBox
         {
-            public CustomCheckedListBox()
-            {
-                DoubleBuffered = true;
-            }
             protected override void OnDrawItem(DrawItemEventArgs e)
             {
-                Size checkSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, System.Windows.Forms.VisualStyles.CheckBoxState.MixedNormal);
-                int dx = (e.Bounds.Height - checkSize.Width) / 2;
-                e.DrawBackground();
-                bool isChecked = GetItemChecked(e.Index);//For some reason e.State doesn't work so we have to do this instead.
-                CheckBoxRenderer.DrawCheckBox(e.Graphics, new Point(dx, e.Bounds.Top + dx), isChecked ? System.Windows.Forms.VisualStyles.CheckBoxState.CheckedNormal : System.Windows.Forms.VisualStyles.CheckBoxState.UncheckedNormal);
-                using (StringFormat sf = new StringFormat { LineAlignment = StringAlignment.Center })
-                {
-                    using (Brush brush = new SolidBrush(isChecked ? CheckedItemColor : ForeColor))
-                    {
-                        e.Graphics.DrawString(Items[e.Index].ToString(), Font, brush, new Rectangle(e.Bounds.Height, e.Bounds.Top, e.Bounds.Width - e.Bounds.Height, e.Bounds.Height), sf);
-                    }
-                }
+                base.OnDrawItem(e);
+
+                if (Items.Count <= 0)
+                    return;
+                string name = Convert.ToString(Items[e.Index]);
+                Color rowColor = Color.White;
+                lineColors.TryGetValue(name, out rowColor);
+                SolidBrush rowBrush = new SolidBrush(rowColor);
+
+                var contentRect = e.Bounds;
+                contentRect.X = 16;
+                e.Graphics.FillRectangle(rowBrush, contentRect);
+                e.Graphics.DrawString(Convert.ToString(Items[e.Index]), e.Font, Brushes.White, contentRect);
             }
-            Color checkedItemColor = Color.Green;
-            public Color CheckedItemColor
-            {
-                get { return checkedItemColor; }
-                set
-                {
-                    checkedItemColor = value;
-                    Invalidate();
-                }
-            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

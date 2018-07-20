@@ -134,8 +134,8 @@ namespace KontrolaWizualnaRaport
                         {
                             result[machineEntry.Key][model].Add(duration / testCyclesCount);
                             //string msg = string.Format("start:{0} end:{1} dur:{2} qty:{3}", lotStart, lotEnd, duration, testCyclesCount);
-                            string msg = string.Format("{0};{1};{2};{3};{4};{5}", machineEntry.Key, model, lotStart, lotEnd, duration, testCyclesCount);
-                            Debug.WriteLine(msg);
+                            //string msg = string.Format("{0};{1};{2};{3};{4};{5}", machineEntry.Key, model, lotStart, lotEnd, duration, testCyclesCount);
+                            //Debug.WriteLine(msg);
                         }
                         testCyclesCount = 0;
                         lotStart = DateTime.Now;
@@ -234,7 +234,65 @@ namespace KontrolaWizualnaRaport
         //    return result;
         //}
 
-        
+        public static void FillOutGridWaitingForTest(DataGridView grid, Dictionary<DateTime, SortedDictionary<int, Dictionary<string, Dictionary<string, DataTable>>>> testerData, DataTable smtRecords)
+        {
+
+            HashSet<string> testedLots = new HashSet<string>();
+            Dictionary<string, DataTable> lotsWaitingForTest = new Dictionary<string, DataTable>();
+
+            foreach (var DateEntry in testerData)
+            {
+                foreach (var shiftEntry in DateEntry.Value)
+                {
+                    foreach (var lineEntry in shiftEntry.Value)
+                    {
+                        foreach (var modelEntry in lineEntry.Value)
+                        {
+                            foreach (DataRow row in modelEntry.Value.Rows)
+                            {
+                                string lot = row["LOT"].ToString();
+                                testedLots.Add(lot);
+                            }
+                            
+                        }
+                    }
+                }
+            }
+
+            foreach (DataRow row in smtRecords.Rows)
+            {
+                string smtLot = row["NrZlecenia"].ToString();
+                DateTime smtDate = DateTime.Parse(row["DataCzasKoniec"].ToString());
+                if ((DateTime.Now - smtDate).TotalDays > 14) continue;
+                if (testedLots.Contains(smtLot)) { continue; }
+                Debug.WriteLine(smtLot + "  "+row["DataCzasKoniec"].ToString());
+
+                string model = row["Model"].ToString();
+                if(!lotsWaitingForTest.ContainsKey(model))
+                {
+                    lotsWaitingForTest.Add(model, smtRecords.Clone());
+                }
+
+                lotsWaitingForTest[model].Rows.Add(row.ItemArray);
+            }
+            grid.Columns.Clear();
+            grid.Columns.Add("Model", "Model");
+            grid.Columns.Add("Ilosc", "Ilość");
+            grid.Columns.Add("IloscLot", "LOTów");
+
+            foreach (var modelEntry in lotsWaitingForTest)
+            {
+                int qty = 0;
+                foreach (DataRow row in modelEntry.Value.Rows)
+                {
+                    qty += int.Parse(row["IloscWykonana"].ToString());
+                }
+                grid.Rows.Add(modelEntry.Key,qty , modelEntry.Value.Rows.Count);
+
+                grid.Rows[grid.Rows.Count - 1].Cells[1].Tag = modelEntry.Value;
+                grid.Rows[grid.Rows.Count - 1].Cells[2].Tag = modelEntry.Value;
+            }
+        }
 
         public static void FillOutTesterTable(Dictionary<DateTime, SortedDictionary<int, Dictionary<string, Dictionary<string, DataTable>>>> testerData, DataGridView grid, Dictionary<string, string> lotModelDictionary)
         {
