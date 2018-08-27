@@ -475,7 +475,7 @@ namespace KontrolaWizualnaRaport
             public Dictionary<string, Tuple<int, int>> scrapToolTip { get; set; }
         }
 
-        public static DataTable DrawWasteLevel(string frequency, Chart chartWasteLevel, List<WasteDataStructure> inputData, DateTime dateBegin, DateTime dateEnd, Dictionary<string, string> modelDictionary, ComboBox comboModel, string[] smtLines, bool linesCumulated, bool customerLGI, List<excelOperations.order12NC> mstOrders, Dictionary<string, Color> lineColors)
+        public static DataTable DrawWasteLevel(string frequency, Chart chartWasteLevel, List<WasteDataStructure> inputData, DateTime dateBegin, DateTime dateEnd, Dictionary<string, string> modelDictionary, ComboBox comboModel, string[] smtLines, bool linesCumulated, bool customerLGI, List<excelOperations.order12NC> mstOrders, Dictionary<string, Color> lineColors, double yAxisMax)
         {
             DataTable result = new DataTable();
             Dictionary<string, Dictionary<string, WasteLevelChartStruct>> lineDateWaste = new Dictionary<string, Dictionary<string, WasteLevelChartStruct>>();
@@ -496,7 +496,7 @@ namespace KontrolaWizualnaRaport
                 if (wasteEntry.FixedDateTime.Date < dateBegin || wasteEntry.FixedDateTime.Date > dateEnd) continue;
 
                 string line = wasteEntry.SmtLine;
-                if (line == "") continue;
+                if (line == "" & customerLGI) continue;
                 if (!linesCumulated & !smtLines.Contains(wasteEntry.SmtLine)) continue;
                 if (!linesCumulated)
                 {
@@ -604,6 +604,9 @@ namespace KontrolaWizualnaRaport
             }
             chartWasteLevel.Series.Add(productionLevel);
 
+
+
+            double yMaxValue = 0;
             foreach (var lineEntry in lineDateWaste)
             {
                 string line = lineEntry.Key;
@@ -631,18 +634,20 @@ namespace KontrolaWizualnaRaport
                 {
 
                     DataPoint ngPoint = new DataPoint();
-                    ngPoint.SetValueXY(frequencyEntry.Key, (double)frequencyEntry.Value.ngCount/ (double)frequencyEntry.Value.totalProdThisLine*100);
+                    double ngY = (double)frequencyEntry.Value.ngCount / (double)frequencyEntry.Value.totalProdThisLine * 100;
+                    yMaxValue = Math.Max(yMaxValue, ngY);
+                    ngPoint.SetValueXY(frequencyEntry.Key, ngY);
                     string ngtoolTip = MakeToolTip(frequencyEntry.Value.ngTooltip);
                     ngPoint.ToolTip = ngtoolTip;
                     ngSeries.Points.Add(ngPoint);
 
                     DataPoint scrapPoint = new DataPoint();
-                    scrapPoint.SetValueXY(frequencyEntry.Key, (double)frequencyEntry.Value.scrapCount / (double)frequencyEntry.Value.totalProdThisLine*100);
+                    double scrapY = (double)frequencyEntry.Value.scrapCount / (double)frequencyEntry.Value.totalProdThisLine * 100;
+                    yMaxValue = Math.Max(yMaxValue, scrapY);
+                    scrapPoint.SetValueXY(frequencyEntry.Key, scrapY);
                     string scraptoolTip = MakeToolTip(frequencyEntry.Value.scrapToolTip);
                     scrapPoint.ToolTip = scraptoolTip;
                     scrapSeries.Points.Add(scrapPoint);
-
-
                 }
 
                 result.Rows.Add("NG:");
@@ -656,16 +661,21 @@ namespace KontrolaWizualnaRaport
                     result.Rows.Add(frequencyEntry.Key, frequencyEntry.Value.totalProdThisLine, frequencyEntry.Value.scrapCount, Math.Round((double)frequencyEntry.Value.scrapCount / (double)frequencyEntry.Value.totalProdThisLine * 100, 2).ToString()+"%");
                 }
 
-
                 chartWasteLevel.Series.Add(ngSeries);
                 chartWasteLevel.Series.Add(scrapSeries);
             }
 
+            chartWasteLevel.Legends.Clear();
+            //chartWasteLevel.Legends[0].DockedToChartArea = chartWasteLevel.ChartAreas[0].Name;
+            //chartWasteLevel.Legends[0].Position.Auto = false;
+            //chartWasteLevel.Legends[0].Position = new ElementPosition(8, 0, 30, 10);
+            //chartWasteLevel.Legends[0].BackColor = System.Drawing.Color.Transparent;
 
-            chartWasteLevel.Legends[0].DockedToChartArea = chartWasteLevel.ChartAreas[0].Name;
-            chartWasteLevel.Legends[0].Position.Auto = false;
-            chartWasteLevel.Legends[0].Position = new ElementPosition(8, 0, 30, 10);
-            chartWasteLevel.Legends[0].BackColor = System.Drawing.Color.Transparent;
+            if (yAxisMax>0)
+            {
+
+                chartWasteLevel.ChartAreas[0].AxisY.Maximum = yMaxValue * yAxisMax;
+            }
 
             return result;
         }
@@ -688,545 +698,6 @@ namespace KontrolaWizualnaRaport
             {
                 result += item.Item1.ToString() + "% - " + item.Item2 + Environment.NewLine;
             }
-            return result;
-        }
-
-        public static DataTable DrawWasteLevelDoWyjebania(string frequency, Chart chartWasteLevel, List<WasteDataStructure> inputData, DateTime dateBegin, DateTime dateEnd, Dictionary<string, string> modelDictionary, ComboBox comboModel, string[] smtLines, bool linesCumulated, bool customerLGI, List<excelOperations.order12NC> mstOrders)
-        {
-            DataTable result = new DataTable();
-            Dictionary<string, Dictionary<string, double>> ngLineDateKey = new Dictionary<string, Dictionary<string, double>>();
-            Dictionary<string, Dictionary<string, double>> scrapLineDateKey = new Dictionary<string, Dictionary<string, double>>();
-            Dictionary<string, Dictionary<string, double>> prodLineDateKey = new Dictionary<string, Dictionary<string, double>>();
-
-            Dictionary<string, Dictionary<string, Dictionary<string, double>>> ngLineDateKeyModel = new Dictionary<string, Dictionary<string, Dictionary<string, double>>>();
-            Dictionary<string, Dictionary<string, Dictionary<string, double>>> scrapLineDateKeyModel = new Dictionary<string, Dictionary<string, Dictionary<string, double>>>();
-            Dictionary<string, Dictionary<string, Dictionary<string, double>>> prodLineDateKeyModel = new Dictionary<string, Dictionary<string, Dictionary<string, double>>>();
-
-            //Dictionary<string, Dictionary<string, double>> ngLevelPerLine = new Dictionary<string, Dictionary<string, double>>();
-            //Dictionary<string, Dictionary<string, double>> scrapLevelPerLine = new Dictionary<string, Dictionary<string, double>>();
-
-
-            Dictionary<string, double> totalProdDateKey = new Dictionary<string, double>();
-
-            string frequencyKey = "";
-
-            result.Columns.Add("Data");
-            result.Columns.Add("Ilość");
-            result.Columns.Add("Produkcja");
-            result.Columns.Add("%");
-
-            string[] mstOrdersList = mstOrders.Select(o => o.order).ToArray();
-            string lineKey = "Total";
-            foreach (var item in inputData)
-            {
-                if (customerLGI & mstOrdersList.Contains(item.NumerZlecenia)) continue;
-                if (!customerLGI & !mstOrdersList.Contains(item.NumerZlecenia)) continue;
-                if (item.FixedDateTime.Date < dateBegin || item.FixedDateTime.Date > dateEnd) continue;
-
-                    string line = item.SmtLine;
-                if (line == "") continue;
-                if (!linesCumulated & !smtLines.Contains(item.SmtLine)) continue;
-                if (!linesCumulated)
-                {
-                    lineKey = item.SmtLine;
-                }
-
-                string model = "";
-                if (!modelDictionary.TryGetValue(item.NumerZlecenia, out model)) model = "???";
-
-                switch (frequency)
-                {
-                    case "daily":
-                        {
-                            frequencyKey = item.FixedDateTime.Date.ToShortDateString();
-                            break;
-                        }
-                    case "weekly":
-                        {
-                            frequencyKey = dateTools.GetIso8601WeekOfYear(item.FixedDateTime).ToString();
-                            break;
-                        }
-                    case "monthly":
-                        {
-                            frequencyKey = dateTools.productionMonthNumber(dateTools.GetIso8601WeekOfYear(item.FixedDateTime), item.FixedDateTime.Year).ToString();
-                            break;
-                        }
-                }
-
-                //line key
-                if (!ngLineDateKey.ContainsKey(lineKey))
-                {
-                    ngLineDateKey.Add(lineKey, new Dictionary<string, double>());
-                    scrapLineDateKey.Add(lineKey, new Dictionary<string, double>());
-                    prodLineDateKey.Add(lineKey, new Dictionary<string, double>());
-
-                    ngLineDateKeyModel.Add(lineKey, new Dictionary<string, Dictionary<string, double>>());
-                    scrapLineDateKeyModel.Add(lineKey, new Dictionary<string, Dictionary<string, double>>());
-                    prodLineDateKeyModel.Add(lineKey, new Dictionary<string, Dictionary<string, double>>());
-                }
-
-
-
-
-                //frequency Key
-                if (!ngLineDateKey[lineKey].ContainsKey(frequencyKey))
-                {
-                    ngLineDateKey[lineKey].Add(frequencyKey, 0);
-                    scrapLineDateKey[lineKey].Add(frequencyKey, 0);
-                    prodLineDateKey[lineKey].Add(frequencyKey, 0);
-
-                    ngLineDateKeyModel[lineKey].Add(frequencyKey, new Dictionary<string, double>());
-                    scrapLineDateKeyModel[lineKey].Add(frequencyKey, new Dictionary<string, double>());
-                    prodLineDateKeyModel[lineKey].Add(frequencyKey, new Dictionary<string, double>());
-                }
-                if (!totalProdDateKey.ContainsKey(frequencyKey))
-                {
-                    totalProdDateKey.Add(frequencyKey, 0);
-                }
-
-                //modelKey
-                if (!ngLineDateKeyModel[lineKey][frequencyKey].ContainsKey(model))
-                {
-                    ngLineDateKeyModel[lineKey][frequencyKey].Add(model, 0);
-                    scrapLineDateKeyModel[lineKey][frequencyKey].Add(model, 0);
-                    prodLineDateKeyModel[lineKey][frequencyKey].Add(model, 0);
-                }
-
-
-
-                if (model.Replace("LLFML", "") == comboModel.Text || comboModel.Text == "")
-                {
-                    ngLineDateKey[lineKey][frequencyKey] += item.AllNg;
-                    scrapLineDateKey[lineKey][frequencyKey] += item.AllScrap;
-                    prodLineDateKey[lineKey][frequencyKey] += item.AllQty;
-
-                    ngLineDateKeyModel[lineKey][frequencyKey][model] += item.AllNg;
-                    scrapLineDateKeyModel[lineKey][frequencyKey][model] += item.AllScrap;
-                    prodLineDateKeyModel[lineKey][frequencyKey][model] += item.AllQty;
-
-                    totalProdDateKey[frequencyKey] += item.AllQty;
-
-                    ngLineDateKey[lineKey][frequencyKey] += item.AllNg;
-                    scrapLineDateKey[lineKey][frequencyKey] += item.AllScrap;
-                }
-
-            }
-
-
-            ChartArea ar = new ChartArea();
-            ar.AxisX.LabelStyle.Interval = 1;
-            ar.AxisY.MajorGrid.Interval = 0.5;
-            ar.AxisY.MinorGrid.Interval = 0.1;
-            ar.AxisY.MinorGrid.LineColor = System.Drawing.Color.Silver;
-            ar.AxisY.MinorGrid.Enabled = true;
-            ar.AxisY2.MajorGrid.Enabled = false;
-            ar.AxisY.LabelStyle.Format = "{0.00} %";
-            DataTable tempScrapTable = result.Clone();
-            Series productionLevel = new Series();
-            productionLevel.Name = "productionLevel";
-            productionLevel.ChartType = SeriesChartType.Column;
-            productionLevel.Name = "Poziom produkcji [szt.]";
-            productionLevel.YAxisType = AxisType.Secondary;
-            productionLevel.Color = System.Drawing.Color.AliceBlue;
-            productionLevel.BorderColor = System.Drawing.Color.Silver;
-
-            chartWasteLevel.Series.Clear();
-            chartWasteLevel.ChartAreas.Clear();
-
-            chartWasteLevel.ChartAreas.Add(ar);
-
-            foreach (var keyEntry in totalProdDateKey)
-            {
-                productionLevel.Points.AddXY(keyEntry.Key, keyEntry.Value);
-                
-            }
-            chartWasteLevel.Series.Add(productionLevel);
-
-            foreach (var lineEntry in ngLineDateKey)
-            {
-                string line = lineEntry.Key;
-
-                Series ngCumulatedSeries = new Series();
-                Series scrapCumulatedSeries = new Series();
-                ngCumulatedSeries.ChartType = SeriesChartType.Line;
-                ngCumulatedSeries.BorderWidth = 3;
-                ngCumulatedSeries.Name = line+" NG [%]";
-
-                scrapCumulatedSeries.ChartType = SeriesChartType.Line;
-                scrapCumulatedSeries.BorderWidth = 3;
-                scrapCumulatedSeries.Name = line+" SCRAP [%]";
-
-                foreach (var frequencyEntry in lineEntry.Value)
-                {
-                    double ng = 0;
-                    double scrap = 0;
-
-                    if (prodLineDateKey[line][frequencyEntry.Key] > 0)
-                    {
-                        ng = ((double)frequencyEntry.Value / (double)prodLineDateKey[line][frequencyEntry.Key]) * 100;
-                        scrap = ((double)scrapLineDateKey[line][frequencyEntry.Key] / (double)prodLineDateKey[line][frequencyEntry.Key]) * 100;
-                    }
-
-                    List<string> ngPerModelToolTip = new List<string>();
-                    List<Tuple<double, string>> scrapPerModelTooltip = new List<Tuple<double, string>>();
-
-                    foreach (var model in scrapLineDateKeyModel[line][frequencyEntry.Key])
-                    {
-                        scrapPerModelTooltip.Add(new Tuple<double, string>(Math.Round(model.Value / prodLineDateKeyModel[line][frequencyEntry.Key][model.Key] * 100, 1), "% - " + model.Value + @"/" + prodLineDateKeyModel[line][frequencyEntry.Key][model.Key] + " - " + model.Key));
-                    }
-
-                    scrapPerModelTooltip = scrapPerModelTooltip.OrderByDescending(o => o.Item1).ToList();
-                    foreach (var model in ngLineDateKeyModel[line][frequencyEntry.Key])
-                    {
-                        ngPerModelToolTip.Add(Math.Round((model.Value / prodLineDateKeyModel[line][frequencyEntry.Key][model.Key]) * 100, 1).ToString() + "% - " + model.Value + @"/" + prodLineDateKeyModel[line][frequencyEntry.Key][model.Key] + " - " + model.Key);
-                    }
-
-                    ngPerModelToolTip = ngPerModelToolTip.OrderByDescending(o => o).ToList();
-
-                    string ngtoolTip = "";
-                    foreach (var item in ngPerModelToolTip)
-                    {
-                        ngtoolTip += item + Environment.NewLine;
-                    }
-                    DataPoint ngPoint = new DataPoint();
-                    ngPoint.SetValueXY(frequencyEntry.Key, ng);
-                    ngPoint.ToolTip = ngtoolTip;
-                    ngCumulatedSeries.Points.Add(ngPoint);
-
-                    //scrap
-                    string scrapTooltip = "";
-                    foreach (var item in scrapPerModelTooltip)
-                    {
-                        scrapTooltip += item.Item1.ToString() + item.Item2 + Environment.NewLine;
-                    }
-
-                    DataPoint scrapPoint = new DataPoint();
-                    scrapPoint.SetValueXY(frequencyEntry.Key, scrap);
-                    scrapPoint.ToolTip = scrapTooltip;
-
-                    scrapCumulatedSeries.Points.Add(scrapPoint);
-                    result.Rows.Add("NG:");
-                    result.Rows.Add(frequencyEntry.Key, frequencyEntry.Value, (double)prodLineDateKey[line][frequencyEntry.Key], Math.Round(ng, 2) + "%");
-                    tempScrapTable.Rows.Add(frequencyEntry.Key, scrapLineDateKey[line][frequencyEntry.Key], (double)prodLineDateKey[line][frequencyEntry.Key], Math.Round(scrap, 2) + "%");
-
-                    result.Rows.Add();
-                    result.Rows.Add("SCRAP:");
-
-                    foreach (DataRow r in tempScrapTable.Rows)
-                    {
-                        result.Rows.Add(r[0].ToString(), r[1].ToString(), r[2].ToString(), r[3].ToString());
-                    }
-
-                }
-                chartWasteLevel.Series.Add(ngCumulatedSeries);
-                chartWasteLevel.Series.Add(scrapCumulatedSeries);
-            }
-            
-
-            chartWasteLevel.Legends[0].DockedToChartArea = chartWasteLevel.ChartAreas[0].Name;
-            chartWasteLevel.Legends[0].Position.Auto = false;
-            chartWasteLevel.Legends[0].Position = new ElementPosition(8, 0, 30, 10);
-            chartWasteLevel.Legends[0].BackColor = System.Drawing.Color.Transparent;
-
-            foreach (var point in chartWasteLevel.Series[2].Points)
-            {
-                point.MarkerStyle = MarkerStyle.Circle;
-                point.MarkerSize = 10;
-            }
-
-            foreach (var point in chartWasteLevel.Series[1].Points)
-            {
-                point.MarkerStyle = MarkerStyle.Circle;
-                point.MarkerSize = 10;
-            }
-
-
-
-
-
-
-
-
-
-
-            //var ngLimit = new HorizontalLineAnnotation();
-            //ngLimit.AxisY = ar.AxisY;
-            //ngLimit.AxisX = ar.AxisX;
-            //ngLimit.ClipToChartArea = chartWasteLevel.ChartAreas[0].Name;
-            //ngLimit.LineColor = System.Drawing.Color.Red;
-            //ngLimit.LineWidth = 2;
-            //ngLimit.AnchorY = 0;
-            //ngLimit.IsSizeAlwaysRelative = true;
-            //var scrapLimit = new HorizontalLineAnnotation();
-
-            //chartWasteLevel.Annotations.Add(ngLimit);
-
-
-
-            return result;
-        }
-
-        public static DataTable DrawWasteLevelOld(string frequency, Chart chartWasteLevel, List<WasteDataStructure> inputData, DateTime dateBegin, DateTime dateEnd, Dictionary<string, string> modelDictionary, ComboBox comboModel, string[] smtLines,bool linesCumulated,  bool customerLGI, List<excelOperations.order12NC> mstOrders)
-        {
-            DataTable result = new DataTable();
-            Dictionary<string, double> ngLevel = new Dictionary<string, double>();
-            Dictionary<string, double> scrapLevel = new Dictionary<string, double>();
-            Dictionary<string, double> allLevel = new Dictionary<string, double>();
-
-            Dictionary<string, Dictionary<string, double>> ngLevelPerModel = new Dictionary<string, Dictionary<string, double>>();
-            Dictionary<string, Dictionary<string, double>> scrapLevelPerModel = new Dictionary<string, Dictionary<string, double>>();
-            Dictionary<string, Dictionary<string, double>> allLevelPerModel = new Dictionary<string, Dictionary<string, double>>();
-
-            Dictionary<string, Dictionary<string, double>> ngLevelPerLine = new Dictionary<string, Dictionary<string, double>>();
-            Dictionary<string, Dictionary<string, double>> scrapLevelPerLine = new Dictionary<string, Dictionary<string, double>>();
-
-
-            Dictionary<string, double> totalProdQuantity = new Dictionary<string, double>();
-
-            string dictionaryKey = "";
-
-            result.Columns.Add("Data");
-            result.Columns.Add("Ilość");
-            result.Columns.Add("Produkcja");
-            result.Columns.Add("%");
-
-            string[] mstOrdersList = mstOrders.Select(o => o.order).ToArray();
-            foreach (var item in inputData)
-            {
-                if (customerLGI & mstOrdersList.Contains(item.NumerZlecenia)) continue;
-                if (!customerLGI & !mstOrdersList.Contains(item.NumerZlecenia)) continue;
-                if (!linesCumulated & !smtLines.Contains(item.SmtLine)) continue;
-
-                string line = item.SmtLine;
-                if (line == "") continue;
-
-                if (item.FixedDateTime.Date >= dateBegin & item.FixedDateTime.Date <= dateEnd)
-                {
-                    string model = "";
-                    if (!modelDictionary.TryGetValue(item.NumerZlecenia, out model)) model = "???";
-                    
-                    switch (frequency)
-                    {
-                        case "daily":
-                            {
-                                dictionaryKey = item.FixedDateTime.Date.ToShortDateString();
-                                break;
-                            }
-                        case "weekly":
-                            {
-                                dictionaryKey = dateTools.GetIso8601WeekOfYear(item.FixedDateTime).ToString();
-                                break;
-                            }
-                        case "monthly":
-                            {
-                                dictionaryKey = dateTools.productionMonthNumber(dateTools.GetIso8601WeekOfYear(item.FixedDateTime), item.FixedDateTime.Year).ToString();
-                                break;
-                            }
-                    }
-
-
-                    if (!ngLevelPerLine.ContainsKey(line))
-                    {
-                        ngLevelPerLine.Add(line, new Dictionary<string, double>());
-                        scrapLevelPerLine.Add(line, new Dictionary<string, double>());
-                    }
-
-                    if (!ngLevel.ContainsKey(dictionaryKey))
-                    {
-                        ngLevel.Add(dictionaryKey, 0);
-                        scrapLevel.Add(dictionaryKey, 0);
-                        allLevel.Add(dictionaryKey, 0);
-
-                        ngLevelPerModel.Add(dictionaryKey, new Dictionary<string, double>());
-                        scrapLevelPerModel.Add(dictionaryKey, new Dictionary<string, double>());
-                        allLevelPerModel.Add(dictionaryKey, new Dictionary<string, double>());
-
-                        totalProdQuantity.Add(dictionaryKey, 0);
-
-                        ngLevelPerLine[line].Add(dictionaryKey, 0);
-                        scrapLevelPerLine[line].Add(dictionaryKey, 0);
-                    }
-
-                    if (!ngLevelPerModel[dictionaryKey].ContainsKey(model))
-                    {
-                        ngLevelPerModel[dictionaryKey].Add(model, 0);
-                        scrapLevelPerModel[dictionaryKey].Add(model, 0);
-                        allLevelPerModel[dictionaryKey].Add(model, 0);
-                    }
-
-                    if (model.Replace("LLFML", "") == comboModel.Text || comboModel.Text == "")
-                    {
-                        ngLevel[dictionaryKey] += item.AllNg;
-                        scrapLevel[dictionaryKey] += item.AllScrap;
-                        allLevel[dictionaryKey] += item.AllQty;
-
-                        ngLevelPerModel[dictionaryKey][model] += item.AllNg;
-                        scrapLevelPerModel[dictionaryKey][model] += item.AllScrap;
-                        allLevelPerModel[dictionaryKey][model] += item.AllQty;
-
-                        totalProdQuantity[dictionaryKey] += item.AllQty;
-
-                        ngLevelPerLine[line][dictionaryKey] += item.AllNg;
-                        scrapLevelPerLine[line][dictionaryKey] += item.AllScrap;
-                    }
-                }
-            }
-
-            ChartArea ar = new ChartArea();
-            ar.AxisX.LabelStyle.Interval = 1;
-            ar.AxisY.MajorGrid.Interval = 0.5;
-            ar.AxisY.MinorGrid.Interval = 0.1;
-            ar.AxisY.MinorGrid.LineColor = System.Drawing.Color.Silver;
-            ar.AxisY.MinorGrid.Enabled = true;
-            ar.AxisY2.MajorGrid.Enabled = false;
-            ar.AxisY.LabelStyle.Format = "{0.00} %";
-            DataTable tempScrapTable = result.Clone();
-            Series productionLevel = new Series();
-            productionLevel.Name = "productionLevel";
-            productionLevel.ChartType = SeriesChartType.Column;
-            productionLevel.Name = "Poziom produkcji [szt.]";
-            productionLevel.YAxisType = AxisType.Secondary;
-            productionLevel.Color = System.Drawing.Color.AliceBlue;
-            productionLevel.BorderColor = System.Drawing.Color.Silver;
-
-            chartWasteLevel.Series.Clear();
-            chartWasteLevel.ChartAreas.Clear();
-
-            if (linesCumulated)
-            {
-                Series ngCumulatedSeries = new Series();
-                Series scrapCumulatedSeries = new Series();
-                ngCumulatedSeries.ChartType = SeriesChartType.Line;
-                ngCumulatedSeries.BorderWidth = 3;
-                ngCumulatedSeries.Name = "NG [%]";
-
-                scrapCumulatedSeries.ChartType = SeriesChartType.Line;
-                scrapCumulatedSeries.BorderWidth = 3;
-                scrapCumulatedSeries.Name = "SCRAP [%]";
-
-                foreach (var keyEntry in ngLevel)
-                {
-                    double ng = 0;
-                    double scrap = 0;
-
-                    if (allLevel[keyEntry.Key] > 0)
-                    {
-                        ng = ((double)keyEntry.Value / (double)allLevel[keyEntry.Key]) * 100;
-                        scrap = ((double)scrapLevel[keyEntry.Key] / (double)allLevel[keyEntry.Key]) * 100;
-                    }
-
-                    List<string> ngPerModelToolTip = new List<string>();
-                    List<Tuple<double, string>> scrapPerModelTooltip = new List<Tuple<double, string>>();
-
-                    foreach (var model in scrapLevelPerModel[keyEntry.Key])
-                    {
-                        scrapPerModelTooltip.Add(new Tuple<double, string>(Math.Round(model.Value / allLevelPerModel[keyEntry.Key][model.Key] * 100, 1), "% - " + model.Value + @"/" + allLevelPerModel[keyEntry.Key][model.Key] + " - " + model.Key));
-                    }
-                    
-                    scrapPerModelTooltip = scrapPerModelTooltip.OrderByDescending(o => o.Item1).ToList();
-                    foreach (var model in ngLevelPerModel[keyEntry.Key])
-                    {
-                        ngPerModelToolTip.Add(Math.Round((model.Value / allLevelPerModel[keyEntry.Key][model.Key]) * 100, 1).ToString() + "% - " + model.Value + @"/" + allLevelPerModel[keyEntry.Key][model.Key] + " - " + model.Key);
-                    }
-
-                    ngPerModelToolTip = ngPerModelToolTip.OrderByDescending(o => o).ToList();
-
-                    string ngtoolTip = "";
-                    foreach (var item in ngPerModelToolTip)
-                    {
-                        ngtoolTip += item + Environment.NewLine;
-                    }
-                    DataPoint ngPoint = new DataPoint();
-                    ngPoint.SetValueXY(keyEntry.Key, ng);
-                    ngPoint.ToolTip = ngtoolTip;
-                    ngCumulatedSeries.Points.Add(ngPoint);
-                    //scrap
-
-                    string scrapTooltip = "";
-                    foreach (var item in scrapPerModelTooltip)
-                    {
-                        scrapTooltip += item.Item1.ToString() + item.Item2 + Environment.NewLine;
-                    }
-
-                    DataPoint scrapPoint = new DataPoint();
-                    scrapPoint.SetValueXY(keyEntry.Key, scrap);
-                    scrapPoint.ToolTip = scrapTooltip;
-
-                    scrapCumulatedSeries.Points.Add(scrapPoint);
-                    result.Rows.Add("NG:");
-                    result.Rows.Add(keyEntry.Key, keyEntry.Value, (double)allLevel[keyEntry.Key], Math.Round(ng, 2) + "%");
-                    tempScrapTable.Rows.Add(keyEntry.Key, scrapLevel[keyEntry.Key], (double)allLevel[keyEntry.Key], Math.Round(scrap, 2) + "%");
-
-                    productionLevel.Points.AddXY(keyEntry.Key, totalProdQuantity[keyEntry.Key]);
-
-                    result.Rows.Add();
-                    result.Rows.Add("SCRAP:");
-
-                    foreach (DataRow r in tempScrapTable.Rows)
-                    {
-                        result.Rows.Add(r[0].ToString(), r[1].ToString(), r[2].ToString(), r[3].ToString());
-                    }
-                    chartWasteLevel.Series.Add(productionLevel);
-                    chartWasteLevel.ChartAreas.Add(ar);
-                    chartWasteLevel.Series.Add(ngCumulatedSeries);
-                    chartWasteLevel.Series.Add(scrapCumulatedSeries);
-
-                    chartWasteLevel.Legends[0].DockedToChartArea = chartWasteLevel.ChartAreas[0].Name;
-                    chartWasteLevel.Legends[0].Position.Auto = false;
-                    chartWasteLevel.Legends[0].Position = new ElementPosition(8, 0, 30, 10);
-                    chartWasteLevel.Legends[0].BackColor = System.Drawing.Color.Transparent;
-
-                    foreach (var point in chartWasteLevel.Series[2].Points)
-                    {
-                        point.MarkerStyle = MarkerStyle.Circle;
-                        point.MarkerSize = 10;
-                    }
-
-                    foreach (var point in chartWasteLevel.Series[1].Points)
-                    {
-                        point.MarkerStyle = MarkerStyle.Circle;
-                        point.MarkerSize = 10;
-                    }
-
-                }
-            }
-            else
-            {
-                List<Series> ngSeriesPerLine = new List<Series>();
-                foreach (var line in smtLines)
-                {
-                    Series ngLineSeries = new Series();
-                    ngLineSeries.ChartType = SeriesChartType.Line;
-                    ngLineSeries.BorderWidth = 3;
-                    ngLineSeries.Name = "NG [%]";
-                }
-            }
-
-
-
-
-            
-
-
-
-
-           
-            
-
-            //var ngLimit = new HorizontalLineAnnotation();
-            //ngLimit.AxisY = ar.AxisY;
-            //ngLimit.AxisX = ar.AxisX;
-            //ngLimit.ClipToChartArea = chartWasteLevel.ChartAreas[0].Name;
-            //ngLimit.LineColor = System.Drawing.Color.Red;
-            //ngLimit.LineWidth = 2;
-            //ngLimit.AnchorY = 0;
-            //ngLimit.IsSizeAlwaysRelative = true;
-            //var scrapLimit = new HorizontalLineAnnotation();
-
-            //chartWasteLevel.Annotations.Add(ngLimit);
-
-            
-
             return result;
         }
 
@@ -2006,6 +1477,63 @@ namespace KontrolaWizualnaRaport
             }
 
             return result;
+        }
+
+        public static void DrawNgChartForOneOperator(DataTable operatorTable, Chart chart)
+        {
+            Dictionary<string, Tuple<double, double>> ngScrapPerDay = new Dictionary<string, Tuple<double, double>>();
+
+            foreach (DataRow row in operatorTable.Rows)
+            {
+                if (row["Data"].ToString() == "") continue;
+                string day = row["Data"].ToString();
+
+                double ng = double.Parse(row["NG"].ToString());
+                double qty = double.Parse(row["Ilość"].ToString());
+                double scrap = double.Parse(row["Scrap"].ToString());
+
+                ngScrapPerDay.Add(day, new Tuple<double, double>(Math.Round(ng / qty * 100, 2), Math.Round(scrap / qty * 100, 2)));
+            }
+
+            ChartArea ar = new ChartArea();
+            ar.AxisX.LabelStyle.Interval = 1;
+            ar.AxisY.MajorGrid.Interval = 0.5;
+            ar.AxisY.MinorGrid.Interval = 0.1;
+            ar.AxisY.MinorGrid.LineColor = System.Drawing.Color.Silver;
+            ar.AxisY.MinorGrid.Enabled = true;
+            ar.AxisY2.MajorGrid.Enabled = false;
+            ar.AxisY.LabelStyle.Format = "{0.00} %";
+            //ar.AxisY.Maximum = 10;
+
+            chart.Series.Clear();
+            chart.ChartAreas.Clear();
+            chart.Legends.Clear();
+            chart.ChartAreas.Add(ar);
+
+            Series ngSeries = new Series();
+            Series scrapSeries = new Series();
+            ngSeries.ChartType = SeriesChartType.Line;
+            ngSeries.BorderWidth = 3;
+            ngSeries.MarkerStyle = MarkerStyle.Circle;
+            ngSeries.MarkerSize = 10;
+
+            scrapSeries.ChartType = SeriesChartType.Line;
+            scrapSeries.BorderWidth = 3;
+            scrapSeries.MarkerStyle = MarkerStyle.Square;
+            scrapSeries.MarkerSize = 10;
+
+            foreach (var dayEntry in ngScrapPerDay)
+            {
+                DataPoint ngPoint = new DataPoint();
+                ngPoint.SetValueXY(dayEntry.Key, (double)dayEntry.Value.Item1);
+                ngSeries.Points.Add(ngPoint);
+
+                DataPoint scrapPoint = new DataPoint();
+                scrapPoint.SetValueXY(dayEntry.Key, (double)dayEntry.Value.Item2);
+                scrapSeries.Points.Add(scrapPoint);
+            }
+            chart.Series.Add(ngSeries);
+            chart.Series.Add(scrapSeries);
         }
     }
 }

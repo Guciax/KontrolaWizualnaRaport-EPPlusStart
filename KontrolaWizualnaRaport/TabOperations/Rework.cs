@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -28,11 +29,12 @@ namespace KontrolaWizualnaRaport
             public string compRef;
             public string oper;
             public bool result;
+            public string pcbId;
         }
 
-        public static Dictionary<DateTime, Dictionary<int,Dictionary<string, PcbReworkData>>> SortSqlTableBydateShiftPcb(DataTable sqlTable)
+        private static Dictionary<DateTime, Dictionary<int,List<ReworkOperationDetails>>> SortSqlTableBydateShiftPcb(DataTable sqlTable)
         {
-            Dictionary<DateTime, Dictionary<int, Dictionary<string, PcbReworkData>>> result = new Dictionary<DateTime, Dictionary<int, Dictionary<string, PcbReworkData>>>();
+            Dictionary<DateTime, Dictionary<int, List<ReworkOperationDetails>>> result = new Dictionary<DateTime, Dictionary<int, List<ReworkOperationDetails>>>();
 
             foreach (DataRow row in sqlTable.Rows)
             {
@@ -49,12 +51,12 @@ namespace KontrolaWizualnaRaport
 
                 if (!result.ContainsKey(fixedDate.Date))
                 {
-                    result.Add(fixedDate.Date, new Dictionary<int, Dictionary<string, PcbReworkData>>());
+                    result.Add(fixedDate.Date, new Dictionary<int, List<ReworkOperationDetails>>());
                 }
                 dateShiftNo shiftInfo = dateTools.whatDayShiftIsit(realDate);
                 if (!result[fixedDate.Date].ContainsKey(shiftInfo.shift))
                 {
-                    result[fixedDate.Date].Add(shiftInfo.shift, new Dictionary<string, PcbReworkData>());
+                    result[fixedDate.Date].Add(shiftInfo.shift, new List<ReworkOperationDetails>());
                 }
 
                 
@@ -72,31 +74,64 @@ namespace KontrolaWizualnaRaport
                 newOperation.compRef = compRef;
                 newOperation.oper = oper;
                 newOperation.result = repairResult;
+                newOperation.pcbId = pcbId;
                 reworkItem.operations.Add(newOperation);
-                if (!result[fixedDate.Date][shiftInfo.shift].ContainsKey(pcbId))
-                {
-                    result[fixedDate.Date][shiftInfo.shift].Add(pcbId, reworkItem);
-                }
-                else
-                {
-                    result[fixedDate.Date][shiftInfo.shift][pcbId].operations.Add(newOperation);
-                }
+
+                    result[fixedDate.Date][shiftInfo.shift].Add(newOperation);
+                
             }
 
             return result;
         }
 
-  
-        public static void FillOutGridDailyProdReport(DataGridView grid, Dictionary<DateTime, Dictionary<int, Dictionary<string, PcbReworkData>>> reworkDataByDate)
+        private static void FillOutGridReworkByOperator(Dictionary<DateTime, Dictionary<int, List<ReworkOperationDetails>>> reworkDataByDate, DataGridView grid)
         {
+            Dictionary<string, List<ReworkOperationDetails>> reworkInfoByOperator = new Dictionary<string, List<ReworkOperationDetails>>();
             grid.Columns.Clear();
-            grid.Columns.Add("Data", "Data");
-            grid.Columns.Add("Tydz", "Tydz");
-            grid.Columns.Add("Zmiana", "Zmiana");
+            grid.Columns.Add("Operator", "Operator");
+            grid.Columns.Add("Operacje", "Operacje");
             grid.Columns.Add("PCB", "PCB");
-            grid.Columns.Add("Operacji", "Operacji");
+            grid.Columns.Add("Uszodzone", "Uszodzone");
+            grid.Columns.Add("Uszodzone%", "Uszodzone%");
+            foreach (var dateEntry in reworkDataByDate)
+            {
+                foreach (var shiftEntry in dateEntry.Value)
+                {
+                    foreach (var pcbEntry in shiftEntry.Value)
+                    {
+                        string oper = pcbEntry.oper;
+                        if (!reworkInfoByOperator.ContainsKey(oper))
+                        {
+                            reworkInfoByOperator.Add(oper, new List<ReworkOperationDetails>());
+                        }
+                        reworkInfoByOperator[oper].Add(pcbEntry);
+                    }
+                }
+            }
 
+            foreach (var operatorEntry in reworkInfoByOperator)
+            {
+                int totalOperations = operatorEntry.Value.Count;
+                int totalPcbs = operatorEntry.Value.Select(pcb => pcb.pcbId).Distinct().ToList().Count;
+                //int okCount = operatorEntry.Value.Select(pcb => pcb.result == true).ToList().Count;
+                int mistakeCount = operatorEntry.Value.Where(pcb => pcb.operation == "SCRAP - uszkodzenie podczas naprawy.").ToList().Count;
+                grid.Rows.Add(operatorEntry.Key, totalOperations, totalPcbs,  mistakeCount, Math.Round((double)mistakeCount/(double)totalPcbs*100,2)+"%");
+            }
+        }
+        
+        
 
+        public static void FillOutGridDailyProdReport(DataGridView dailyReportGrid, DataGridView reportByOperatorGrid, DataTable sqlTable)
+        {
+            Dictionary<DateTime, Dictionary<int, List<ReworkOperationDetails>>> reworkDataByDate = SortSqlTableBydateShiftPcb(sqlTable);
+            FillOutGridReworkByOperator(reworkDataByDate, reportByOperatorGrid);
+
+            dailyReportGrid.Columns.Clear();
+            dailyReportGrid.Columns.Add("Data", "Data");
+            dailyReportGrid.Columns.Add("Tydz", "Tydz");
+            dailyReportGrid.Columns.Add("Zmiana", "Zmiana");
+            dailyReportGrid.Columns.Add("PCB", "PCB");
+            dailyReportGrid.Columns.Add("Operacji", "Operacji");
 
             Color rowColor = Color.White;
 
@@ -110,6 +145,7 @@ namespace KontrolaWizualnaRaport
                 {
                     rowColor = Color.White;
                 }
+
                 foreach (var shiftEntry in dateEntry.Value)
                 {
                     DataTable shiftTagTable = new DataTable();
@@ -123,25 +159,30 @@ namespace KontrolaWizualnaRaport
                     shiftTagTable.Columns.Add("Naprawa");
                     shiftTagTable.Columns.Add("Komponent");
                     shiftTagTable.Columns.Add("Wynik");
-                    
-                    int operationCount = 0;
-                    int pcbCount = 0;
-                    
 
-                    foreach (var pcbId in shiftEntry.Value)
+                    int operationCount = shiftEntry.Value.Count;
+                    int pcbCount = 0;
+
+                    string prevPcb = "";
+
+                    for (int op=0;op<shiftEntry.Value.Count;op++)
                     {
-                        pcbCount++;
-                        foreach (var operation in pcbId.Value.operations)
+                        if (shiftEntry.Value[op].pcbId!=prevPcb)
                         {
-                            operationCount++;
-                            string wynik = "OK";
-                            if (!operation.result) wynik = "NG";
-                            shiftTagTable.Rows.Add(pcbCount, operationCount, operation.fixedDate, operation.model, pcbId.Key, operation.oper, operation.operation, operation.compRef, wynik);
+                            pcbCount++;
+                            prevPcb = shiftEntry.Value[op].pcbId;
                         }
+
+                        string wynik = "OK";
+                        if (!shiftEntry.Value[op].result) wynik = "NG";
+
+                        shiftTagTable.Rows.Add(pcbCount, op+1, shiftEntry.Value[op].realDate.ToString("dd.MM.yyyy hh:mm"), shiftEntry.Value[op].model, shiftEntry.Value[op].pcbId, shiftEntry.Value[op].oper, shiftEntry.Value[op].operation, shiftEntry.Value[op].compRef, wynik);
                     }
 
-                    grid.Rows.Add(dateEntry.Key.ToString("dd-MM-yyyy"), dateTools.GetIso8601WeekOfYear(dateEntry.Key), shiftEntry.Key, shiftEntry.Value.Count, operationCount);
-                    foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count-1].Cells)
+                    
+
+                    dailyReportGrid.Rows.Add(dateEntry.Key.ToString("dd-MM-yyyy"), dateTools.GetIso8601WeekOfYear(dateEntry.Key), shiftEntry.Key, pcbCount, operationCount);
+                    foreach (DataGridViewCell cell in dailyReportGrid.Rows[dailyReportGrid.Rows.Count-1].Cells)
                     {
                         cell.Style.BackColor = rowColor;
                         if (cell.OwningColumn.HeaderText.ToLower()!="data" & cell.OwningColumn.HeaderText.ToLower() != "tydz" & cell.OwningColumn.HeaderText.ToLower() != "zmiana")
@@ -151,7 +192,8 @@ namespace KontrolaWizualnaRaport
                     }
                 }
             }
-            SMTOperations.autoSizeGridColumns(grid);
+            SMTOperations.autoSizeGridColumns(dailyReportGrid);
+            dailyReportGrid.FirstDisplayedCell = dailyReportGrid.Rows[dailyReportGrid.Rows.Count - 1].Cells[0];
         }
     }
 }

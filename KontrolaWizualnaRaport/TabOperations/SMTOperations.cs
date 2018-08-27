@@ -820,37 +820,115 @@ namespace KontrolaWizualnaRaport
             return result;
         }
 
+        public class stencilStruct
+        {
+            public Int32 cycleCOunt { get; set; }
+            public DateTime dateStart { get; set; }
+            public DateTime dateEnd { get; set; }
+        }
+
+        public static void FillOutGridTraceability(string[] ledIds, DataGridView grid)
+        {
+            DataTable sqlSmtTable = SQLoperations.GetSmtLedTraceability();
+            DataTable sourceTable = new DataTable();
+
+            sourceTable.Columns.Add("Dioda");
+            sourceTable.Columns.Add("LOT");
+            sourceTable.Columns.Add("SMT");
+            sourceTable.Columns.Add("Box");
+
+            foreach (DataRow row in sqlSmtTable.Rows)
+            {
+                //DataCzasKoniec,LiniaSMT,NrZlecenia,Model
+                //  94MWS59R80JZ3E-137099    :83|137100:94MWS59R80JZ3E:81#137105:94MWS59R80JZ3E:82|137106:94MWS59R80JZ3E:75
+
+                string lot = row["NrZlecenia"].ToString();
+                string smtLine = row["LiniaSMT"].ToString();
+                string model = row["Model"].ToString();
+                string date = row["DataCzasKoniec"].ToString();
+                string ledLeftovers = row["KoncowkiLED"].ToString();
+                string[] splitByheads = ledLeftovers.Split('#');
+                List<string> ledIdList = new List<string>();
+                List<string> lotsList = new List<string>();
+
+                foreach (var head in splitByheads)
+                {
+                    string[] leds = head.Split('|');
+                    foreach (var led in leds)
+                    {
+                       var props = led.Split(':');
+                        var pair = props[1] + "-" + props[0];
+                        if (!ledIds.Contains(pair))
+                        {
+                            break;
+                        }
+                        sourceTable.Rows.Add(pair, lot, model, smtLine);
+                    }
+                }
+
+                //foreach (DataRow gridRow in sourceTable.Rows)
+                //{
+                //    string lotNo = gridRow["LOT"].ToString();
+                //    if (lotsList.Contains(lotNo) || lotNo == "") continue;
+                //    List<string> serials = SQLoperations.lotToPcbSerialNo(lotNo);
+                //    gridRow["Box"] = string.Join("|", SQLoperations.GetBoxPalletIdFromPcb(serials).ToArray());
+                //    lotsList.Add(lotNo);
+
+                //}
+
+                grid.DataSource = sourceTable;
+
+            }
+        }
+
         public static void FillOutStencilTable( DataGridView grid, Dictionary<string, MesModels> mesModels)
         {
             DataTable smtRecords = SQLoperations.GetStencilSmtRecords();
-            Dictionary<string, Int32> qtyPerStencil = new Dictionary<string, int>();
+            Dictionary<string, stencilStruct> stencilDict = new Dictionary<string, stencilStruct>();
 
             foreach (DataRow row in smtRecords.Rows)
             {
                 string stencilID = row["StencilQR"].ToString();
                 string model = row["Model"].ToString();
+                DateTime date = DateTime.Parse(row["DataCzasKoniec"].ToString());
+
                 MesModels modelInfo;
                 if (!mesModels.TryGetValue(model, out modelInfo)) continue;
                 if (stencilID.Trim() == "") continue;
                 int qty = 0;
                 int.TryParse(row["IloscWykonana"].ToString(), out qty);
-                if (qty>0)
+
+                if (qty > 0) 
                 {
-                    if (!qtyPerStencil.ContainsKey(stencilID))
+                    if (!stencilDict.ContainsKey(stencilID))
                     {
-                        qtyPerStencil.Add(stencilID, 0);
+                        stencilDict.Add(stencilID, new stencilStruct());
+                        stencilDict[stencilID].dateEnd = new DateTime(1700, 01, 01);
+                        stencilDict[stencilID].dateStart = DateTime.Now;
                     }
-                    qtyPerStencil[stencilID] += qty/modelInfo.PcbsOnCarrier;
+                    stencilDict[stencilID].cycleCOunt += qty/modelInfo.PcbsOnCarrier;
+
+                    if (date < stencilDict[stencilID].dateStart)
+                    {
+                        stencilDict[stencilID].dateStart = date;
+                    }
+
+                    if (date > stencilDict[stencilID].dateEnd)
+                    {
+                        stencilDict[stencilID].dateEnd = date;
+                    }
                 }
             }
 
             grid.Columns.Clear();
             grid.Columns.Add("StencilID", "StencilID");
             grid.Columns.Add("Ilosc", "Ilość cykli");
+            grid.Columns.Add("Okres", "Okres dni");
+            grid.Columns.Add("Avg", "Średnio na dzień");
 
-            foreach (var stencilEntry in qtyPerStencil)
+            foreach (var stencilEntry in stencilDict)
             {
-                grid.Rows.Add(stencilEntry.Key, stencilEntry.Value);
+                grid.Rows.Add(stencilEntry.Key, stencilEntry.Value.cycleCOunt, Math.Round((DateTime.Now- stencilEntry.Value.dateStart).TotalDays,0,MidpointRounding.AwayFromZero),Math.Round( stencilEntry.Value.cycleCOunt/ Math.Round((DateTime.Now - stencilEntry.Value.dateStart).TotalDays, 0, MidpointRounding.AwayFromZero),1));
             }
 
             dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCells);

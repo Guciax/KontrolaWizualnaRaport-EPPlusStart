@@ -35,6 +35,7 @@ namespace KontrolaWizualnaRaport
                 fixedDateTime = FixedShiftDate(realDateTime);
                 shiftNumber = DateToShiftNumber(realDateTime);
                 oper = row["Operator"].ToString();
+                if (oper.ToLower() == "test") continue;
                 goodQty = int.Parse(row["iloscDobrych"].ToString());
                 allQty = goodQty;
                 string model = "???";

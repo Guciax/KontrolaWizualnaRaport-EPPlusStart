@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace KontrolaWizualnaRaport
 {
@@ -51,7 +52,7 @@ namespace KontrolaWizualnaRaport
 
             if (masterVITable.Rows.Count < 1)
             {
-                masterVITable = SQLoperations.DownloadVisInspFromSQL(60);
+                masterVITable = SQLoperations.DownloadVisInspFromSQL(365);
             }
 
             //textBox1.Text += "SQL table: " + masterVITable.Rows.Count + " rows" + Environment.NewLine;
@@ -304,9 +305,9 @@ namespace KontrolaWizualnaRaport
             return new Dictionary<string, string>[] { result1, result2, result3, result4 };
         }
 
-        public static void ngRatePerOperator(List<WasteDataStructure> inspectionData, DateTime startDate, DateTime endDate, DataGridView grid)
+        public static void ngRatePerOperator(List<WasteDataStructure> inspectionData, DateTime startDate, DateTime endDate, DataGridView gridNgRate)
         {
-            grid.Columns.Clear();
+            gridNgRate.Columns.Clear();
             
             Dictionary<string, List<WasteDataStructure>> inspectionDataPerOperator = inspectionData.GroupBy(op => op.Oper).ToDictionary(op => op.Key, op => op.ToList());
 
@@ -320,15 +321,15 @@ namespace KontrolaWizualnaRaport
             //result.Columns.Add("Scrap", typeof(double));
             //result.Columns.Add("Scrap%", typeof(double));
 
-            grid.Columns.Add("Operator", "Operator");
-            grid.Columns.Add("Sprawdzone", "Sprawdzone");
-            grid.Columns.Add("Śr.na zmianę", "Śr.na zmianę");
-            grid.Columns.Add("h/zmiane","h/zmiane");
-            grid.Columns.Add("na godz.", "na godz.");
-            grid.Columns.Add("NG", "NG");
-            grid.Columns.Add("NG%", "NG%");
-            grid.Columns.Add("Scrap", "Scrap");
-            grid.Columns.Add("Scrap%", "Scrap % ");
+            gridNgRate.Columns.Add("Operator", "Operator");
+            gridNgRate.Columns.Add("Sprawdzone", "Sprawdzone");
+            gridNgRate.Columns.Add("Śr.na zmianę", "Śr.na zmianę");
+            gridNgRate.Columns.Add("h/zmiane","h/zmiane");
+            gridNgRate.Columns.Add("na godz.", "na godz.");
+            gridNgRate.Columns.Add("NG", "NG");
+            gridNgRate.Columns.Add("NG%", "NG%");
+            gridNgRate.Columns.Add("Scrap", "Scrap");
+            gridNgRate.Columns.Add("Scrap%", "Scrap % ");
 
            
             foreach (var operatorEntry in inspectionDataPerOperator)
@@ -364,7 +365,7 @@ namespace KontrolaWizualnaRaport
                     }
                     operatorperDay[wasteEntry.FixedDateTime.Date][wasteEntry.Model].Add(wasteEntry);
                 }
-                
+                if (totalInspected == 0) continue;
 
                 double ngPercent = Math.Round(totalNg / totalInspected * 100, 2);
                 double scrapPercent = Math.Round(totalScrap / totalInspected * 100, 2);
@@ -405,20 +406,21 @@ namespace KontrolaWizualnaRaport
                         h = 12;
                         rowClr = System.Drawing.Color.LightBlue;
                     }
-                
 
-                grid.Rows.Add(operatorEntry.Key, totalInspected, avg, h, Math.Round(avg/h,0), totalNg, ngPercent, totalScrap, scrapPercent);
-                grid.Rows[grid.Rows.Count - 1].Cells["Operator"].Tag = tagTable;
+                
+                gridNgRate.Rows.Add(operatorEntry.Key, totalInspected, avg, h, Math.Round(avg/h,0), totalNg, ngPercent, totalScrap, scrapPercent);
+                gridNgRate.Rows[gridNgRate.Rows.Count - 1].Cells["Operator"].Tag = tagTable;
+
                 if (h == 12)
                 {
-                    foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count - 1].Cells)
+                    foreach (DataGridViewCell cell in gridNgRate.Rows[gridNgRate.Rows.Count - 1].Cells)
                     {
                         cell.Style.BackColor = rowClr;
                     }
                 }
             }
 
-            SMTOperations.autoSizeGridColumns(grid);
+            SMTOperations.autoSizeGridColumns(gridNgRate);
             //grid.DataSource = result;
            // grid.Columns.Add(hoursCol);
 
@@ -487,5 +489,7 @@ namespace KontrolaWizualnaRaport
             }
             catch (Exception ex) { }
         }
+
+
     }
 }

@@ -37,7 +37,6 @@ namespace KontrolaWizualnaRaport
         }
 
         DataTable masterVITable = new DataTable();
-        
         Dictionary<string, string> lotModelDictionary = new Dictionary<string, string>();
         Dictionary<string, string> planModelDictionary = new Dictionary<string, string>();
         Dictionary<string, string> lotToOrderedQty = new Dictionary<string, string>();
@@ -96,7 +95,7 @@ namespace KontrolaWizualnaRaport
             {
                 case "SerwisLED":
                     {
-                        Rework.FillOutGridDailyProdReport(dataGridViewReworkDailyReport, Rework.SortSqlTableBydateShiftPcb(SQLoperations.GetLedRework()));
+                        Rework.FillOutGridDailyProdReport(dataGridViewReworkDailyReport, dataGridViewReworkByOperator, SQLoperations.GetLedRework());
                         break;
                     }
                 case "SMT":
@@ -360,7 +359,7 @@ namespace KontrolaWizualnaRaport
 
         private void dateTimePickerWasteLevelBegin_ValueChanged(object sender, EventArgs e)
         {
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked,  radioButtonWasteLevelLG.Checked, mstOrders, lineColors);
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked,  radioButtonWasteLevelLG.Checked, mstOrders, lineColors, vScrollBar1.Value/vScrollBar1.Maximum);
             dgvTools.ColumnsAutoSize(dataGridViewWasteLevel, DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader);
         }
 
@@ -898,7 +897,7 @@ namespace KontrolaWizualnaRaport
 
         private void radioButtonWasteLevelLG_CheckedChanged(object sender, EventArgs e)
         {
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors);
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, (double)vScrollBar1.Value / (double)vScrollBar1.Maximum);
         }
 
         private void dataGridViewChangeOvers_SelectionChanged(object sender, EventArgs e)
@@ -1201,7 +1200,6 @@ namespace KontrolaWizualnaRaport
             if (e.KeyCode== Keys.Return)
             {
                 string lot = textBox3.Text;
-
                 LotSummary.FillOutKitting(dataGridViewSummaryKitting, lot);
                 LotSummary.FillOutSmtSummary(dataGridViewSummarySmt, lot);
                 LotSummary.FillOutViSummary(dataGridViewSummaryVi, lot);
@@ -1277,7 +1275,7 @@ namespace KontrolaWizualnaRaport
 
             if (smtLines.Length > 0)
             {
-                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors);
+                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, checkBoxyAxis.Checked ? 1-(double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
                 foreach (DataGridViewColumn col in dataGridViewWasteLevel.Columns)
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -1407,7 +1405,6 @@ namespace KontrolaWizualnaRaport
                     cell.Style.BackColor = rowCol;
                 }
 
-
                 if (row.Cells["Data"].Value != null)
                 {
                     if (row.Cells["Data"].Value.ToString() != "")
@@ -1422,11 +1419,11 @@ namespace KontrolaWizualnaRaport
                         }
                     }
                 }
-
-
             }
 
             SMTOperations.autoSizeGridColumns(dataGridViewViOperatorDetails);
+            Charting.DrawNgChartForOneOperator((DataTable)dataGridViewViOperatorDetails.DataSource, chartNgRateForOneOperator);
+
         }
 
         private void dataGridViewKittingReadyLots_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1436,7 +1433,7 @@ namespace KontrolaWizualnaRaport
                 DataGridViewCell cell = dataGridViewKittingReadyLots.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 DataTable sourceTable = (DataTable)cell.Tag;
                 string title = dataGridViewKittingReadyLots.Rows[e.RowIndex].Cells["Model"].Value.ToString();
-                SimpleDetailsDT dtForm = new SimpleDetailsDT(sourceTable, title, -1);
+                SimpleDetailsDT dtForm = new SimpleDetailsDT(sourceTable, title, -1, false);
                 dtForm.Show();
             }
         }
@@ -1446,13 +1443,13 @@ namespace KontrolaWizualnaRaport
             if (e.ColumnIndex > -1 & e.RowIndex > -1)
             {
                 DataGridViewCell cell = dataGridViewReworkDailyReport.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                if (cell.Tag!=null)
+                if (cell.Tag != null)
                 {
                     DataTable sourceTable = (DataTable)cell.Tag;
-                    SimpleDetailsDT detailForm = new SimpleDetailsDT(sourceTable, "", 0);
+                    SimpleDetailsDT detailForm = new SimpleDetailsDT(sourceTable, "", 4, true);
                     detailForm.Show();
                 }
-                }
+            }
         }
 
         private void cBListViModelAnalysesSmtLines_MouseEnter(object sender, EventArgs e)
@@ -1521,7 +1518,7 @@ namespace KontrolaWizualnaRaport
 
             if (smtLines.Length > 0)
             {
-                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors);
+                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, checkBoxyAxis.Checked ? 1-(double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
                 foreach (DataGridViewColumn col in dataGridViewWasteLevel.Columns)
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -1560,7 +1557,19 @@ namespace KontrolaWizualnaRaport
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+            string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, checkBoxyAxis.Checked ?1- (double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
+        }
 
+        private void buttonSmtTraceOK_Click(object sender, EventArgs e)
+        {
+            SMTOperations.FillOutGridTraceability(textBoxSmtTraceLedId.Lines, dataGridViewSmtTrace);
+        }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, checkBoxyAxis.Checked ? 1- (double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
         }
     }
 }

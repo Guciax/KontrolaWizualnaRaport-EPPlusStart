@@ -26,19 +26,30 @@ namespace KontrolaWizualnaRaport
             {
                 if (cell.Tag!=null)
                 {
-                    sum += GetCellValue(cell);
+                    sum += GetCellIntValue(cell);
                 }
             }
             lbl.Text = "Suma zaznaczonych: " + sum;
             lbl.Tag = sum.ToString();
         }
 
-        public static Int32 GetCellValue(DataGridViewCell cell)
+        public static Int32 GetCellIntValue(DataGridViewCell cell)
         {
             Int32 result = 0;
             if (cell.Value != null)
             {
                 Int32.TryParse(cell.Value.ToString(), out result);
+            }
+
+            return result;
+        }
+
+        public static string GetCellStringValue(DataGridViewCell cell)
+        {
+            string result = "";
+            if (cell.Value != null)
+            {
+                return cell.Value.ToString();
             }
 
             return result;
