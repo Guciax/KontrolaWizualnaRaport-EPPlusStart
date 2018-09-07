@@ -1,12 +1,16 @@
-﻿using System;
+﻿using KontrolaWizualnaRaport.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+using static KontrolaWizualnaRaport.DgvImageButtonCell;
 
 namespace KontrolaWizualnaRaport
 {
@@ -14,6 +18,7 @@ namespace KontrolaWizualnaRaport
     {
         private readonly WastePerReasonStructure inputWasteData;
         private readonly string title;
+        private Dictionary<string, List<FileInfo>> imagesPerLot = new Dictionary<string, List<FileInfo>>();
 
         public WasteReasonDetails(WastePerReasonStructure inputWasteData, string reason)
         {
@@ -32,6 +37,8 @@ namespace KontrolaWizualnaRaport
             sourceTable.Columns.Add("Data");
             sourceTable.Columns.Add("LiniaSMT");
             sourceTable.Columns.Add("Operator");
+            //sourceTable.Columns.Add("Zdjecia");
+
 
             sourceTable.Columns["Dobrych"].DataType = typeof(Int32);
 
@@ -49,8 +56,17 @@ namespace KontrolaWizualnaRaport
                 Int32 qty = lot.WastePerReason[title];
                 qtyPerLine[line] += qty;
                 qtyPerModel[model] += qty;
-                
 
+                var imageList = VIOperations.TryGetFileInfoOfImagesForLot(lot.NumerZlecenia, lot.RealDateTime.ToString("dd-MM-yyyy"));
+                if (imageList.Count>0)
+                {
+                    if (!imagesPerLot.ContainsKey(lot.NumerZlecenia))
+                    {
+                        imagesPerLot.Add(lot.NumerZlecenia, new List<FileInfo>());
+                    }
+                    imagesPerLot[lot.NumerZlecenia].AddRange(imageList);
+                }
+                
                 sourceTable.Rows.Add(lot.GoodQty, lot.WastePerReason[title], lot.NumerZlecenia, lot.Model, lot.RealDateTime, lot.SmtLine, lot.Oper);
             }
 
@@ -92,6 +108,56 @@ namespace KontrolaWizualnaRaport
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (dataGridView1.Columns.Count < 8)
+            {
+                DataGridViewImageButtonSaveColumn columnImage =
+                    new DataGridViewImageButtonSaveColumn();
+
+                columnImage.Name = "Zdjecia";
+                columnImage.HeaderText = "";
+                dataGridView1.Columns.Add(columnImage);
+            }
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                
+
+                string lot = row.Cells["LOT"].Value.ToString();
+                List<FileInfo> imgList = new List<FileInfo>();
+                if (!imagesPerLot.TryGetValue(lot, out imgList)) continue;
+
+                
+                    ((DataGridViewImageButtonSaveCell)(row.Cells["Zdjecia"])).Enabled = true;
+                ((DataGridViewImageButtonSaveCell)(row.Cells["Zdjecia"])).ButtonState = PushButtonState.Normal;
+                row.Cells["Zdjecia"].Tag = imgList;
+
+                //DataGridViewButtonCell butCell = new DataGridViewButtonCell();
+
+                //butCell.Tag = imgList;
+                //butCell.Style.BackColor = Color.Lime;
+
+
+                //row.Cells["Zdjecia"] = butCell;
+                //row.Cells["Zdjecia"].Value = "ZDJĘCIA";
+            }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1 & e.ColumnIndex > -1)
+            {
+                DataGridViewCell cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                if (cell.OwningColumn.Name == "Zdjecia" & cell.Tag != null)
+                {
+                    string lot = dataGridView1.Rows[e.RowIndex].Cells["LOT"].Value.ToString();
+                    List<FileInfo> imgList = (List<FileInfo>)cell.Tag;
+                    ShowImagesForm imgForm = new ShowImagesForm(imgList, $"LOT: {lot}");
+                    imgForm.ShowDialog();
+                }
+            }
         }
     }
 }

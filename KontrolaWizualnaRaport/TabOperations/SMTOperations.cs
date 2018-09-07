@@ -836,6 +836,9 @@ namespace KontrolaWizualnaRaport
             sourceTable.Columns.Add("LOT");
             sourceTable.Columns.Add("SMT");
             sourceTable.Columns.Add("Box");
+            sourceTable.Columns.Add("Końc.");
+            List<string[]> rowsList = new List<string[]>();
+            List<string[]> notFoundList = new List<string[]>();
 
             foreach (DataRow row in sqlSmtTable.Rows)
             {
@@ -850,22 +853,61 @@ namespace KontrolaWizualnaRaport
                 string[] splitByheads = ledLeftovers.Split('#');
                 List<string> ledIdList = new List<string>();
                 List<string> lotsList = new List<string>();
+                //94MWS59R80JZ3E-139693
+                
 
                 foreach (var head in splitByheads)
                 {
                     string[] leds = head.Split('|');
                     foreach (var led in leds)
                     {
-                       var props = led.Split(':');
+                        var props = led.Split(':');
                         var pair = props[1] + "-" + props[0];
+                        var left = props[2];
                         if (!ledIds.Contains(pair))
                         {
                             break;
                         }
-                        sourceTable.Rows.Add(pair, lot, model, smtLine);
+                        rowsList.Add(new string[] { pair, lot, model, smtLine, left });
                     }
                 }
+            }
+            foreach (var id in ledIds)
+            {
+                if (id.Trim() == "") continue;
+                bool idFound = false;
+                foreach (var item in rowsList)
+                {
+                    if (id == item[0])
+                    {
+                        sourceTable.Rows.Add(item);
+                        idFound = true;
+                    }
+                }
+                if (!idFound)
+                {
+                    notFoundList.Add(id.Split('-'));
+                    sourceTable.Rows.Add(id, "Nieznane", "Brak","Danych","SMT");
+                }
+            }
 
+            var notFoundLots = SQLoperations.GetZlecenieString(notFoundList);
+
+            foreach (DataRow row in sourceTable.Rows)
+            {
+                if (row["LOT"].ToString()=="Nieznane")
+                {
+                    string nc12Id = row["Dioda"].ToString();
+                    foreach (var item in notFoundLots)
+                    {
+                        if (nc12Id == item[0]+"-"+item[1])
+                        {
+                            row["LOT"] = item[2];
+                        }
+                    }
+                }
+            }
+                
                 //foreach (DataRow gridRow in sourceTable.Rows)
                 //{
                 //    string lotNo = gridRow["LOT"].ToString();
@@ -878,7 +920,7 @@ namespace KontrolaWizualnaRaport
 
                 grid.DataSource = sourceTable;
 
-            }
+            
         }
 
         public static void FillOutStencilTable( DataGridView grid, Dictionary<string, MesModels> mesModels)

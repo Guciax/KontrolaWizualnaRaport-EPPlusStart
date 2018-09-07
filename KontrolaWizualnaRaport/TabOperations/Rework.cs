@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using static KontrolaWizualnaRaport.dateTools;
 using static KontrolaWizualnaRaport.SMTOperations;
 
@@ -31,6 +32,8 @@ namespace KontrolaWizualnaRaport
             public bool result;
             public string pcbId;
         }
+
+        static Dictionary<DateTime, Dictionary<int, List<ReworkOperationDetails>>> reworkDataByDate = new Dictionary<DateTime, Dictionary<int, List<ReworkOperationDetails>>>();
 
         private static Dictionary<DateTime, Dictionary<int,List<ReworkOperationDetails>>> SortSqlTableBydateShiftPcb(DataTable sqlTable)
         {
@@ -119,11 +122,9 @@ namespace KontrolaWizualnaRaport
             }
         }
         
-        
-
         public static void FillOutGridDailyProdReport(DataGridView dailyReportGrid, DataGridView reportByOperatorGrid, DataTable sqlTable)
         {
-            Dictionary<DateTime, Dictionary<int, List<ReworkOperationDetails>>> reworkDataByDate = SortSqlTableBydateShiftPcb(sqlTable);
+            reworkDataByDate = SortSqlTableBydateShiftPcb(sqlTable);
             FillOutGridReworkByOperator(reworkDataByDate, reportByOperatorGrid);
 
             dailyReportGrid.Columns.Clear();
@@ -194,6 +195,111 @@ namespace KontrolaWizualnaRaport
             }
             SMTOperations.autoSizeGridColumns(dailyReportGrid);
             dailyReportGrid.FirstDisplayedCell = dailyReportGrid.Rows[dailyReportGrid.Rows.Count - 1].Cells[0];
+        }
+
+        class ngVsService
+        {
+            public Int32 ng { get; set; }
+            public Int32 rework { get; set; }
+        }
+
+        public static void FillOutServiceVsNgGridAndDrawChart(List<WasteDataStructure> inspectionData, Chart chart, bool daily, DataGridView grid)
+        {
+            Dictionary<string, ngVsService> ngPerDay = new Dictionary<string, ngVsService>();
+            foreach (var item in inspectionData)
+            {
+                string dateKey = "";
+                if (daily)
+                {
+                    dateKey= item.FixedDateTime.Date.ToString("dd-MMM");
+                }
+                else
+                {
+                    dateKey = dateTools.GetIso8601WeekOfYear(item.FixedDateTime).ToString();
+                }
+                if (!ngPerDay.ContainsKey(dateKey))
+                {
+                    ngPerDay.Add(dateKey, new ngVsService());
+                    ngPerDay[dateKey].ng = 0;
+                    ngPerDay[dateKey].rework = 0;
+
+                }
+
+                ngPerDay[dateKey].ng += item.AllNg;
+            }
+
+            foreach (var dateEntry in reworkDataByDate)
+            {
+                string dateKey = "";
+                if (daily)
+                {
+                    dateKey = dateEntry.Key.Date.ToString("dd-MMM");
+                }
+                else
+                {
+                    dateKey = dateTools.GetIso8601WeekOfYear(dateEntry.Key.Date).ToString();
+                }
+                
+                foreach (var shiftEntry in dateEntry.Value)
+                {
+                    var reworkCount = shiftEntry.Value.Select(op => op.pcbId).Distinct().Count();
+                    if (!ngPerDay.ContainsKey(dateKey))
+                    {
+                        ngPerDay.Add(dateKey, new ngVsService());
+                        ngPerDay[dateKey].ng = 0;
+                        ngPerDay[dateKey].rework = 0;
+                    }
+
+                    ngPerDay[dateKey].rework += reworkCount;
+                }
+            }
+
+            grid.Columns.Clear();
+            grid.Columns.Add("Data", "Data");
+            grid.Columns.Add("NG", "NG");
+            grid.Columns.Add("Naprawa", "Naprawa");
+            grid.Columns.Add("Roznica", "Różnica");
+
+            chart.Series.Clear();
+            chart.ChartAreas.Clear();
+            chart.Legends.Clear();
+
+            ChartArea ar = new ChartArea();
+            ar.AxisX.Interval = ngPerDay.Count > 10 ? ngPerDay.Count / 10 : 10;
+            ar.AxisX.MajorGrid.LineColor = Color.Silver;
+            ar.AxisY.MajorGrid.LineColor = Color.Silver;
+
+            Series balanceSeries = new Series();
+            balanceSeries.ChartType = SeriesChartType.Line;
+            balanceSeries.BorderWidth = 3;
+
+            Series ngSeries = new Series();
+            ngSeries.ChartType = SeriesChartType.Line;
+
+            Series reworkSeries = new Series();
+            reworkSeries.ChartType = SeriesChartType.Line;
+
+            foreach (var dateEntry in ngPerDay)
+            {
+                DataPoint balancePoint = new DataPoint();
+                balancePoint.SetValueXY(dateEntry.Key, dateEntry.Value.rework - dateEntry.Value.ng);
+                balanceSeries.Points.Add(balancePoint);
+
+                DataPoint ngPoint = new DataPoint();
+                ngPoint.SetValueXY(dateEntry.Key, dateEntry.Value.ng);
+                ngSeries.Points.Add(ngPoint);
+
+                DataPoint reworkPoint = new DataPoint();
+                reworkPoint.SetValueXY(dateEntry.Key, dateEntry.Value.rework);
+                reworkSeries.Points.Add(reworkPoint);
+
+                grid.Rows.Add(dateEntry.Key, dateEntry.Value.ng, dateEntry.Value.rework, dateEntry.Value.rework - dateEntry.Value.ng);
+
+            }
+
+            dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCells);
+            chart.ChartAreas.Add(ar);
+            chart.Series.Add(balanceSeries);
         }
     }
 }

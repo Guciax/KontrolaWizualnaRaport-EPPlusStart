@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+using static KontrolaWizualnaRaport.DgvImageButtonCell;
 
 namespace KontrolaWizualnaRaport
 {
     class LotSummary
     {
-        public static void FillOutGrid(DataGridView grid, DataTable table)
+        public static void FillOutGrid(DataGridView grid, DataTable table, bool attachImages)
         {
             grid.Columns.Clear();
             grid.Columns.Add("Nazwa", "Nazwa");
@@ -23,26 +25,69 @@ namespace KontrolaWizualnaRaport
                 {
                     grid.Rows.Add(table.Columns[c].ColumnName, table.Rows[r][c]);
                 }
+                if (attachImages)
+                {
+                    DataGridViewImageButtonSaveColumn columnImage = new DataGridViewImageButtonSaveColumn();
+
+                    columnImage.Name = "Images";
+                    columnImage.HeaderText = "";
+                    grid.Columns.Add(columnImage);
+
+                    string date = table.Rows[r]["Data_czas"].ToString().Substring(0, 10).Replace(".", "-");
+                    string lot = table.Rows[r]["numerZlecenia"].ToString();
+                    var fileImgList = VIOperations.TryGetFileInfoOfImagesForLot(lot, date);
+
+                    if (fileImgList.Count > 0)
+                    {
+                        foreach (DataGridViewRow row in grid.Rows)
+                        {
+                            string rowFailureName = row.Cells[0].Value.ToString();
+                            List<System.IO.FileInfo> tagList = new List<System.IO.FileInfo>();
+                            foreach (var img in fileImgList)
+                            {
+                                string failureName = img.Name.Split('_')[1];
+
+                                
+                                if (failureName == rowFailureName)
+                                {
+                                    tagList.Add(img);
+                                    
+                                }
+                            }
+                            if (tagList.Count>0)
+                            {
+                                ((DataGridViewImageButtonSaveCell)(row.Cells[r + 2])).Enabled = true;
+                                ((DataGridViewImageButtonSaveCell)(row.Cells[r + 2])).ButtonState = PushButtonState.Normal;
+
+                                row.Cells[r + 2].Tag = tagList;
+                            }
+                        }
+
+                    }
+                }
             }
+
+
+
             SMTOperations.autoSizeGridColumns(grid);
         }
 
         public static void FillOutKitting(DataGridView grid, string lot)
         {
             DataTable kitTable = SQLoperations.GetKittingInfoForLot(lot);
-            FillOutGrid(grid, kitTable);
+            FillOutGrid(grid, kitTable,false);
         }
 
         public static void FillOutSmtSummary(DataGridView grid, string lot)
         {
             DataTable smtTable = SQLoperations.GetSmtRecordsForLot(lot);
-            FillOutGrid(grid, smtTable);
+            FillOutGrid(grid, smtTable, false);
         }
 
         public static void FillOutViSummary(DataGridView grid, string lot)
         {
             DataTable viTable = SQLoperations.GetVisInspForLotL(lot);
-            FillOutGrid(grid, viTable);
+            FillOutGrid(grid, viTable, true);
         }
 
         public static void FilloutBoxingSummary(DataGridView grid, List<string> pcbs)
@@ -116,7 +161,7 @@ namespace KontrolaWizualnaRaport
                 table.Rows.Add(start, end, testerEntry.Key, total, good, ng);
             }
 
-            FillOutGrid(grid, table);
+            FillOutGrid(grid, table, false);
             return pcbOKList;
         }
 

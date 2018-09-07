@@ -37,6 +37,7 @@ namespace KontrolaWizualnaRaport
                 {
                     foreach (OfficeOpenXml.ExcelWorksheet worksheet in pck.Workbook.Worksheets)
                     {
+                        if (worksheet.Dimension == null) continue;
                         int orderColIndex = 0;
                         int nc12ColIndex = 0;
                         int qtyColIndex = 0;

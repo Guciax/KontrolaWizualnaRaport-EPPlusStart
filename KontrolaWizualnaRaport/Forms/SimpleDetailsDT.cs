@@ -35,7 +35,7 @@ namespace KontrolaWizualnaRaport
         {
             if (hyperlinkPcb & !Directory.Exists(@"P:\"))
             {
-                ConnectPDrive();
+                Network.ConnectPDrive();
             }
 
             dataGridView1.DataSource = sourceTable;
@@ -44,30 +44,15 @@ namespace KontrolaWizualnaRaport
             SMTOperations.autoSizeGridColumns(dataGridView1);
             MakeInterlacedColors();
             MakeImageHyperlinks();
-
-            
         }
 
-        private static void ConnectPDrive()
-        {
-            Process myProcess = new Process();
-            myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            myProcess.StartInfo.CreateNoWindow = true;
-            myProcess.StartInfo.UseShellExecute = false;
-            myProcess.StartInfo.FileName = "cmd.exe";
-            myProcess.StartInfo.Arguments = @"/c net use P: \\mstms005\shared /user:eprod plfm!234 /PERSISTENT:NO";
-            myProcess.EnableRaisingEvents = true;
-            myProcess.Start();
-            myProcess.WaitForExit();
-
-            //System.Diagnostics.Process.Start("CMD.exe", @"/K net use P: \\mstms005\shared /PERSISTENT:NO");
-        }
+        
 
         private void MakeImageHyperlinks()
         {
             if (!System.IO.Directory.Exists(@"P:\"))
             {
-                ConnectPDrive();
+                Network.ConnectPDrive();
             }
                 //using (new Network.NetworkConnection(@"\\mstms005\Shared\", new System.Net.NetworkCredential("EPROD", "plfm!234","MST")))
                 {
@@ -85,25 +70,28 @@ namespace KontrolaWizualnaRaport
 
 
 
-                        if (!listOfFilesInDict.TryGetValue(pcbDir, out fileList))
+                    if (!listOfFilesInDict.TryGetValue(pcbDir, out fileList))
+                    {
+                        listOfFilesInDict.Add(pcbDir, new List<FileInfo>());
+                        Debug.WriteLine("skan " + pcbDir);
+                        if (System.IO.Directory.Exists(pcbDir))
                         {
-                            Debug.WriteLine("skan " + pcbDir);
-                            if (System.IO.Directory.Exists(pcbDir))
+
+                            DirectoryInfo dirNfo = new DirectoryInfo(pcbDir);
+                            var files = dirNfo.GetFiles();
+                            foreach (var file in files)
                             {
-                                listOfFilesInDict.Add(pcbDir, new List<FileInfo>());
-                                DirectoryInfo dirNfo = new DirectoryInfo(pcbDir);
-                                var files = dirNfo.GetFiles();
-                                foreach (var file in files)
-                                {
 
-                                    listOfFilesInDict[pcbDir].Add(file);
+                                listOfFilesInDict[pcbDir].Add(file);
 
-                                }
                             }
-
                         }
 
+                    }
+
+
                         List<FileInfo> filesForThisSerial = new List<FileInfo>();
+
                         foreach (var file in listOfFilesInDict[pcbDir])
                         {
                             var splittedFilename = Path.GetFileNameWithoutExtension(file.Name).Split('_');

@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Windows.Forms.VisualStyles;
+using static KontrolaWizualnaRaport.DgvImageButtonCell;
 
 namespace KontrolaWizualnaRaport
 {
@@ -41,18 +45,26 @@ namespace KontrolaWizualnaRaport
             DataGridView dataGridViewBledyNrZlec,
             DataGridView dataGridViewMstOrders,
             DataGridView dataGridViewViOperatorsTotal,
+            DataGridView gridLatestLots,
             DateTimePicker dateTimePickerViOperatorEfiiciencyStart,
             DateTimePicker dateTimePickerViOperatorEfiiciencyEnd,
             NumericUpDown numericUpDownMoreThan50Scrap,
             NumericUpDown numericUpDownMoreThan50Ng,
-            Dictionary<string, string> lotToOrderedQty
+            Dictionary<string, string> lotToOrderedQty,
+
+            //rework
+            DataGridView dataGridViewReworkDailyReport,
+            DataGridView dataGridViewReworkByOperator,
+            DataGridView dataGridViewServiceVsNg,
+            Chart chartServiceVsNg,
+            bool chartDaily
             )
         {
             mstOrders = excelOperations.loadExcel(ref lotModelDictionary);
 
             if (masterVITable.Rows.Count < 1)
             {
-                masterVITable = SQLoperations.DownloadVisInspFromSQL(365);
+                masterVITable = SQLoperations.DownloadVisInspFromSQL(120);
             }
 
             //textBox1.Text += "SQL table: " + masterVITable.Rows.Count + " rows" + Environment.NewLine;
@@ -114,6 +126,16 @@ namespace KontrolaWizualnaRaport
             SMTOperations.autoSizeGridColumns(dataGridViewViOperatorsTotal);
 
             dataGridViewMstOrders.DataSource = VIOperations.checkMstViIfDone(mstOrders, inspectionData);
+
+            Rework.FillOutGridDailyProdReport(dataGridViewReworkDailyReport, dataGridViewReworkByOperator, SQLoperations.GetLedRework());
+            RefreshReworkChart(inspectionData, chartServiceVsNg, chartDaily, dataGridViewServiceVsNg);
+
+            FillOutGridLatestLots(gridLatestLots, inspectionData);
+        }
+
+        public static void RefreshReworkChart(List<WasteDataStructure> inspectionData, Chart chartServiceVsNg, bool chartDaily, DataGridView dataGridViewServiceVsNg)
+        {
+            Rework.FillOutServiceVsNgGridAndDrawChart(inspectionData, chartServiceVsNg, chartDaily, dataGridViewServiceVsNg);
         }
 
         public static string chartFrequency(GroupBox grBox)
@@ -490,6 +512,105 @@ namespace KontrolaWizualnaRaport
             catch (Exception ex) { }
         }
 
+        public static List<Image> TryGetFailureImagesForPcb(string lot, string serial, string date)
+        {
+            List<Image> result = new List<Image>();
+            var path = Path.Combine(@"P:\Kontrola_Wzrokowa", date, lot);
 
+            DirectoryInfo dirNfo = new DirectoryInfo(path);
+            if (!dirNfo.Exists) return new List<Image>();
+            var files = dirNfo.GetFiles();
+
+            foreach (var file in files)
+            {
+                if (file.Name.Split('_')[0] == serial)
+                {
+                    result.Add(Image.FromFile(file.FullName));
+                }
+            }
+
+            return result;
+        }
+
+        public static List<Image> TryGetFailureImagesForLot(string lot,  string date)
+        {
+            List<Image> result = new List<Image>();
+            var path = Path.Combine(@"P:\Kontrola_Wzrokowa", date, lot);
+
+            DirectoryInfo dirNfo = new DirectoryInfo(path);
+            if (!dirNfo.Exists) return new List<Image>();
+            var files = dirNfo.GetFiles();
+
+            foreach (var file in files)
+            {
+                if (file.Extension != ".jpg") continue;
+                Image img = Image.FromFile(file.FullName);
+                img.Tag = file.Name;
+                    result.Add(img);
+            }
+
+            return result;
+        }
+
+        public static List<FileInfo> TryGetFileInfoOfImagesForLot(string lot, string date)
+        {
+            List<FileInfo> result = new List<FileInfo>();
+            var path = Path.Combine(@"P:\Kontrola_Wzrokowa", date, lot);
+
+            DirectoryInfo dirNfo = new DirectoryInfo(path);
+            if (!dirNfo.Exists) return new List<FileInfo>();
+            var files = dirNfo.GetFiles();
+
+            foreach (var file in files)
+            {
+                if (file.Extension != ".jpg") continue;
+                //Image img = Image.FromFile(file.FullName);
+                //img.Tag = file.Name;
+                result.Add(file);
+            }
+
+            return result;
+        }
+
+        public static void FillOutGridLatestLots(DataGridView grid, List<WasteDataStructure> inspectionData)
+        {
+            if (!System.IO.Directory.Exists(@"P:\"))
+            {
+                Network.ConnectPDrive();
+            }
+
+            grid.Columns.Clear();
+            grid.Columns.Add("Data", "Data");
+            grid.Columns.Add("Model", "Model");
+            grid.Columns.Add("Lot", "Lot");
+            grid.Columns.Add("Operator", "Operator");
+            grid.Columns.Add("Linia", "Linia");
+            grid.Columns.Add("IloscOK", "IloscOK");
+            grid.Columns.Add("NG", "NG");
+            grid.Columns.Add("Scrap", "Scrap");
+            DataGridViewImageButtonSaveColumn columnImage = new DataGridViewImageButtonSaveColumn();
+
+            columnImage.Name = "Images";
+            columnImage.HeaderText = "";
+            grid.Columns.Add(columnImage);
+            //grid.Columns.Add("Zdjecia", "Zdjecia");
+            foreach (var inspectionRecord in inspectionData.Skip(inspectionData.Count-40).Reverse())
+            {
+                var fileImgList = TryGetFileInfoOfImagesForLot(inspectionRecord.NumerZlecenia, inspectionRecord.RealDateTime.ToString("dd-MM-yyyy"));
+                grid.Rows.Add(inspectionRecord.RealDateTime, inspectionRecord.Model, inspectionRecord.NumerZlecenia, inspectionRecord.Oper, inspectionRecord.SmtLine, inspectionRecord.GoodQty, inspectionRecord.AllNg, inspectionRecord.AllScrap);
+
+                if (fileImgList.Count>0)
+                {
+                    ((DataGridViewImageButtonSaveCell)(grid.Rows[grid.Rows.GetLastRow(DataGridViewElementStates.None)].Cells["Images"])).Enabled = true;
+                    ((DataGridViewImageButtonSaveCell)(grid.Rows[grid.Rows.GetLastRow(DataGridViewElementStates.None)].Cells["Images"])).ButtonState = PushButtonState.Normal;
+
+                    //grid.Rows[grid.Rows.GetLastRow(DataGridViewElementStates.None)].Cells["Zdjecia"] = new DataGridViewButtonCell();
+                    //grid.Rows[grid.Rows.GetLastRow(DataGridViewElementStates.None)].Cells["Zdjecia"] = new DataGridViewImageButtonCell();
+                    grid.Rows[grid.Rows.GetLastRow(DataGridViewElementStates.None)].Cells["Images"].Tag = fileImgList;
+                }
+            }
+
+            dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCells);
+        }
     }
 }

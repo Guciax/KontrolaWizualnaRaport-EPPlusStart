@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -11,12 +12,24 @@ namespace KontrolaWizualnaRaport
 {
     class Network
     {
+        public static void ConnectPDrive()
+        {
+            Process myProcess = new Process();
+            myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            myProcess.StartInfo.CreateNoWindow = true;
+            myProcess.StartInfo.UseShellExecute = false;
+            myProcess.StartInfo.FileName = "cmd.exe";
+            myProcess.StartInfo.Arguments = @"/c net use P: \\mstms005\shared /user:eprod plfm!234 /PERSISTENT:NO";
+            myProcess.EnableRaisingEvents = true;
+            myProcess.Start();
+            myProcess.WaitForExit();
+        }
+
         public class NetworkConnection : IDisposable
         {
             string _networkName;
 
-            public NetworkConnection(string networkName,
-                NetworkCredential credentials)
+            public NetworkConnection(string networkName, NetworkCredential credentials)
             {
                 _networkName = networkName;
 

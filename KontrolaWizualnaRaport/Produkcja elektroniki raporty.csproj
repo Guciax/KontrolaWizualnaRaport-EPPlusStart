@@ -38,6 +38,7 @@
     <Reference Include="EPPlus">
       <HintPath>.\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -53,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DgvImageButtonCell.cs" />
     <Compile Include="dgvTools.cs" />
     <Compile Include="Forms\ShowImagesForm.cs">
       <SubType>Form</SubType>
@@ -60,6 +62,7 @@
     <Compile Include="Forms\ShowImagesForm.Designer.cs">
       <DependentUpon>ShowImagesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageToByteArray.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="TabOperations\BoxingOperations.cs" />
     <Compile Include="TabOperations\ChangeOverTools.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KontrolaWizualnaRaport.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -55,6 +56,9 @@ namespace KontrolaWizualnaRaport
 
         private void Form1_Load(object sender, EventArgs e)
         {
+#if DEBUG
+            ImageToByteArray.ImgToByteArray();
+#endif
             dateTimePickerSmtStart.Value = DateTime.Now.Date.AddDays(-60);
             smtRecords = SQLoperations.GetSmtRecordsFromDb(dateTimePickerSmtStart.Value, dateTimePickerSmtEnd.Value);
             lotTable = SQLoperations.lotTable();
@@ -83,21 +87,12 @@ namespace KontrolaWizualnaRaport
             lineColors.Add("SMT6", Color.DarkGreen);
             lineColors.Add("SMT7", Color.SteelBlue);
             lineColors.Add("SMT8", Color.MediumTurquoise);
-
-            
-            
-            
         }
 
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (tabControl2.SelectedTab.Text)
             {
-                case "SerwisLED":
-                    {
-                        Rework.FillOutGridDailyProdReport(dataGridViewReworkDailyReport, dataGridViewReworkByOperator, SQLoperations.GetLedRework());
-                        break;
-                    }
                 case "SMT":
                     {
                         if (smtModelLineQuantity.Count < 1)
@@ -216,11 +211,17 @@ namespace KontrolaWizualnaRaport
                                 dataGridViewBledyNrZlec,
                                 dataGridViewMstOrders,
                                 dataGridViewViOperatorsTotal,
+                                dataGridViewLatestLots,
                                 dateTimePickerViOperatorEfiiciencyStart,
                                 dateTimePickerViOperatorEfiiciencyEnd,
                                 numericUpDownMoreThan50Scrap,
                                 numericUpDownMoreThan50Ng,
-                                lotToOrderedQty);
+                                lotToOrderedQty, dataGridViewReworkDailyReport, 
+                                dataGridViewReworkByOperator,
+                                dgvServiceVsNg,
+                                chartServiceVsNg,
+                                radioButtonReworkVsNgDaily.Checked
+                                );
                         }
                         break;
                     }
@@ -1304,15 +1305,18 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridViewMstOrders_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
+            if (dataGridViewMstOrders.Rows.Count > 0)
+                { 
             foreach (DataGridViewRow row in dataGridViewMstOrders.Rows)
-            {
-                if(row.Cells["Kontrola wzrokowa"].Value.ToString()=="NIE")
                 {
-                    row.Cells["Kontrola wzrokowa"].Style.BackColor = Color.Red;
-                    row.Cells["Kontrola wzrokowa"].Style.ForeColor = Color.White;
+                    if (row.Cells["Kontrola wzrokowa"].Value.ToString() == "NIE")
+                    {
+                        row.Cells["Kontrola wzrokowa"].Style.BackColor = Color.Red;
+                        row.Cells["Kontrola wzrokowa"].Style.ForeColor = Color.White;
+                    }
                 }
+                dataGridViewMstOrders.FirstDisplayedCell = dataGridViewMstOrders.Rows[dataGridViewMstOrders.Rows.Count - 1].Cells[0];
             }
-            dataGridViewMstOrders.FirstDisplayedCell = dataGridViewMstOrders.Rows[dataGridViewMstOrders.Rows.Count - 1].Cells[0];
         }
 
         private void cBListViReasonAnalysesSmtLines_MouseEnter(object sender, EventArgs e)
@@ -1440,16 +1444,7 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridViewReworkDailyReport_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex > -1 & e.RowIndex > -1)
-            {
-                DataGridViewCell cell = dataGridViewReworkDailyReport.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                if (cell.Tag != null)
-                {
-                    DataTable sourceTable = (DataTable)cell.Tag;
-                    SimpleDetailsDT detailForm = new SimpleDetailsDT(sourceTable, "", 4, true);
-                    detailForm.Show();
-                }
-            }
+
         }
 
         private void cBListViModelAnalysesSmtLines_MouseEnter(object sender, EventArgs e)
@@ -1470,7 +1465,7 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridViewReworkDailyReport_SelectionChanged(object sender, EventArgs e)
         {
-            dgvTools.SumOfSelectedCells(dataGridViewReworkDailyReport, labelReworkProdReportSumOfSelected);
+            
         }
 
         private void comboBoxTestEfficiencyModels_SelectedIndexChanged(object sender, EventArgs e)
@@ -1570,6 +1565,58 @@ namespace KontrolaWizualnaRaport
         {
             string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
             dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, checkBoxyAxis.Checked ? 1- (double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
+        }
+
+        private void dataGridViewReworkDailyReport_SelectionChanged_1(object sender, EventArgs e)
+        {
+            dgvTools.SumOfSelectedCells(dataGridViewReworkDailyReport, labelReworkProdReportSumOfSelected);
+        }
+
+        private void dataGridViewReworkDailyReport_CellDoubleClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex > -1 & e.RowIndex > -1)
+            {
+                DataGridViewCell cell = dataGridViewReworkDailyReport.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                if (cell.Tag != null)
+                {
+                    DataTable sourceTable = (DataTable)cell.Tag;
+                    SimpleDetailsDT detailForm = new SimpleDetailsDT(sourceTable, "", 4, true);
+                    detailForm.Show();
+                }
+            }
+        }
+
+        private void radioButtonReworkVsNgDaily_CheckedChanged(object sender, EventArgs e)
+        {
+            VIOperations.RefreshReworkChart(inspectionData, chartServiceVsNg, radioButtonReworkVsNgDaily.Checked, dgvServiceVsNg);
+        }
+
+        private void dataGridViewLatestLots_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1 & e.ColumnIndex > -1)
+            {
+                DataGridViewCell cell = dataGridViewLatestLots.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                if (cell.Tag != null)
+                {
+                    List<FileInfo> imgFilesList = (List<FileInfo>)cell.Tag;
+                    ShowImagesForm imgForm = new ShowImagesForm(imgFilesList, "");
+                    imgForm.ShowDialog();
+                }
+            }
+        }
+
+        private void dataGridViewSummaryVi_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex > -1 & e.RowIndex > -1) 
+            {
+                DataGridViewCell cell = dataGridViewSummaryVi.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                if (cell.Tag!=null)
+                {
+                    List<FileInfo> imgFilesList = (List<FileInfo>)cell.Tag;
+                    ShowImagesForm imgForm = new ShowImagesForm(imgFilesList, "");
+                    imgForm.ShowDialog();
+                }
+            }
         }
     }
 }

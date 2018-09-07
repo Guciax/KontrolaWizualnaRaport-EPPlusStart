@@ -30,6 +30,7 @@ namespace KontrolaWizualnaRaport.Forms
             {
                 PictureBox picBox = new PictureBox();
                 Image img = Bitmap.FromFile(file.FullName);
+                img.Tag = file.Name;
                 picBox.Image = img;
                 picBox.SizeMode = PictureBoxSizeMode.Zoom;
                 picBox.MouseClick += PicBox_MouseClick;
@@ -42,6 +43,10 @@ namespace KontrolaWizualnaRaport.Forms
             {
                 PictureBox firstBox = (PictureBox)flowLayoutPanel1.Controls[0];
                 pictureBox1.Image = firstBox.Image;
+                if (firstBox.Image.Tag!=null)
+                {
+                    labelDescription.Text = firstBox.Image.Tag.ToString();
+                }
                 previousPBox = firstBox;
                 firstBox.BorderStyle = BorderStyle.FixedSingle;
             }
@@ -51,7 +56,12 @@ namespace KontrolaWizualnaRaport.Forms
         private void PicBox_MouseClick(object sender, MouseEventArgs e)
         {
             PictureBox picBox = (PictureBox)sender;
-            pictureBox1.Image = picBox.Image;
+            Image img = picBox.Image;
+            if (img.Tag!=null)
+            {
+                labelDescription.Text = img.Tag.ToString();
+            }
+            pictureBox1.Image = img;
             picBox.BorderStyle = BorderStyle.FixedSingle;
 
             if (previousPBox!=null)

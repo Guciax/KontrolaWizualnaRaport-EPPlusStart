@@ -34,7 +34,7 @@ namespace KontrolaWizualnaRaport
             SqlCommand command = new SqlCommand();
             command.CommandTimeout = 60;
             command.Connection = conn;
-            command.CommandText = @"SELECT Id,Data_czas,Operator,iloscDobrych,numerZlecenia,ngBrakLutowia,ngBrakDiodyLed,ngBrakResConn,ngPrzesuniecieLed,ngPrzesuniecieResConn,ngZabrudzenieLed,ngUszkodzenieMechaniczneLed,ngUszkodzenieConn,ngWadaFabrycznaDiody,ngUszkodzonePcb,ngWadaNaklejki,ngSpalonyConn,ngInne,scrapBrakLutowia,scrapBrakDiodyLed,scrapBrakResConn,scrapPrzesuniecieLed,scrapPrzesuniecieResConn,scrapZabrudzenieLed,scrapUszkodzenieMechaniczneLed,scrapUszkodzenieConn,scrapWadaFabrycznaDiody,scrapUszkodzonePcb,scrapWadaNaklejki,scrapSpalonyConn,scrapInne,ngTestElektryczny FROM tb_Kontrola_Wizualna_Karta_Pracy where Data_czas>@dataCzas AND Operator<>'test';";
+            command.CommandText = @"SELECT Id,Data_czas,Operator,iloscDobrych,numerZlecenia,ngBrakLutowia,ngBrakDiodyLed,ngBrakResConn,ngPrzesuniecieLed,ngPrzesuniecieResConn,ngZabrudzenieLed,ngUszkodzenieMechaniczneLed,ngUszkodzenieConn,ngWadaFabrycznaDiody,ngUszkodzonePcb,ngWadaNaklejki,ngSpalonyConn,ngInne,scrapBrakLutowia,scrapBrakDiodyLed,scrapBrakResConn,scrapPrzesuniecieLed,scrapPrzesuniecieResConn,scrapZabrudzenieLed,scrapUszkodzenieMechaniczneLed,scrapUszkodzenieConn,scrapWadaFabrycznaDiody,scrapUszkodzonePcb,scrapWadaNaklejki,scrapSpalonyConn,scrapInne,ngTestElektryczny FROM tb_Kontrola_Wizualna_Karta_Pracy where Data_czas>@dataCzas AND Operator<>'test' order by Data_czas;";
             //@"SELECT Data_czas,Operator,iloscDobrych,numerZlecenia,ngBrakLutowia,ngBrakDiodyLed,ngBrakResConn,ngPrzesuniecieLed,ngPrzesuniecieResConn,ngZabrudzenieLed,ngUszkodzenieMechaniczneLed,ngUszkodzenieConn,ngWadaFabrycznaDiody,ngUszkodzonePcb,ngWadaNaklejki,ngSpalonyConn,ngInne,scrapBrakLutowia,scrapBrakDiodyLed,scrapBrakResConn,scrapPrzesuniecieLed,scrapPrzesuniecieResConn,scrapZabrudzenieLed,scrapUszkodzenieMechaniczneLed,scrapUszkodzenieConn,scrapWadaFabrycznaDiody,scrapUszkodzonePcb,scrapWadaNaklejki,scrapSpalonyConn,scrapInne,ngTestElektryczny FROM tb_Kontrola_Wizualna_Karta_Pracy WHERE Data_czas > '" + DateTime.Now.AddDays(-90).ToShortDateString() + "';";
             command.Parameters.AddWithValue("@dataCzas", tillDate);
             SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -611,6 +611,47 @@ namespace KontrolaWizualnaRaport
 
 
             return result.ToList();
+        }
+
+        public static List<string[]> GetZlecenieString(List<string[]> ncIdPair)
+        {
+            DataTable tabletoFill = new DataTable();
+
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = @"Data Source=MSTMS010;Initial Catalog=ConnectToMSTDB;User Id=mes;Password=mes;";
+
+            SqlCommand command = new SqlCommand();
+            command.Connection = conn;
+            command.CommandText = @"SELECT ID,ZlecenieString,NC12 FROM DaneBierzaceKompAktualne_FULL where ";
+
+            for (int i = 0; i < ncIdPair.Count; i++)
+            {
+                if (i > 0)
+                {
+                    command.CommandText += " OR ";
+                }
+                command.CommandText += $"(ID = @id{i} and NC12 = @nc12{i})";
+                command.Parameters.AddWithValue("@id" + i, ncIdPair[i][1]);
+                command.Parameters.AddWithValue("@nc12" + i, ncIdPair[i][0]);
+            }
+            command.CommandText += ";";
+
+
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+            //try
+            {
+                adapter.Fill(tabletoFill);
+            }
+            List<string[]> result = new List<string[]>();
+
+            foreach (DataRow row in tabletoFill.Rows)
+            {
+                string id = row["ID"].ToString();
+                string nc12 = row["NC12"].ToString();
+                string lot = row["ZlecenieString"].ToString();
+                result.Add(new string[] { nc12, id, lot });
+            }
+            return result;
         }
     }
 }

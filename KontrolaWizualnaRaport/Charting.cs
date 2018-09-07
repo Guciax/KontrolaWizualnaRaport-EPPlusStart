@@ -515,7 +515,7 @@ namespace KontrolaWizualnaRaport
                         }
                     case "weekly":
                         {
-                            frequencyKey = dateTools.GetIso8601WeekOfYear(wasteEntry.FixedDateTime).ToString();
+                            frequencyKey = wasteEntry.FixedDateTime.Year-2000+ dateTools.GetIso8601WeekOfYear(wasteEntry.FixedDateTime).ToString();
                             break;
                         }
                     case "monthly":
