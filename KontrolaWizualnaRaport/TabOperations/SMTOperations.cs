@@ -466,6 +466,7 @@ namespace KontrolaWizualnaRaport
 
                         foreach (var item in ledDropped) 
                         {
+                            if (string.IsNullOrWhiteSpace(item)) continue;
                             string[] ranks = item.Split('|');
                             string[] rankA = ranks[0].ToString().Split(':');
                             string[] rankB = ranks[1].ToString().Split(':');

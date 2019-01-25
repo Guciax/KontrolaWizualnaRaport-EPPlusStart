@@ -339,8 +339,18 @@ namespace KontrolaWizualnaRaport
                 string model = row["MODEL_ID"].ToString().Replace("LLFML","");
                 if (result.ContainsKey(model)) continue;
                 int ledSum = int.Parse(row["PKG_SUM_QTY"].ToString());
-                int ledSumA = int.Parse(row["A_PKG_QTY"].ToString());
-                int ledSumB = int.Parse(row["B_PKG_QTY"].ToString());
+                int ledSumA = 0;
+                int ledSumB = 0;
+                if (row["A_PKG_QTY"].ToString().Trim() != "")
+                {
+                    ledSumA = int.Parse(row["A_PKG_QTY"].ToString());
+                    ledSumB = int.Parse(row["B_PKG_QTY"].ToString());
+                }
+                else
+                {
+                    ledSumA = (int)Math.Round((double)ledSum / 2,0, MidpointRounding.ToEven);
+                    ledSumB = ledSum - ledSumA;
+                }
                 int pcbOnCarrier = int.Parse(row["SMT_Carrier_QTY"].ToString());
 
                 string type = "";

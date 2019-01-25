@@ -21,7 +21,7 @@ namespace KontrolaWizualnaRaport
         public static List<order12NC> loadExcel(ref Dictionary<string, string> lotModelDictionary)
         {
             List<order12NC> result = new List<order12NC>();
-            string FilePath = @"Y:\Manufacturing_Center\Manufacturing HID EM\weinne\woto\elektronika\ZLECENIA MST\2018\zlecenia MST.xlsx";
+            string FilePath = @"Y:\Manufacturing_Center\Manufacturing Elektronika EM\woto\elektronika\ZLECENIA MST\2019\zlecenia MST.xlsx";
 
             if (File.Exists(FilePath))
             {
