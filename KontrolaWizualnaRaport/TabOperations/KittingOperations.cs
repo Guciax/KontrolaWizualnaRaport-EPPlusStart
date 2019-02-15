@@ -29,50 +29,26 @@ namespace KontrolaWizualnaRaport
             return modelTable;
         }
 
-        public static void FillGridWorkReport(DataTable lotTable, DataGridView grid)
+        public static void FillGridWorkReport()
         {
-            DataTable dt = lotTable.Copy();
-            dt.Columns.Remove("LiniaProdukcyjna");
-            SortedDictionary<DateTime, SortedDictionary<int, DataTable>> tablesPerDayPerShift = SMTOperations.sortTableByDayAndShift(dt, "DataCzasWydruku");
-            
 
-            System.Drawing.Color rowColor = System.Drawing.Color.LightBlue;
+            var filteredMstOrders = DataContainer.sqlDataByProcess.Kitting.Select(o => o.Value).Where(o => o.odredGroup == "MST" & SharedComponents.Kitting.checkBoxKittingMst.Checked);
+            var filteredLgOrders = DataContainer.sqlDataByProcess.Kitting.Select(o => o.Value).Where(o => o.odredGroup == "LG" & SharedComponents.Kitting.checkBoxKittingLg.Checked);
+            var joinedOrdered = filteredLgOrders.Union(filteredLgOrders).OrderBy(o => o.kittingDate);
 
-            grid.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            foreach (var dayEntry in tablesPerDayPerShift)
+            var groupByDay = joinedOrdered.GroupBy(o => dateTools.whatDayShiftIsit(o.kittingDate).fixedDate.Date).ToDictionary(x=>x.Key, v=>v.ToList());
+            foreach (var dayEntry in groupByDay)
             {
-                if (rowColor == System.Drawing.Color.LightBlue)
+                var groupByShift = dayEntry.Value.GroupBy(o=>dateTools.whatDayShiftIsit(o.kittingDate).shift).ToDictionary(x => x.Key, v => v.ToList());
+                foreach (var shift in groupByShift)
                 {
-                    rowColor = System.Drawing.Color.White;
+                    SharedComponents.Kitting.dataGridViewKitting.Rows.Add(dayEntry.Key, dateTools.GetIso8601WeekOfYear(dayEntry.Key), shift.Key, shift.Value.Count(), shift.Value.Select(o => o.orderedQty).Sum());
                 }
-                else
-                {
-                    rowColor = System.Drawing.Color.LightBlue;
-                }
-                var week = dateTools.GetIso8601WeekOfYear(dayEntry.Key);
-
-                foreach (var shiftEntry in dayEntry.Value)
-                {
-                    double qty = 0;
-                    foreach (DataRow row in shiftEntry.Value.Rows)
-                    {
-                        qty += double.Parse(row["Ilosc_wyrobu_zlecona"].ToString());
-                    }
-
-                    grid.Rows.Add(dayEntry.Key.ToShortDateString(),week, shiftEntry.Key.ToString(), qty);
-                    foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count - 1].Cells)
-                    {
-                        cell.Style.BackColor = rowColor;
-                        if (cell.OwningColumn.HeaderText == "Ilość")
-                        {
-                            cell.Tag = shiftEntry.Value;
-                        }
-                    }
-                }
+                
             }
-            grid.FirstDisplayedScrollingRowIndex = grid.RowCount - 1;
-            SMTOperations.autoSizeGridColumns(grid);
+
+            SharedComponents.Kitting.dataGridViewKitting.FirstDisplayedScrollingRowIndex = SharedComponents.Kitting.dataGridViewKitting.RowCount - 1;
+            SMTOperations.autoSizeGridColumns(SharedComponents.Kitting.dataGridViewKitting);
         }
 
         public static void FillGridReadyLots(DataGridView grid, DataTable lotTable, DataTable smtRecords)

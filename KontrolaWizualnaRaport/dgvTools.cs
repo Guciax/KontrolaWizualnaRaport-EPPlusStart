@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,25 @@ namespace KontrolaWizualnaRaport
     class dgvTools
     {
 
+        public static void MakeAlternatingRowsColors(DataGridView grid, int colIndex)
+        {
+            Color rowColor = Color.White;
+            for (int r = 0; r < grid.Rows.Count; r++) 
+            {
+                if (r > 0)
+                {
+                    if (grid.Rows[r-1].Cells[colIndex].Value.ToString()!= grid.Rows[r].Cells[colIndex].Value.ToString())
+                    {
+                        rowColor = rowColor == Color.White ? Color.LightSteelBlue : Color.White;
+                    }
+                }
+
+                foreach (DataGridViewCell cell in grid.Rows[r].Cells)
+                {
+                    cell.Style.BackColor = rowColor;
+                }
+            }
+        }
 
         public static void ColumnsAutoSize(DataGridView grid, DataGridViewAutoSizeColumnMode mode)
         {

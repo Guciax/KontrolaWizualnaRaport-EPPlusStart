@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KontrolaWizualnaRaport.CentalDataStorage;
+using MST.MES;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -15,88 +17,63 @@ namespace KontrolaWizualnaRaport
 {
     class SMTOperations
     {
-        public struct LotLedWasteStruc
+        public class LotLedWasteStruc
         {
             public string lotId;
             public string smtLine;
             public string model;
             public int manufacturedModules;
-            public int reelsUsed;
-            public int ledsPerReel;
-            public int requiredRankA;
-            public int requiredRankB;
-            public int ledLeftA;
-            public int ledLeftB;
+            public int ledsUsed;
+            public int ledsUsageFromBom;
+            public float ledWaste
+            {
+                get
+                {
+                    return (float)Math.Round(((double)ledsUsed - (double)ledsUsageFromBom) / (double)ledsUsageFromBom * 100, 2);
+                }
+            }
         }
 
         public static SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary = new SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>>();
 
-        public static void ReLoadSmtTab(
-            DataGridView dataGridViewSmtProduction, 
-            DataGridView dataGridViewChangeOvers,
-            DataGridView dataGridViewSmtLedDropped,
-            DataGridView dataGridViewSmtLedWasteByModel,
-            DataGridView dataGridViewSmtWasteTotal,
-            DataGridView dataGridViewSmtLedWasteTotalPerLine,
-            DataGridView dataGridViewSmtStencilUsage,
-            DataTable smtRecords, 
-            ref Dictionary<string, Dictionary<string, List<durationQuantity>>> smtModelLineQuantity, 
-            RadioButton radioButtonSmtShowAllModels,
-            Dictionary<string, MesModels> mesModels,
-            ComboBox comboBoxSmtModels,
-            ComboBox comboBoxSmtLedWasteLine,
-            ComboBox comboBoxSmtLewWasteFreq,
-            ComboBox comboBoxSmtLedWasteLines,
-            Dictionary<string, Color> lineColors, 
-            Chart chartLedWasteChart,
-            Panel panelSmtLedWasteCheckContainer)
+        public static void ReLoadSmtTab()
         {
-            SortedDictionary<DateTime, SortedDictionary<int, DataTable>> sortedTableByDayAndShift = SMTOperations.sortTableByDayAndShift(smtRecords, "DataCzasKoniec");
-            SMTOperations.shiftSummaryDataSource(sortedTableByDayAndShift, dataGridViewSmtProduction);
+            SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortedTableByDayAndShift = SMTOperations.sortTableByDayAndShift();
+            SMTOperations.shiftSummaryDataSource(sortedTableByDayAndShift, SharedComponents.Smt.productionReportTab.dataGridViewSmtProduction);
 
-            smtModelLineQuantity = SMTOperations.smtQtyPerModelPerLine(smtRecords, radioButtonSmtShowAllModels.Checked, mesModels);
-            comboBoxSmtModels.Items.AddRange(smtModelLineQuantity.Select(m => m.Key).OrderBy(m => m).ToArray());
-
-            ChangeOverTools.BuildSmtChangeOverGrid(ChangeOverTools.BuildDateShiftLineDictionary(smtRecords), dataGridViewChangeOvers);
+            //smtModelLineQuantity = SMTOperations.smtQtyPerModelPerLine(smtRecords, radioButtonSmtShowAllModels.Checked, mesModels);
+            SharedComponents.Smt.ModelAnalysis.comboBoxSmtModels.Items.AddRange(GlobalParameters.allLinesByHand);
             
-            ledWasteDictionary = LedWasteDictionary(sortedTableByDayAndShift, mesModels);
-            SMTOperations.FillOutDailyLedWaste(ledWasteDictionary, dataGridViewSmtLedDropped);
-            SMTOperations.FillOutLedWasteByModel(ledWasteDictionary, dataGridViewSmtLedWasteByModel, comboBoxSmtLedWasteLine.Text);
-            SMTOperations.FillOutLedWasteTotalWeekly(ledWasteDictionary, dataGridViewSmtWasteTotal);
-            Dictionary<string, bool> lineOptions = new Dictionary<string, bool>();
-            lineColors = new Dictionary<string, Color>();
+            //ChangeOverTools.BuildSmtChangeOverGrid(ChangeOverTools.BuildDateShiftLineDictionary(smtRecords), dataGridViewChangeOvers);
+            
+            ledWasteDictionary = LedWasteDictionary(sortedTableByDayAndShift, DataContainer.mesModels);
+            SMTOperations.FillOutDailyLedWaste(ledWasteDictionary,SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedDropped);
+            SMTOperations.FillOutLedWasteByModel(ledWasteDictionary, SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedWasteByModel, SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Text);
+            SMTOperations.FillOutLedWasteTotalWeekly(ledWasteDictionary, SharedComponents.Smt.LedWasteTab.dataGridViewSmtWasteTotal);
 
-            foreach (Control c in panelSmtLedWasteCheckContainer.Controls)
-            {
-                if ((c is CheckBox))
-                {
-                    lineOptions.Add(c.Text.Trim(), ((CheckBox)c).Checked);
-                    lineColors.Add(c.Text.Trim(), c.BackColor);
-                }
-            }
+            Charting.DrawLedWasteChart(ledWasteDictionary);
 
-            Charting.DrawLedWasteChart(ledWasteDictionary, chartLedWasteChart, comboBoxSmtLewWasteFreq.Text, lineOptions, lineColors);
-
-            comboBoxSmtLedWasteLine.Items.Add("Wszystkie");
-            comboBoxSmtLedWasteLine.Items.AddRange(smtModelLineQuantity.SelectMany(m => m.Value).Select(l => l.Key).Distinct().OrderBy(l => l).ToArray());
-            comboBoxSmtLedWasteLine.Text = "Wszystkie";
-            comboBoxSmtLedWasteLines.Items.AddRange(ledWasteDictionary.SelectMany(date => date.Value).SelectMany(shift => shift.Value).Select(l => l.model).Distinct().OrderBy(l => l).ToArray());
-            comboBoxSmtLedWasteLines.Items.Insert(0, "Wszystkie");
-            comboBoxSmtLedWasteLines.Text = "Wszystkie";
-            SMTOperations.FillOutLedWasteTotalByLine(ledWasteDictionary, dataGridViewSmtLedWasteTotalPerLine, comboBoxSmtLedWasteLines.Text);
-            FillOutStencilTable(dataGridViewSmtStencilUsage, mesModels);
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteModels.Items.Add("Wszystkie");
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteModels.Items.AddRange(DataContainer.sqlDataByProcess.Smt.Select(o=>o.Value.modelId).Distinct().ToArray());
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Text = "Wszystkie";
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Items.AddRange(GlobalParameters.smtLines);
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Items.Insert(0, "Wszystkie");
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Text = "Wszystkie";
+            SMTOperations.FillOutLedWasteTotalByLine(ledWasteDictionary, SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedWasteTotalPerLine, SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteModels.Text);
+            FillOutStencilTable(SharedComponents.Smt.StencilsTab.dataGridViewSmtStencilUsage, DataContainer.mesModels);
         }
 
         public static void FillOutLedWasteTotalByLine(SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary, DataGridView grid, string model)
         {
             grid.SuspendLayout();
             grid.Rows.Clear();
-            List<string> lines = ledWasteDictionary.SelectMany(date => date.Value).SelectMany(shift => shift.Value).Select(l => l.smtLine).Distinct().OrderBy(l => l).ToList();
-            
-            Dictionary<string, double> producedPerLineA = new Dictionary<string, double>();
-            Dictionary<string, double> producedPerLineB = new Dictionary<string, double>();
-            Dictionary<string, double> wastePerLineA = new Dictionary<string, double>();
-            Dictionary<string, double> wastePerLineB = new Dictionary<string, double>();
+
+            Dictionary<string, List<LotLedWasteStruc>> ledsPerLine = ledWasteDictionary
+                                                                    .SelectMany(s => s.Value)
+                                                                    .SelectMany(o => o.Value)
+                                                                    .GroupBy(r => r.smtLine)
+                                                                    .ToDictionary(x => x.Key, v => v.ToList());
+
             Dictionary<string, DataTable> tagTable = new Dictionary<string, DataTable>();
 
             DataTable template = new DataTable();
@@ -104,20 +81,18 @@ namespace KontrolaWizualnaRaport
             template.Columns.Add("Model");
             template.Columns.Add("Data");
             template.Columns.Add("Linia");
-            template.Columns.Add("Mont.A");
-            template.Columns.Add("Odp_A");
-            template.Columns.Add("Mont.B");
-            template.Columns.Add("Odp_B");
+            template.Columns.Add("Mont");
+            template.Columns.Add("Odp%");
 
             grid.Columns.Clear();
             grid.Columns.Add("Poz", "");
-            foreach (var item in lines)
+            foreach (var item in GlobalParameters.allLinesByHand)
             {
                 grid.Columns.Add(item, item);
-                producedPerLineA.Add(item, 0);
-                producedPerLineB.Add(item, 0);
-                wastePerLineA.Add(item, 0);
-                wastePerLineB.Add(item, 0);
+                if (!ledsPerLine.ContainsKey(item))
+                {
+                    ledsPerLine.Add(item, new List<LotLedWasteStruc>());
+                }
                 tagTable.Add(item, template.Clone());
                 tagTable[item].Rows.Add();
             }
@@ -131,55 +106,27 @@ namespace KontrolaWizualnaRaport
                         if (lot.model != model & model != "Wszystkie") continue;
                         if (lot.manufacturedModules < 1) continue;
 
-                        var lotWaste = CalculateLotLedWaste(lot);
-
-                        producedPerLineA[lot.smtLine] += lotWaste.ledExpectedUsageA;
-                        wastePerLineA[lot.smtLine] += lotWaste.droppedA;
-                        producedPerLineB[lot.smtLine] += lotWaste.ledExpectedUsageB;
-                        wastePerLineB[lot.smtLine] += lotWaste.droppedB;
-
-                        tagTable[lot.smtLine].Rows.Add(lot.lotId, lot.model, dateEntry.Key.ToString("dd-MM-yyyy"), lot.smtLine, lotWaste.ledExpectedUsageA, lotWaste.droppedA, lotWaste.ledExpectedUsageB, lotWaste.droppedB);
+                        var waste = Math.Round((double)(lot.ledsUsed - lot.ledsUsageFromBom) / (double)lot.ledsUsageFromBom, 2);
+                        tagTable[lot.smtLine].Rows.Add(lot.lotId, lot.model, dateEntry.Key.ToString("dd-MM-yyyy"), lot.smtLine, lot.ledsUsed, waste);
                     }
                 }
             }
 
-            grid.Rows.Add(6);
-            foreach (var lineEntry in producedPerLineA)
+
+
+            grid.Rows.Add("Montaż LED");
+            grid.Rows.Add("Odpad LED");
+
+            foreach (var line in ledsPerLine)
             {
-                grid.Rows[0].Cells[0].Value = "Mont_A";
-                grid.Rows[0].Cells[lineEntry.Key].Value = producedPerLineA[lineEntry.Key];
-                grid.Rows[0].Cells[lineEntry.Key].Tag = tagTable[lineEntry.Key];
+                double totalLedUsed = line.Value.Select(o => o.ledsUsed).Sum();
+                double totalLedBom = line.Value.Select(o => o.ledsUsageFromBom).Sum();
+                double waste = Math.Round((totalLedUsed - totalLedBom) / totalLedBom * 100, 2);
 
-                grid.Rows[1].Cells[0].Value = "Odp_A";
-                grid.Rows[1].Cells[lineEntry.Key].Value = wastePerLineA[lineEntry.Key];
-                grid.Rows[1].Cells[lineEntry.Key].Tag = tagTable[lineEntry.Key];
-
-                double wasteA = 0;
-                if (producedPerLineA[lineEntry.Key]>0)
-                {
-                    wasteA = Math.Round(wastePerLineA[lineEntry.Key] / producedPerLineA[lineEntry.Key] * 100, 2);
-                }
-                grid.Rows[2].Cells[0].Value = "Odp%_A";
-                grid.Rows[2].Cells[lineEntry.Key].Value = wasteA + "%";
-                grid.Rows[2].Cells[lineEntry.Key].Tag = tagTable[lineEntry.Key];
-
-                grid.Rows[3].Cells[0].Value = "Mont_B";
-                grid.Rows[3].Cells[lineEntry.Key].Value = producedPerLineB[lineEntry.Key];
-                grid.Rows[3].Cells[lineEntry.Key].Tag = tagTable[lineEntry.Key];
-
-                grid.Rows[4].Cells[0].Value = "Odp_B";
-                grid.Rows[4].Cells[lineEntry.Key].Value = wastePerLineB[lineEntry.Key];
-                grid.Rows[4].Cells[lineEntry.Key].Tag = tagTable[lineEntry.Key];
-
-                double wasteB = 0;
-                if (producedPerLineB[lineEntry.Key] > 0)
-                {
-                    wasteB = Math.Round(wastePerLineB[lineEntry.Key] / producedPerLineB[lineEntry.Key] * 100, 2);
-                }
-                grid.Rows[5].Cells[0].Value = "Odp%_B";
-                grid.Rows[5].Cells[lineEntry.Key].Value = wasteB + "%";
-                grid.Rows[5].Cells[lineEntry.Key].Tag = tagTable[lineEntry.Key];
+                grid.Rows[0].Cells[line.Key].Value = totalLedUsed;
+                grid.Rows[1].Cells[line.Key].Value = waste+"%";
             }
+
             autoSizeGridColumns(grid);
             grid.ResumeLayout();
         }
@@ -192,23 +139,6 @@ namespace KontrolaWizualnaRaport
             public Int32 droppedB;
         }
 
-        public static LotLedWaste CalculateLotLedWaste(LotLedWasteStruc lot)
-        {
-            int ledExpectedUsageA = lot.requiredRankA * lot.manufacturedModules;
-            int ledExpectedUsageB = lot.requiredRankB * lot.manufacturedModules;
-            int ledExpectedLeftoversA = lot.reelsUsed / 2 * lot.ledsPerReel - ledExpectedUsageA;
-            int ledExpectedLeftoversB = lot.reelsUsed / 2 * lot.ledsPerReel - ledExpectedUsageB;
-            int droppedA = ledExpectedLeftoversA - lot.ledLeftA;
-            int droppedB = ledExpectedLeftoversB - lot.ledLeftB;
-
-            LotLedWaste result = new LotLedWaste();
-            result.droppedA = droppedA;
-            result.droppedB = droppedB;
-            result.ledExpectedUsageA = ledExpectedUsageA;
-            result.ledExpectedUsageB = ledExpectedUsageB;
-
-            return result;
-        }
 
         public static void FillOutLedWasteByModel(SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary, DataGridView grid, string line)
         {
@@ -216,73 +146,37 @@ namespace KontrolaWizualnaRaport
             grid.Columns.Clear();
             grid.Columns.Add("Model", "Model");
             grid.Columns.Add("Mont_LED", "Mont.LED");
-            grid.Columns.Add("Odp_LED", "Odpad LED");
             grid.Columns.Add("Odp", "Odpad");
-            grid.Columns.Add("LED", "LED");
-
-            Dictionary<string, double> mountedLed = new Dictionary<string, double>();
-            Dictionary<string, DataTable> detailsTag = new Dictionary<string, DataTable>();
-            Dictionary<string, double> droppedLed = new Dictionary<string, double>();
-            Dictionary<string, double> ledWaste = new Dictionary<string, double>();
-            Dictionary<string, string> ledPackage = new Dictionary<string, string>();
 
             DataTable template = new DataTable();
             template.Columns.Add("LOT");
             template.Columns.Add("Model");
-            template.Columns.Add("Data");
             template.Columns.Add("Linia");
-            template.Columns.Add("Mont.A");
-            template.Columns.Add("Odp_A");
-            template.Columns.Add("Mont.B");
-            template.Columns.Add("Odp_B");
+            template.Columns.Add("Mont_Led");
+            template.Columns.Add("Odp_Led%");
+            
 
-            foreach (var dateEntry in ledWasteDictionary)
+
+
+            var grouppedByModel = ledWasteDictionary.SelectMany(o => o.Value).SelectMany(o => o.Value).Where(o => o.smtLine == line || o.smtLine == "Wszystkie").GroupBy(o => o.model).ToDictionary(k => k.Key, v => v.ToList());
+
+
+            foreach (var modelEntry in grouppedByModel)
             {
-                
-                foreach (var shiftEntry in dateEntry.Value)
+                double mtdLed = modelEntry.Value.Select(o => o.ledsUsed).Sum();
+                double bomLed = modelEntry.Value.Select(o => o.ledsUsageFromBom).Sum();
+                float ledWaste = (float)Math.Round((mtdLed - bomLed) / bomLed * 100, 2);
+                grid.Rows.Add(modelEntry.Key, mtdLed, ledWaste + "%");
+
+                DataTable detailsTag = template.Clone();
+                foreach (var order in modelEntry.Value)
                 {
-                    foreach (var lot in shiftEntry.Value)
-                    {
-                        if (lot.smtLine != line & line != "Wszystkie") continue;
-                        string model = lot.model;
-                        string pckg = "";
-
-                        if (lot.ledsPerReel>3000)
-                        {
-                            pckg = "2835";
-                        }
-                        else
-                        {
-                            pckg = "5630";
-                        }
-                        if(!mountedLed.ContainsKey(model))
-                        {
-                            mountedLed.Add(model, 0);
-                            droppedLed.Add(model, 0);
-                            ledWaste.Add(model, 0);
-                            detailsTag.Add(model, template.Clone());
-                            detailsTag[model].Rows.Add(lot.model + " specA=" + lot.requiredRankA + " specB=" + lot.requiredRankB);
-                            ledPackage.Add(model, pckg);
-                        }
-
-                        var lotWaste = CalculateLotLedWaste(lot);
-
-                        detailsTag[model].Rows.Add(lot.lotId,lot.model, dateEntry.Key.ToString("dd-MM-yyyy"),lot.smtLine, lotWaste.ledExpectedUsageA, lotWaste.droppedA, lotWaste.ledExpectedUsageB, lotWaste.droppedB);
-                        mountedLed[model] += lotWaste.ledExpectedUsageA + lotWaste.ledExpectedUsageB;
-                        droppedLed[model] += lotWaste.droppedA + lotWaste.droppedB;
-                        ledWaste[model] = Math.Round(droppedLed[model] / mountedLed[model] * 100, 2);
-                    }
+                    detailsTag.Rows.Add(order.lotId, order.model, order.smtLine, order.ledsUsed, order.ledWaste + "%");
                 }
 
-                
-            }
-
-            foreach (var modelEntry in mountedLed)
-            {
-                grid.Rows.Add(modelEntry.Key, mountedLed[modelEntry.Key], droppedLed[modelEntry.Key], ledWaste[modelEntry.Key] + "%", ledPackage[modelEntry.Key]);
                 foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count-1].Cells)
                 {
-                    cell.Tag = detailsTag[modelEntry.Key];
+                    cell.Tag = detailsTag;
                 }
             }
 
@@ -296,15 +190,14 @@ namespace KontrolaWizualnaRaport
             grid.Columns.Clear();
             grid.Columns.Add("Tydz", "Tydz");
             grid.Columns.Add("MontLED", "MontLED");
-            grid.Columns.Add("OdpadLED", "OdpadLED");
             grid.Columns.Add("%", "%");
 
             Dictionary<string, double> ledMounted = new Dictionary<string, double>();
-            Dictionary<string, double> ledDropped = new Dictionary<string, double>();
+            Dictionary<string, double> ledByBom = new Dictionary<string, double>();
             Dictionary<string, double> ledWaste = new Dictionary<string, double>();
             double monthMounted = 0;
-            double monthDropped = 0;
             double monthwaste = 0;
+            double monthByBom = 0;
 
             string monthName = "";
 
@@ -313,11 +206,11 @@ namespace KontrolaWizualnaRaport
                 if (dateEntry.Key.ToString("MMM", CultureInfo.InvariantCulture)!=monthName & monthName!="")
                 {
                     ledMounted.Add(monthName, monthMounted);
-                    ledDropped.Add(monthName, monthDropped);
                     ledWaste.Add(monthName, monthwaste);
+                    ledByBom.Add(monthName, monthwaste);
                     monthMounted = 0;
-                    monthDropped = 0;
                     monthwaste = 0;
+                    monthByBom = 0;
                 }
                 string week = dateTools.GetIso8601WeekOfYear(dateEntry.Key).ToString();
                 monthName = dateEntry.Key.ToString("MMM", CultureInfo.InvariantCulture);
@@ -325,30 +218,32 @@ namespace KontrolaWizualnaRaport
                 if (!ledMounted.ContainsKey(week))
                 {
                     ledMounted.Add(week, 0);
-                    ledDropped.Add(week, 0);
                     ledWaste.Add(week, 0);
+                    ledByBom.Add(week, 0);
                 }
 
                 foreach (var shiftEntry in dateEntry.Value)
                 {
                     foreach (var lotData in shiftEntry.Value)
                     {
-                        var lotWaste = CalculateLotLedWaste(lotData);
 
-                        ledMounted[week] += lotWaste.ledExpectedUsageA + lotWaste.ledExpectedUsageB;
-                        ledDropped[week] += lotWaste.droppedA + lotWaste.droppedB;
-                        ledWaste[week] = Math.Round(ledDropped[week] / ledMounted[week] * 100, 2);
-                        monthMounted += lotWaste.ledExpectedUsageA + lotWaste.ledExpectedUsageB;
-                        monthDropped += lotWaste.droppedA + lotWaste.droppedB;
+                        ledMounted[week] += lotData.ledsUsed; 
+                        ledByBom[week] += lotData.ledsUsageFromBom; ;
+                        ledWaste[week] = Math.Round((ledMounted[week]- ledByBom[week]) / ledMounted[week] * 100, 2);
+                        monthMounted += lotData.ledsUsed;
+                        monthByBom += lotData.ledsUsageFromBom;
                         //monthwaste = Math.Round(ledDropped[week] / ledMounted[week] * 100, 2);
-                        monthwaste = Math.Round(monthDropped / monthMounted * 100, 2);
+                        monthwaste = Math.Round((monthMounted - monthByBom) / monthMounted * 100, 2);
                     }
                 }
 
             }
+
+            
+
             foreach (var weekEntry in ledMounted)
             {
-                grid.Rows.Add(weekEntry.Key, ledMounted[weekEntry.Key], ledDropped[weekEntry.Key], ledWaste[weekEntry.Key]);
+                grid.Rows.Add(weekEntry.Key, ledMounted[weekEntry.Key],  ledWaste[weekEntry.Key]);
             }
             autoSizeGridColumns(grid);
             grid.ResumeLayout();
@@ -360,7 +255,6 @@ namespace KontrolaWizualnaRaport
             grid.Columns.Clear();
             grid.Columns.Add("Data", "Data");
             grid.Columns.Add("Zm", "Zm");
-            grid.Columns.Add("SMT1", "SMT1");
             grid.Columns.Add("SMT2", "SMT2");
             grid.Columns.Add("SMT3", "SMT3");
             grid.Columns.Add("SMT5", "SMT5");
@@ -372,59 +266,31 @@ namespace KontrolaWizualnaRaport
             {
                 foreach (var shiftEntry in dateEntry.Value)
                 {
-                    Dictionary<string, double> ledDroppedPerLine = new Dictionary<string, double>();
-                    Dictionary<string, double> ledUsedPerLine = new Dictionary<string, double>();
-                    Dictionary<string, string> ledWastePerLine = new Dictionary<string, string>();
 
-                    ledDroppedPerLine.Add("SMT1", 0);
-                    ledDroppedPerLine.Add("SMT2", 0);
-                    ledDroppedPerLine.Add("SMT3", 0);
-                    ledDroppedPerLine.Add("SMT5", 0);
-                    ledDroppedPerLine.Add("SMT6", 0);
-                    ledDroppedPerLine.Add("SMT7", 0);
-                    ledDroppedPerLine.Add("SMT8", 0);
 
-                    ledUsedPerLine.Add("SMT1", 0);
-                    ledUsedPerLine.Add("SMT2", 0);
-                    ledUsedPerLine.Add("SMT3", 0);
-                    ledUsedPerLine.Add("SMT5", 0);
-                    ledUsedPerLine.Add("SMT6", 0);
-                    ledUsedPerLine.Add("SMT7", 0);
-                    ledUsedPerLine.Add("SMT8", 0);
-
-                    ledWastePerLine.Add("SMT1", "");
-                    ledWastePerLine.Add("SMT2", "");
-                    ledWastePerLine.Add("SMT3", "");
-                    ledWastePerLine.Add("SMT5", "");
-                    ledWastePerLine.Add("SMT6", "");
-                    ledWastePerLine.Add("SMT7", "");
-                    ledWastePerLine.Add("SMT8", "");
-
-                    foreach (var lotData in shiftEntry.Value)
+                    var grouppedByLine = shiftEntry.Value.GroupBy(o => o.smtLine).ToDictionary(l => l.Key, l => l.ToList());
+                    Dictionary<string, float> wasteByLine = new Dictionary<string, float>();
+                    foreach (var line in GlobalParameters.allLinesByHand)
                     {
-                        var lotWaste = CalculateLotLedWaste(lotData);
-
-                        if (lotWaste.droppedA + lotWaste.droppedB < 0) continue;
-
-                        ledUsedPerLine[lotData.smtLine] += lotWaste.ledExpectedUsageA + lotWaste.ledExpectedUsageB;
-                        ledDroppedPerLine[lotData.smtLine] += lotWaste.droppedA + lotWaste.droppedB;
+                        if (!grouppedByLine.ContainsKey(line)) grouppedByLine.Add(line, new List<LotLedWasteStruc>());
+                        if (!wasteByLine.ContainsKey(line)) wasteByLine.Add(line, 0);
                     }
 
-                    foreach (var lineEntry in ledUsedPerLine)
+                    foreach (var smtLine in grouppedByLine)
                     {
-                        if (ledUsedPerLine[lineEntry.Key] > 0)
+                        int ledsUsed = 0;
+                        int ledsByBom = 0;
+                        foreach (var smtRecord in smtLine.Value)
                         {
-                            ledWastePerLine[lineEntry.Key] = Math.Round(ledDroppedPerLine[lineEntry.Key] / ledUsedPerLine[lineEntry.Key] * 100, 2).ToString()+"%";
+                            ledsUsed += smtRecord.ledsUsed;
+                            ledsByBom += smtRecord.ledsUsageFromBom;
                         }
-                        else
-                        {
-                            ledWastePerLine[lineEntry.Key] = "";
-                        }
+                        wasteByLine[smtLine.Key] = (float)Math.Round(((double)ledsUsed - (double)ledsByBom) / (double)ledsByBom * 100, 2);
                     }
 
                     
 
-                    grid.Rows.Add(dateEntry.Key.ToString("dd-MM-yyyy"), shiftEntry.Key, ledWastePerLine["SMT1"], ledWastePerLine["SMT2"] , ledWastePerLine["SMT3"], ledWastePerLine["SMT5"] , ledWastePerLine["SMT6"] , ledWastePerLine["SMT7"], ledWastePerLine["SMT8"]);
+                    grid.Rows.Add(dateEntry.Key.ToString("dd-MM-yyyy"), shiftEntry.Key, wasteByLine["SMT2"] , wasteByLine["SMT3"], wasteByLine["SMT5"] , wasteByLine["SMT6"] , wasteByLine["SMT7"], wasteByLine["SMT8"]);
                 }
             }
             autoSizeGridColumns(grid);
@@ -432,7 +298,7 @@ namespace KontrolaWizualnaRaport
             grid.ResumeLayout();
         }
 
-        public static SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> LedWasteDictionary(SortedDictionary<DateTime, SortedDictionary<int, DataTable>> inputSmtData, Dictionary<string, MesModels> mesModels)
+        public static SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> LedWasteDictionary(SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> inputSmtData, Dictionary<string, ModelInfo.ModelSpecification> mesModels)
         {
             SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> result = new SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>>();
 
@@ -448,58 +314,24 @@ namespace KontrolaWizualnaRaport
                     {
                         result[dateEntry.Key].Add(shiftEntry.Key, new List<LotLedWasteStruc>());
                     }
-                    foreach (DataRow row in shiftEntry.Value.Rows)
+                    foreach (var smtRecord in shiftEntry.Value)
                     {
                         //107577:2OPF00050A:0|107658:2OPF00050A:0#107580:2OPF00050A:27|107657:2OPF00050A:23
-                        string lot = row["NrZlecenia"].ToString();
-                        string model = row["Model"].ToString();
-                        int requiredRankA = mesModels[model].LedAQty;
-                        int requiredRankB = mesModels[model].LedBQty;
-                        string[] ledDropped = row["KoncowkiLED"].ToString().Split('#');
-                        int reelsUsed = ledDropped.Length * 2;
-                        int ledALeftTotal = 0;
-                        int ledBLeftTotal = 0;
-                        int ledPerReel = 0;
-                        int manufacturedModules = int.Parse(row["IloscWykonana"].ToString());
-                        string smtLine = row["LiniaSMT"].ToString();
-                        
 
-                        foreach (var item in ledDropped) 
-                        {
-                            if (string.IsNullOrWhiteSpace(item)) continue;
-                            string[] ranks = item.Split('|');
-                            string[] rankA = ranks[0].ToString().Split(':');
-                            string[] rankB = ranks[1].ToString().Split(':');
-                            int leftA = int.Parse(rankA[2]);
-                            int leftB = int.Parse(rankB[2]);
-                            string ledId = rankA[1];
-                            if (ledId.Length>10)
-                            {
-                                ledPerReel = 3000;
-                            }
-                            else
-                            {
-                                ledPerReel = 3500;
-                            }
-                            ledALeftTotal += leftA;
-                            ledBLeftTotal += leftB;
-                        }
+                        string lot = smtRecord.orderInfo.orderNo;
+                        string model = smtRecord.orderInfo.modelId;
+                        string clientGroup = smtRecord.orderInfo.clientGroup;
+                        int manufacturedModules = smtRecord.manufacturedQty;
+                        string smtLine = smtRecord.smtLine;
 
-                        if (ledPerReel * reelsUsed / 2 - requiredRankA * manufacturedModules < ledALeftTotal || ledPerReel * reelsUsed / 2 - requiredRankB * manufacturedModules < ledBLeftTotal) 
-                        {
-                            continue;
-                        }
+
 
                         LotLedWasteStruc newItem = new LotLedWasteStruc();
                         newItem.lotId = lot;
-                        newItem.requiredRankA = requiredRankA;
-                        newItem.requiredRankB = requiredRankB;
-                        newItem.ledLeftA = ledALeftTotal;
-                        newItem.ledLeftB = ledBLeftTotal;
-                        newItem.ledsPerReel = ledPerReel;
+                        newItem.ledsUsageFromBom = mesModels[smtRecord.orderInfo.modelId].ledCountPerModel * smtRecord.manufacturedQty;
+                        newItem.ledsUsed = smtRecord.ledsUsed;
                         newItem.manufacturedModules = manufacturedModules;
                         newItem.smtLine = smtLine;
-                        newItem.reelsUsed = reelsUsed;
                         newItem.model = model;
                         result[dateEntry.Key][shiftEntry.Key].Add(newItem);
                     }
@@ -510,35 +342,21 @@ namespace KontrolaWizualnaRaport
         }
 
 
-        public static SortedDictionary<DateTime, SortedDictionary<int, DataTable>> sortTableByDayAndShift(DataTable sqlTable,string dateColumnName)
+        public static SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortTableByDayAndShift()
         {
-            //DataCzasStart,DataCzasKoniec,LiniaSMT,OperatorSMT,NrZlecenia,Model,IloscWykonana,NGIlosc,ScrapIlosc
-            SortedDictionary<DateTime, SortedDictionary<int, DataTable>> summaryDic = new SortedDictionary<DateTime, SortedDictionary<int, DataTable>>();
+            SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> result = new SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>>();
+            var dictByDate = DataContainer.sqlDataByProcess.Smt.SelectMany(o => o.Value.smtOrders).Where(o => o.ledsUsed > 0).GroupBy(x => dateTools.whatDayShiftIsit(x.smtEndDate).fixedDate).ToDictionary(x => x.Key, x => x.ToList());
 
-            foreach (DataRow row in sqlTable.Rows)
+            foreach (var dayEntry in dictByDate)
             {
-                string dateString = row[dateColumnName].ToString();
-                if (dateString == "") continue;
-                //DateTime endDate = DateTime.ParseExact(dateString, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                DateTime endDate = DateTime.Parse(dateString);
-                dateShiftNo endDateShiftInfo = whatDayShiftIsit(endDate);
-
-                if (!summaryDic.ContainsKey(endDateShiftInfo.fixedDate.Date))
-                {
-                    summaryDic.Add(endDateShiftInfo.fixedDate.Date, new SortedDictionary<int, DataTable>());
-                }
-                if (!summaryDic[endDateShiftInfo.fixedDate.Date].ContainsKey(endDateShiftInfo.shift))
-                {
-                    summaryDic[endDateShiftInfo.fixedDate.Date].Add(endDateShiftInfo.shift, new DataTable());
-                    summaryDic[endDateShiftInfo.fixedDate.Date][endDateShiftInfo.shift] = sqlTable.Clone();
-                }
-                summaryDic[endDateShiftInfo.fixedDate.Date][endDateShiftInfo.shift].Rows.Add(row.ItemArray);
+                var dictByShift = dayEntry.Value.GroupBy(d => dateTools.whatDayShiftIsit(d.smtEndDate).shift).ToDictionary(x => x.Key, x => x.ToList());
+                result.Add(dayEntry.Key,new SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>(dictByShift));
             }
 
-            return summaryDic;
+            return result;
         }
 
-        public static void shiftSummaryDataSource(SortedDictionary<DateTime, SortedDictionary<int, DataTable>> sourceDic, DataGridView grid)
+        public static void shiftSummaryDataSource(SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sourceDic, DataGridView grid)
         {
             DataTable result = new DataTable();
             grid.Rows.Clear();
@@ -547,13 +365,11 @@ namespace KontrolaWizualnaRaport
             grid.Columns.Add("Tydz", "Tydz");
             grid.Columns.Add("Dzien", "Dzien");
             grid.Columns.Add("Zmiana", "Zmiana");
-            grid.Columns.Add("SMT1", "SMT1");
-            grid.Columns.Add("SMT2", "SMT2");
-            grid.Columns.Add("SMT3", "SMT3");
-            grid.Columns.Add("SMT5", "SMT5");
-            grid.Columns.Add("SMT6", "SMT6");
-            grid.Columns.Add("SMT7", "SMT7");
-            grid.Columns.Add("SMT8", "SMT8");
+            //grid.Columns.Add("SMT1", "SMT1");
+            foreach (var smtLine in GlobalParameters.allLinesByHand)
+            {
+                grid.Columns.Add(smtLine, smtLine);
+            }
 
             foreach (DataGridViewColumn col in grid.Columns)
             {
@@ -579,56 +395,45 @@ namespace KontrolaWizualnaRaport
 
                 foreach (var shiftEntry in dayEntry.Value)
                 {
-                    Dictionary<string, double> qtyPerLine = new Dictionary<string, double>();
+                    SortedDictionary<string, int> qtyPerLine = new SortedDictionary<string, int>(shiftEntry.Value.GroupBy(l => l.smtLine).ToDictionary(k => k.Key, l => l.ToList().Select(o => o.manufacturedQty).Sum()));
+                    foreach (var smtLine in GlobalParameters.allLinesByHand)
+                    {
+                        if (!qtyPerLine.ContainsKey(smtLine)) { qtyPerLine.Add(smtLine, 0); }
+                    }
+
                     Dictionary<string, DataTable> detailPerLine = new Dictionary<string, DataTable>();
 
-                    foreach (DataRow row in shiftEntry.Value.Rows)
-                    {
-                        string smtLine = row["LiniaSMT"].ToString();
-                        if (!qtyPerLine.ContainsKey(smtLine))
-                        {
-                            qtyPerLine.Add(smtLine, 0);
-                            detailPerLine.Add(smtLine, new DataTable());
-                            detailPerLine[smtLine] = shiftEntry.Value.Clone();
-                        }
+                    grid.Rows.Add(dateTools.productionMonthNumber(week, dayEntry.Key.Year), week, dayEntry.Key.ToShortDateString(), shiftEntry.Key.ToString(),  qtyPerLine["SMT2"], qtyPerLine["SMT3"], qtyPerLine["SMT4"], qtyPerLine["SMT5"], qtyPerLine["SMT6"], qtyPerLine["SMT7"], qtyPerLine["SMT8"]);
 
-                        double qty = double.Parse(row["IloscWykonana"].ToString());
-                        qtyPerLine[smtLine] += qty;
-                        detailPerLine[smtLine].Rows.Add(row.ItemArray);
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("Start");
+                    dt.Columns.Add("Koniec");
+                    dt.Columns.Add("Linia");
+                    dt.Columns.Add("Operator");
+                    dt.Columns.Add("Zlecenie");
+                    dt.Columns.Add("Model");
+                    dt.Columns.Add("Ilość");
+                    dt.Columns.Add("NG");
+                    dt.Columns.Add("Stencil");
+                    foreach (var smtRecord in shiftEntry.Value)
+                    {
+                        dt.Rows.Add(smtRecord.smtStartDate, smtRecord.smtEndDate, smtRecord.smtLine, smtRecord.operatorSmt, smtRecord.orderInfo.orderNo, smtRecord.orderInfo.modelId, smtRecord.manufacturedQty, 0, smtRecord.stencilId);
                     }
 
-                    double smt1 = 0;
-                    double smt2 = 0;
-                    double smt3 = 0;
-                    double smt5 = 0;
-                    double smt6 = 0;
-                    double smt7 = 0;
-                    double smt8 = 0;
 
-                    foreach (var lineEntry in qtyPerLine)
-                    {
-                        qtyPerLine.TryGetValue("SMT1", out smt1);
-                        qtyPerLine.TryGetValue("SMT2", out smt2);
-                        qtyPerLine.TryGetValue("SMT3", out smt3);
-                        qtyPerLine.TryGetValue("SMT5", out smt5);
-                        qtyPerLine.TryGetValue("SMT6", out smt6);
-                        qtyPerLine.TryGetValue("SMT7", out smt7);
-                        qtyPerLine.TryGetValue("SMT8", out smt8);
-                    }
-
-                    grid.Rows.Add(dateTools.productionMonthNumber(week, dayEntry.Key.Year),week,dayEntry.Key.ToShortDateString(),  shiftEntry.Key.ToString(), smt1, smt2, smt3, smt5, smt6, smt7, smt8);
-
-                    foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count-1].Cells)
+                    foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count - 1].Cells)
                     {
                         cell.Style.BackColor = rowColor;
-                        DataTable dt;
+
                         if (detailPerLine.TryGetValue(cell.OwningColumn.Name, out dt))
                         {
                             cell.Tag = dt;
                         }
                     }
                 }
+
             }
+
             autoSizeGridColumns(grid);
             if (grid.Rows.Count > 0)
             {
@@ -924,7 +729,7 @@ namespace KontrolaWizualnaRaport
             
         }
 
-        public static void FillOutStencilTable( DataGridView grid, Dictionary<string, MesModels> mesModels)
+        public static void FillOutStencilTable( DataGridView grid, Dictionary<string, ModelInfo.ModelSpecification> mesModels)
         {
             DataTable smtRecords = SQLoperations.GetStencilSmtRecords();
             Dictionary<string, stencilStruct> stencilDict = new Dictionary<string, stencilStruct>();
@@ -935,7 +740,7 @@ namespace KontrolaWizualnaRaport
                 string model = row["Model"].ToString();
                 DateTime date = DateTime.Parse(row["DataCzasKoniec"].ToString());
 
-                MesModels modelInfo;
+                ModelInfo.ModelSpecification modelInfo;
                 if (!mesModels.TryGetValue(model, out modelInfo)) continue;
                 if (stencilID.Trim() == "") continue;
                 int qty = 0;
@@ -949,7 +754,7 @@ namespace KontrolaWizualnaRaport
                         stencilDict[stencilID].dateEnd = new DateTime(1700, 01, 01);
                         stencilDict[stencilID].dateStart = DateTime.Now;
                     }
-                    stencilDict[stencilID].cycleCOunt += qty/modelInfo.PcbsOnCarrier;
+                    stencilDict[stencilID].cycleCOunt += qty/modelInfo.pcbCountPerMB;
 
                     if (date < stencilDict[stencilID].dateStart)
                     {

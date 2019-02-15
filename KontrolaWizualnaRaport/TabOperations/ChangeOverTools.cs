@@ -51,6 +51,7 @@ namespace KontrolaWizualnaRaport
             grid.Columns.Add("SMT1", "SMT1");
             grid.Columns.Add("SMT2", "SMT2");
             grid.Columns.Add("SMT3", "SMT3");
+            grid.Columns.Add("SMT4", "SMT4");
             grid.Columns.Add("SMT5", "SMT5");
             grid.Columns.Add("SMT6", "SMT6");
             grid.Columns.Add("SMT7", "SMT7");

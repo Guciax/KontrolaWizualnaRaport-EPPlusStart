@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KontrolaWizualnaRaport.CentalDataStorage;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -275,102 +276,57 @@ namespace KontrolaWizualnaRaport
             chart.Series.Add(lineSeriesA);
             chart.Series.Add(lineSeriesB);
         }
-
-        public static void DrawLedWasteChart(SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary, Chart chart, string frequency, Dictionary<string, bool> lineOptions, Dictionary<string, System.Drawing.Color> lineColors)
+        private class ledUsedBom
         {
+            public int ledsUsed=0;
+            public int ledsBom=0;
+        }
+        public static void DrawLedWasteChart(SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary)
+        {
+            
+            Chart chart = SharedComponents.Smt.LedWasteTab.chartLedWasteChart;
+            string frequency = SharedComponents.Smt.LedWasteTab.comboBoxSmtLewWasteFreq.Text;
+            Dictionary<string, bool> selectedLines = SharedComponents.Smt.LedWasteTab.selectedLines;
             Dictionary<string, Dictionary<string, double>> dataPointsProd = new Dictionary<string, Dictionary<string, double>>();
-            Dictionary<string, Dictionary<string, double>> dataPointsDropped = new Dictionary<string, Dictionary<string, double>>();
+            Dictionary<string, Dictionary<string, ledUsedBom>> dataPointsWaste = new Dictionary<string, Dictionary<string, ledUsedBom>>();
+            foreach (var smtLine in GlobalParameters.allLinesByHand)
+            {
+                dataPointsWaste.Add(smtLine, new Dictionary<string, ledUsedBom>());
+            }
+            dataPointsWaste.Add("Total", new Dictionary<string, ledUsedBom>());
 
             //dataPointsProd.Add("Total", new Dictionary<string, double>());
-           // dataPointsDropped.Add("Total", new Dictionary<string, double>());
-            List<DateTime> allDates = ledWasteDictionary.Select(date => date.Key).ToList();
-            List<string> allLines = ledWasteDictionary.SelectMany(date => date.Value).SelectMany(shift => shift.Value).Select(l => l.smtLine).Distinct().OrderBy(l => l).ToList();
-            allLines.Add("Total");
+            //dataPointsDropped.Add("Total", new Dictionary<string, double>());
 
-            foreach (var line in allLines)
+            
+            foreach (var dayEntry in ledWasteDictionary)
             {
-                dataPointsProd.Add(line, new Dictionary<string, double>());
-                dataPointsDropped.Add(line, new Dictionary<string, double>());
-                foreach (var date in allDates)
+                string chartFrequency = SharedComponents.Smt.LedWasteTab.comboBoxSmtLewWasteFreq.Text;
+                string dateKey = dayEntry.Key.ToString("dd-MMM");
+                if (chartFrequency == "Tygodniowo") { dateKey = dateTools.GetIso8601WeekOfYear(dayEntry.Key).ToString(); }
+                if (chartFrequency == "Miesiecznie") { dateKey = dayEntry.Key.ToString("MMM"); }
+
+                foreach (var shiftEntry in dayEntry.Value)
                 {
-                    string dateKey = date.ToString("dd-MM-yyyy");
-                    if (frequency == "Tygodniowo")
+                    var grouppedByLine = shiftEntry.Value.GroupBy(k => k.smtLine).ToDictionary(k => k.Key, v => v.ToList());
+                    foreach (var smtLine in grouppedByLine)
                     {
-                        dateKey = dateTools.GetIso8601WeekOfYear(date).ToString();
-                    }
-                    if (frequency == "Miesiecznie")
-                    {
-                        dateKey = date.ToString("MMM", CultureInfo.InvariantCulture);
-                    }
-                    if (dataPointsProd[line].ContainsKey(dateKey)) continue;
-                    dataPointsProd[line].Add(dateKey, 0);
-                    dataPointsDropped[line].Add(dateKey, 0);
-                }
-            }
 
-            foreach (var dateEntry in ledWasteDictionary)
-            {
-                string dateKey = dateEntry.Key.ToString("dd-MM-yyyy");
-                if (frequency=="Tygodniowo")
-                {
-                    dateKey = dateTools.GetIso8601WeekOfYear(dateEntry.Key).ToString();
-                }
-                if (frequency=="Miesiecznie")
-                {
-                    dateKey = dateEntry.Key.ToString("MMM", CultureInfo.InvariantCulture);
-                }
-
-                
-                foreach (var shiftEntry in dateEntry.Value)
-                {
-                    foreach (var lotData in shiftEntry.Value)
-                    {
-                        string line = lotData.smtLine;
-                        
-
-                        int ledExpectedUsageA = lotData.requiredRankA * lotData.manufacturedModules;
-                        int ledExpectedUsageB = lotData.requiredRankB * lotData.manufacturedModules;
-                        int ledExpectedLeftoversA = lotData.reelsUsed / 2 * lotData.ledsPerReel - ledExpectedUsageA;
-                        int ledExpectedLeftoversB = lotData.reelsUsed / 2 * lotData.ledsPerReel - ledExpectedUsageB;
-                        int droppedA = ledExpectedLeftoversA - lotData.ledLeftA;
-                        int droppedB = ledExpectedLeftoversB - lotData.ledLeftB;
-
-                        if (lineOptions["Total"])
+                        if (!dataPointsWaste[smtLine.Key].ContainsKey(dateKey))
                         {
-                            if (!dataPointsProd["Total"].ContainsKey(dateKey))
+                            dataPointsWaste[smtLine.Key].Add(dateKey, new ledUsedBom());
+                            if (!dataPointsWaste["Total"].ContainsKey(dateKey))
                             {
-                                dataPointsProd["Total"].Add(dateKey, 0);
-                                dataPointsDropped["Total"].Add(dateKey, 0);
+                                dataPointsWaste["Total"].Add(dateKey, new ledUsedBom());
                             }
-                            dataPointsProd["Total"][dateKey] += ledExpectedUsageA + ledExpectedUsageB;
-                            dataPointsDropped["Total"][dateKey] += droppedA + droppedB;
                         }
-
-                        if (!lineOptions[line]) continue;
-
-                        if (!dataPointsProd.ContainsKey(line))
-                        {
-                            dataPointsProd.Add(line, new Dictionary<string, double>());
-                            dataPointsDropped.Add(line, new Dictionary<string, double>());
-                        }
-
-                        if (!dataPointsProd[line].ContainsKey(dateKey))
-                        {
-                            dataPointsProd[line].Add(dateKey, 0);
-                            dataPointsDropped[line].Add(dateKey, 0);
-                        }
-
-
-                        dataPointsProd[line][dateKey] += ledExpectedUsageA + ledExpectedUsageB;
-                        dataPointsDropped[line][dateKey] += droppedA + droppedB;
-
+                        dataPointsWaste[smtLine.Key][dateKey].ledsUsed += smtLine.Value.Select(o => o.ledsUsed).Sum();
+                        dataPointsWaste[smtLine.Key][dateKey].ledsBom += smtLine.Value.Select(o => o.ledsUsageFromBom).Sum();
+                        dataPointsWaste["Total"][dateKey].ledsBom += smtLine.Value.Select(o => o.ledsUsageFromBom).Sum();
                     }
-
                 }
-
-               
-
             }
+   
             chart.Series.Clear();
             chart.ChartAreas.Clear();
 
@@ -399,48 +355,48 @@ namespace KontrolaWizualnaRaport
 
             chart.ChartAreas.Add(ar);
             double maxY = 0;
-            foreach (var lineEntry in dataPointsProd)
+            foreach (var lineEntry in dataPointsWaste)
             {
+
                 Series lineSeries = new Series();
                 lineSeries.ChartType = SeriesChartType.Line;
                 lineSeries.BorderWidth = 3;
                 lineSeries.Name = lineEntry.Key;
-                lineSeries.Color = lineColors[lineEntry.Key];
+                lineSeries.Color = GlobalParameters.smtLinesColors[lineEntry.Key];
 
 
                 foreach (var dateKeyEntry in lineEntry.Value)
                 {
                     DataPoint ngPoint = new DataPoint();
-                    double waste = Math.Round(dataPointsDropped[lineEntry.Key][dateKeyEntry.Key] / dateKeyEntry.Value * 100, 2);
+                    double waste = Math.Round((double)(dataPointsWaste[lineEntry.Key][dateKeyEntry.Key].ledsUsed - dataPointsWaste[lineEntry.Key][dateKeyEntry.Key].ledsBom) / (double)dataPointsWaste[lineEntry.Key][dateKeyEntry.Key].ledsBom * 100, 2);
                     ngPoint.MarkerSize = 8;
                     ngPoint.MarkerStyle = MarkerStyle.Circle;
                     if (waste > maxY) maxY = waste;
                     ngPoint.SetValueXY(dateKeyEntry.Key, waste);
                     //ngPoint.ToolTip = ngtoolTip;
                     lineSeries.Points.Add(ngPoint);
-                    if (lineEntry.Key=="SMT2")
-                    {
-                       // MessageBox.Show("");
-                    }
                 }
                 chart.Series.Add(lineSeries);
             }
             chart.ChartAreas[0].AxisY.Maximum = maxY * 1.1;
 
+            
             Series productionLevel = new Series();
             productionLevel.ChartType = SeriesChartType.Column;
-            productionLevel.Name = "Poziom produkcji [szt.]";
+            productionLevel.Name = "Użycie LED [szt.]";
             productionLevel.YAxisType = AxisType.Secondary;
             productionLevel.Color = System.Drawing.Color.AliceBlue;
             productionLevel.BorderColor = System.Drawing.Color.Silver;
 
-            foreach (var dateKeyEnrtry in dataPointsProd)
+            foreach (var dateKey in dataPointsWaste["Total"])
             {
                 DataPoint pt = new DataPoint();
-                pt.SetValueXY(dateKeyEnrtry.Key, dateKeyEnrtry.Value);
+                pt.SetValueXY(dateKey.Key, dateKey.Value.ledsUsed);
                 productionLevel.Points.Add(pt);
             }
-            //chart.Series.Add(productionLevel);
+
+
+            chart.Series.Add(productionLevel);
 
         }
             

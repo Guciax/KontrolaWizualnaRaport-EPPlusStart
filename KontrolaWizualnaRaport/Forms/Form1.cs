@@ -1,4 +1,6 @@
-﻿using KontrolaWizualnaRaport.Forms;
+﻿using KontrolaWizualnaRaport.CentalDataStorage;
+using KontrolaWizualnaRaport.Forms;
+using MST.MES;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -51,15 +53,58 @@ namespace KontrolaWizualnaRaport
         Dictionary<DateTime, SortedDictionary<int, Dictionary<string, DataTable>>> boxingData = new Dictionary<DateTime, SortedDictionary<int, Dictionary<string, DataTable>>>();
         Dictionary<string, MesModels> mesModels = new Dictionary<string, MesModels>();
         //SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary = new SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>>();
-        static Dictionary<string, Color> lineColors = new Dictionary<string, Color>();
         CustomCheckedListBox checkedListBoxViWasteLevelSmtLines = new CustomCheckedListBox();
 
         private void Form1_Load(object sender, EventArgs e)
         {
-#if DEBUG
-            ImageToByteArray.ImgToByteArray();
-#endif
             dateTimePickerSmtStart.Value = DateTime.Now.Date.AddDays(-60);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt1);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt2);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt3);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt4);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt5);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt6);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt7);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt8);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxTotal);
+
+            DataContainer.sqlDataByProcess.Kitting = MST.MES.SqlDataReaderMethods.Kitting.GetOrdersInfoByDataReader(30);
+            Debug.WriteLine("testID");
+            DataContainer.sqlDataByProcess.Smt = MST.MES.SqlDataReaderMethods.SMT.GetOrdersDateToDate(dateTimePickerSmtStart.Value.Date, dateTimePickerTestEnd.Value.Date);
+            Debug.WriteLine("smt");
+            DataContainer.sqlDataByProcess.VisualInspection = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecords(30);
+            Debug.WriteLine("vi");
+            //sqlDataByProcess.Test = MST.MES.SqlDataReaderMethods.LedTest.GetTestRecords(10, testerIdToName);
+            Debug.WriteLine("test");
+            //sqlDataByProcess.Rework = MST.MES.SqlDataReaderMethods.LedRework.GetReworkList(90);
+            DataMerger.MergeData();
+
+            DataContainer.mesModels = MST.MES.SqlDataReaderMethods.MesModels.allModels();
+
+            SharedComponents.Kitting.checkBoxKittingLg = checkBoxKittingLg;
+            SharedComponents.Kitting.checkBoxKittingMst = checkBoxKittingMst;
+            SharedComponents.Kitting.comboBoxKittingModels = comboBoxKittingModels;
+            SharedComponents.Kitting.dataGridViewKitting = dataGridViewKitting;
+            SharedComponents.Kitting.dataGridViewKittingHistory = dataGridViewKittingHistory;
+            SharedComponents.Kitting.dataGridViewKittingReadyLots = dataGridViewKittingReadyLots;
+
+            SharedComponents.Smt.changeoversTab.dataGridViewChangeOvers = dataGridViewChangeOvers;
+            SharedComponents.Smt.LedWasteTab.chartLedWasteChart = chartLedWasteChart;
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine = comboBoxSmtLedWasteLine;
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteModels = comboBoxSmtLedWasteModels;
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLewWasteFreq = comboBoxSmtLewWasteFreq;
+            SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedDropped = dataGridViewSmtLedDropped;
+            SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedWasteByModel = dataGridViewSmtLedWasteByModel;
+            SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedWasteTotalPerLine = dataGridViewSmtLedWasteTotalPerLine;
+            SharedComponents.Smt.LedWasteTab.dataGridViewSmtWasteTotal = dataGridViewSmtWasteTotal;
+            SharedComponents.Smt.ModelAnalysis.comboBoxSmtModels = comboBoxSmtModels;
+            SharedComponents.Smt.productionReportTab.dataGridViewSmtProduction = dataGridViewSmtProduction;
+            SharedComponents.Smt.smtStartDate = dateTimePickerSmtStart;
+            SharedComponents.Smt.smtEndDate = dateTimePickerSmtEnd;
+            SharedComponents.Smt.StencilsTab.dataGridViewSmtStencilUsage = dataGridViewSmtStencilUsage;
+
+            //---------------OLD
+            
             smtRecords = SQLoperations.GetSmtRecordsFromDb(dateTimePickerSmtStart.Value, dateTimePickerSmtEnd.Value);
             lotTable = SQLoperations.lotTable();
             Dictionary<string, string>[] lotList = VIOperations.lotArray(lotTable);
@@ -78,15 +123,6 @@ namespace KontrolaWizualnaRaport
 
             cBListViModelAnalysesSmtLines.Parent = tabPage7;
             cBListViModelAnalysesSmtLines.BringToFront();
-
-            lineColors.Add("SMT1", Color.Maroon);
-            lineColors.Add("SMT2", Color.OrangeRed);
-            lineColors.Add("SMT3", Color.SandyBrown);
-            lineColors.Add("SMT4", Color.Violet);
-            lineColors.Add("SMT5", Color.LimeGreen);
-            lineColors.Add("SMT6", Color.DarkGreen);
-            lineColors.Add("SMT7", Color.SteelBlue);
-            lineColors.Add("SMT8", Color.MediumTurquoise);
         }
 
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,23 +133,7 @@ namespace KontrolaWizualnaRaport
                     {
                         if (smtModelLineQuantity.Count < 1)
                         {
-                            SMTOperations.ReLoadSmtTab(dataGridViewSmtProduction,
-                                dataGridViewChangeOvers,
-                                dataGridViewSmtLedDropped, dataGridViewSmtLedWasteByModel,
-                                dataGridViewSmtWasteTotal,
-                                dataGridViewSmtLedWasteTotalPerLine,
-                                dataGridViewSmtStencilUsage,
-                                smtRecords,
-                                ref smtModelLineQuantity,
-                                radioButtonSmtShowAllModels,
-                                mesModels,
-                                comboBoxSmtModels,
-                                comboBoxSmtLedWasteLine,
-                                comboBoxSmtLewWasteFreq,
-                                comboBoxSmtLedWasteLines,
-                                lineColors,
-                                chartLedWasteChart,
-                                panelSmtLedWasteCheckContainer);
+                            SMTOperations.ReLoadSmtTab();
 
                         }
                             break;
@@ -122,7 +142,7 @@ namespace KontrolaWizualnaRaport
                     {
                         if (dataGridViewKitting.Rows.Count == 0)
                         {
-                            KittingOperations.FillGridWorkReport(lotTable, dataGridViewKitting);
+                            KittingOperations.FillGridWorkReport();
                             KittingOperations.FillGridReadyLots(dataGridViewKittingReadyLots, lotTable, smtRecords);
                             comboBoxKittingModels.Tag = KittingOperations.TagForModelHistory(lotTable, comboBoxKittingModels);
                         }
@@ -173,14 +193,6 @@ namespace KontrolaWizualnaRaport
                                 testData = SQLoperations.GetTestMeasurements(60);
                                 loadDone = true;
                             }).Start();
-                        }
-                        break;
-                    }
-                case "SPLITTING":
-                    {
-                        if (dataGridViewSplitting.Rows.Count == 0)
-                        {
-                            SplittingOperations.FillGrid(lotTable, dataGridViewSplitting);
                         }
                         break;
                     }
@@ -251,23 +263,7 @@ namespace KontrolaWizualnaRaport
         private void buttonSmtRefresh_Click(object sender, EventArgs e)
         {
             smtRecords = SQLoperations.GetSmtRecordsFromDb(dateTimePickerSmtStart.Value, dateTimePickerSmtEnd.Value);
-            SMTOperations.ReLoadSmtTab(dataGridViewSmtProduction,
-                                dataGridViewChangeOvers,
-                                dataGridViewSmtLedDropped, dataGridViewSmtLedWasteByModel,
-                                dataGridViewSmtWasteTotal,
-                                dataGridViewSmtLedWasteTotalPerLine,
-                                dataGridViewSmtStencilUsage,
-                                smtRecords,
-                                ref smtModelLineQuantity,
-                                radioButtonSmtShowAllModels,
-                                mesModels,
-                                comboBoxSmtModels,
-                                comboBoxSmtLedWasteLine,
-                                comboBoxSmtLewWasteFreq,
-                                comboBoxSmtLedWasteLines,
-                                lineColors,
-                                chartLedWasteChart,
-                                panelSmtLedWasteCheckContainer);
+            SMTOperations.ReLoadSmtTab();
         }
 
         
@@ -360,7 +356,7 @@ namespace KontrolaWizualnaRaport
 
         private void dateTimePickerWasteLevelBegin_ValueChanged(object sender, EventArgs e)
         {
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked,  radioButtonWasteLevelLG.Checked, mstOrders, lineColors, vScrollBar1.Value/vScrollBar1.Maximum);
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked,  radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, vScrollBar1.Value/vScrollBar1.Maximum);
             dgvTools.ColumnsAutoSize(dataGridViewWasteLevel, DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader);
         }
 
@@ -824,26 +820,7 @@ namespace KontrolaWizualnaRaport
 
         private void buttonShowOneLot_Click(object sender, EventArgs e)
         {
-            DataTable oneLotDt = smtRecords.Clone();
 
-            foreach (DataRow row in smtRecords.Rows)
-            {
-                if (row["NrZlecenia"].ToString() == textBoxSmtLot.Text)
-                {
-                    oneLotDt.Rows.Add(row.ItemArray);
-                    break;
-                }
-            }
-
-            if (oneLotDt.Rows.Count > 0)
-            {
-                oneLotDt.Columns["IloscWykonana"].ColumnName = "Ilosc";
-
-                SmtShiftDetails detailsForm = new SmtShiftDetails(oneLotDt, "LOT: " + textBoxSmtLot.Text);
-                detailsForm.ShowDialog();
-            }
-            else
-            { MessageBox.Show("Brak zlecenia " + textBoxSmtLot.Text + " w bazie danych"); }
         }
 
         private void dataGridViewTest_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -898,7 +875,7 @@ namespace KontrolaWizualnaRaport
 
         private void radioButtonWasteLevelLG_CheckedChanged(object sender, EventArgs e)
         {
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, (double)vScrollBar1.Value / (double)vScrollBar1.Maximum);
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, (double)vScrollBar1.Value / (double)vScrollBar1.Maximum);
         }
 
         private void dataGridViewChangeOvers_SelectionChanged(object sender, EventArgs e)
@@ -1000,7 +977,7 @@ namespace KontrolaWizualnaRaport
                     lineOptions.Add(c.Text.Trim(), ((CheckBox)c).Checked);
                 }
             }
-            Charting.DrawLedWasteChart(ledWasteDictionary, chartLedWasteChart, comboBoxSmtLewWasteFreq.Text, lineOptions, lineColors);
+            Charting.DrawLedWasteChart(ledWasteDictionary);
         }
 
         private void checkBoxSmt1_CheckStateChanged(object sender, EventArgs e)
@@ -1013,7 +990,7 @@ namespace KontrolaWizualnaRaport
                     lineOptions.Add(c.Text.Trim(), ((CheckBox)c).Checked);
                 }
             }
-            Charting.DrawLedWasteChart(ledWasteDictionary, chartLedWasteChart, comboBoxSmtLewWasteFreq.Text, lineOptions, lineColors);
+            Charting.DrawLedWasteChart(ledWasteDictionary);
         }
 
         private void comboBoxSmtLedWasteLine_SelectedIndexChanged(object sender, EventArgs e)
@@ -1034,7 +1011,7 @@ namespace KontrolaWizualnaRaport
 
         private void comboBoxSmtLedWasteLines_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SMTOperations.FillOutLedWasteTotalByLine(ledWasteDictionary, dataGridViewSmtLedWasteTotalPerLine, comboBoxSmtLedWasteLines.Text);
+            SMTOperations.FillOutLedWasteTotalByLine(ledWasteDictionary, dataGridViewSmtLedWasteTotalPerLine, comboBoxSmtLedWasteModels.Text);
         }
 
         private void dataGridViewSmtLedWasteTotalPerLine_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1198,15 +1175,7 @@ namespace KontrolaWizualnaRaport
 
         private void textBox3_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode== Keys.Return)
-            {
-                string lot = textBox3.Text;
-                LotSummary.FillOutKitting(dataGridViewSummaryKitting, lot);
-                LotSummary.FillOutSmtSummary(dataGridViewSummarySmt, lot);
-                LotSummary.FillOutViSummary(dataGridViewSummaryVi, lot);
-                List<string> pcbOK = LotSummary.FillOutTestummaryReturnPcbOK(dataGridViewSummaryTest, lot);
-                LotSummary.FilloutBoxingSummary(dataGridViewSummaryBox, pcbOK);
-            }
+
         }
 
         private void dataGridViewSummaryTest_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -1276,7 +1245,7 @@ namespace KontrolaWizualnaRaport
 
             if (smtLines.Length > 0)
             {
-                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, checkBoxyAxis.Checked ? 1-(double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
+                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, checkBoxyAxis.Checked ? 1-(double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
                 foreach (DataGridViewColumn col in dataGridViewWasteLevel.Columns)
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -1513,7 +1482,7 @@ namespace KontrolaWizualnaRaport
 
             if (smtLines.Length > 0)
             {
-                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, checkBoxyAxis.Checked ? 1-(double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
+                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, checkBoxyAxis.Checked ? 1-(double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
                 foreach (DataGridViewColumn col in dataGridViewWasteLevel.Columns)
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -1540,7 +1509,7 @@ namespace KontrolaWizualnaRaport
                     return;
                 string name = Convert.ToString(Items[e.Index]);
                 Color rowColor = Color.White;
-                lineColors.TryGetValue(name, out rowColor);
+                GlobalParameters.smtLinesColors.TryGetValue(name, out rowColor);
                 SolidBrush rowBrush = new SolidBrush(rowColor);
 
                 var contentRect = e.Bounds;
@@ -1553,7 +1522,7 @@ namespace KontrolaWizualnaRaport
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, checkBoxyAxis.Checked ?1- (double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, checkBoxyAxis.Checked ?1- (double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
         }
 
         private void buttonSmtTraceOK_Click(object sender, EventArgs e)
@@ -1564,7 +1533,7 @@ namespace KontrolaWizualnaRaport
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, lineColors, checkBoxyAxis.Checked ? 1- (double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
+            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, checkBoxyAxis.Checked ? 1- (double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
         }
 
         private void dataGridViewReworkDailyReport_SelectionChanged_1(object sender, EventArgs e)

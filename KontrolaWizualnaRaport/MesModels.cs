@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KontrolaWizualnaRaport
 {
-    class MesModels
+    public class MesModels
     {
         public MesModels( int ledSumQty, int ledAQty, int ledBQty, string type, int pcbsOnCarrier)
         {

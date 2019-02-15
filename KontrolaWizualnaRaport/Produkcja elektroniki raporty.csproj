@@ -54,6 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CentalDataStorage\DataContainer.cs" />
+    <Compile Include="CentalDataStorage\DataMerge.cs" />
+    <Compile Include="CentalDataStorage\GlobalParameters.cs" />
+    <Compile Include="CentalDataStorage\SharedComponents.cs" />
     <Compile Include="DgvImageButtonCell.cs" />
     <Compile Include="dgvTools.cs" />
     <Compile Include="Forms\ShowImagesForm.cs">
@@ -115,7 +119,6 @@
     <Compile Include="Forms\SmtShiftDetails.Designer.cs">
       <DependentUpon>SmtShiftDetails.cs</DependentUpon>
     </Compile>
-    <Compile Include="TabOperations\SplittingOperations.cs" />
     <Compile Include="SQLoperations.cs" />
     <Compile Include="TabOperations\TestOperations.cs" />
     <Compile Include="TabOperations\VIOperations.cs" />
@@ -160,6 +163,8 @@
     <EmbeddedResource Include="Forms\WasteReasonDetails.resx">
       <DependentUpon>WasteReasonDetails.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -181,6 +186,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ico_w2w_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MST.MES\MST.MES\MST.MES.csproj">
+      <Project>{3A75370E-11B7-4582-A6AF-73CAF3A9E997}</Project>
+      <Name>MST.MES</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

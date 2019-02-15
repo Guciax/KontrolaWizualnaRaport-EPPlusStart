@@ -229,10 +229,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.dataGridViewKittingReadyLots = new System.Windows.Forms.DataGridView();
             this.dataGridViewKitting = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tydz = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label29 = new System.Windows.Forms.Label();
             this.panel10 = new System.Windows.Forms.Panel();
@@ -240,6 +236,9 @@
             this.dataGridViewKittingHistory = new System.Windows.Forms.DataGridView();
             this.panel22 = new System.Windows.Forms.Panel();
             this.labelKittingSelectedSum = new System.Windows.Forms.Label();
+            this.panel23 = new System.Windows.Forms.Panel();
+            this.checkBoxKittingLg = new System.Windows.Forms.CheckBox();
+            this.checkBoxKittingMst = new System.Windows.Forms.CheckBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage10 = new System.Windows.Forms.TabPage();
@@ -277,11 +276,12 @@
             this.dataGridViewSmtLedWasteByModel = new System.Windows.Forms.DataGridView();
             this.dataGridViewSmtLedDropped = new System.Windows.Forms.DataGridView();
             this.panel34 = new System.Windows.Forms.Panel();
-            this.comboBoxSmtLedWasteLines = new System.Windows.Forms.ComboBox();
+            this.comboBoxSmtLedWasteModels = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.panel31 = new System.Windows.Forms.Panel();
             this.chartLedWasteChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panelSmtLedWasteCheckContainer = new System.Windows.Forms.Panel();
+            this.checkBoxSmt4 = new System.Windows.Forms.CheckBox();
             this.checkBoxTotal = new System.Windows.Forms.CheckBox();
             this.checkBoxSmt8 = new System.Windows.Forms.CheckBox();
             this.checkBoxSmt7 = new System.Windows.Forms.CheckBox();
@@ -310,14 +310,14 @@
             this.buttonSmtTraceOK = new System.Windows.Forms.Button();
             this.label32 = new System.Windows.Forms.Label();
             this.textBoxSmtTraceLedId = new System.Windows.Forms.TextBox();
-            this.panel23 = new System.Windows.Forms.Panel();
+            this.panelControlsSmt = new System.Windows.Forms.Panel();
+            this.cbSmtLg = new System.Windows.Forms.CheckBox();
+            this.cbSmtMst = new System.Windows.Forms.CheckBox();
             this.label17 = new System.Windows.Forms.Label();
             this.dateTimePickerSmtStart = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerSmtEnd = new System.Windows.Forms.DateTimePicker();
             this.buttonSmtRefresh = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
-            this.buttonShowOneLot = new System.Windows.Forms.Button();
-            this.textBoxSmtLot = new System.Windows.Forms.TextBox();
             this.tabPage16 = new System.Windows.Forms.TabPage();
             this.tabControl6 = new System.Windows.Forms.TabControl();
             this.tabPage25 = new System.Windows.Forms.TabPage();
@@ -366,6 +366,11 @@
             this.timerTestLoadDone = new System.Windows.Forms.Timer(this.components);
             this.timerBoxLoadDone = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tydz = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.chartEfficiency)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -457,6 +462,7 @@
             this.panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKittingHistory)).BeginInit();
             this.panel22.SuspendLayout();
+            this.panel23.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPage10.SuspendLayout();
@@ -494,7 +500,7 @@
             this.tabPage28.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtTrace)).BeginInit();
             this.panel44.SuspendLayout();
-            this.panel23.SuspendLayout();
+            this.panelControlsSmt.SuspendLayout();
             this.tabPage16.SuspendLayout();
             this.tabControl6.SuspendLayout();
             this.tabPage25.SuspendLayout();
@@ -2214,7 +2220,6 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(200, 20);
             this.textBox3.TabIndex = 1;
-            this.textBox3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox3_KeyDown);
             // 
             // label19
             // 
@@ -2229,6 +2234,7 @@
             // 
             this.tabPage13.Controls.Add(this.tableLayoutPanel9);
             this.tabPage13.Controls.Add(this.panel22);
+            this.tabPage13.Controls.Add(this.panel23);
             this.tabPage13.Location = new System.Drawing.Point(4, 25);
             this.tabPage13.Name = "tabPage13";
             this.tabPage13.Padding = new System.Windows.Forms.Padding(3);
@@ -2250,12 +2256,12 @@
             this.tableLayoutPanel9.Controls.Add(this.panel10, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.dataGridViewKittingHistory, 2, 1);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 42);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 2;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(1270, 558);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1270, 519);
             this.tableLayoutPanel9.TabIndex = 2;
             // 
             // panel42
@@ -2296,7 +2302,7 @@
             this.dataGridViewKittingReadyLots.Location = new System.Drawing.Point(426, 38);
             this.dataGridViewKittingReadyLots.Name = "dataGridViewKittingReadyLots";
             this.dataGridViewKittingReadyLots.ReadOnly = true;
-            this.dataGridViewKittingReadyLots.Size = new System.Drawing.Size(417, 517);
+            this.dataGridViewKittingReadyLots.Size = new System.Drawing.Size(417, 478);
             this.dataGridViewKittingReadyLots.TabIndex = 1;
             this.dataGridViewKittingReadyLots.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKittingReadyLots_CellDoubleClick);
             // 
@@ -2309,39 +2315,17 @@
             this.Column1,
             this.Tydz,
             this.Column2,
-            this.Column3});
+            this.Column3,
+            this.Column7});
             this.dataGridViewKitting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewKitting.Location = new System.Drawing.Point(3, 38);
             this.dataGridViewKitting.Name = "dataGridViewKitting";
             this.dataGridViewKitting.ReadOnly = true;
-            this.dataGridViewKitting.Size = new System.Drawing.Size(417, 517);
+            this.dataGridViewKitting.RowHeadersVisible = false;
+            this.dataGridViewKitting.Size = new System.Drawing.Size(417, 478);
             this.dataGridViewKitting.TabIndex = 0;
             this.dataGridViewKitting.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKitting_CellDoubleClick);
             this.dataGridViewKitting.SelectionChanged += new System.EventHandler(this.dataGridViewKitting_SelectionChanged);
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Data";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            // 
-            // Tydz
-            // 
-            this.Tydz.HeaderText = "Tydz";
-            this.Tydz.Name = "Tydz";
-            this.Tydz.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Zmiana";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Ilość";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
             // 
             // panel7
             // 
@@ -2385,7 +2369,7 @@
             this.dataGridViewKittingHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewKittingHistory.Location = new System.Drawing.Point(849, 38);
             this.dataGridViewKittingHistory.Name = "dataGridViewKittingHistory";
-            this.dataGridViewKittingHistory.Size = new System.Drawing.Size(418, 517);
+            this.dataGridViewKittingHistory.Size = new System.Drawing.Size(418, 478);
             this.dataGridViewKittingHistory.TabIndex = 4;
             // 
             // panel22
@@ -2408,10 +2392,44 @@
             this.labelKittingSelectedSum.Text = "Suma zaznaczonych: ";
             this.labelKittingSelectedSum.MouseClick += new System.Windows.Forms.MouseEventHandler(this.labelKittingSelectedSum_MouseClick);
             // 
+            // panel23
+            // 
+            this.panel23.Controls.Add(this.checkBoxKittingLg);
+            this.panel23.Controls.Add(this.checkBoxKittingMst);
+            this.panel23.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel23.Location = new System.Drawing.Point(3, 3);
+            this.panel23.Name = "panel23";
+            this.panel23.Size = new System.Drawing.Size(1270, 39);
+            this.panel23.TabIndex = 3;
+            // 
+            // checkBoxKittingLg
+            // 
+            this.checkBoxKittingLg.AutoSize = true;
+            this.checkBoxKittingLg.Checked = true;
+            this.checkBoxKittingLg.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxKittingLg.Location = new System.Drawing.Point(64, 11);
+            this.checkBoxKittingLg.Name = "checkBoxKittingLg";
+            this.checkBoxKittingLg.Size = new System.Drawing.Size(40, 17);
+            this.checkBoxKittingLg.TabIndex = 1;
+            this.checkBoxKittingLg.Text = "LG";
+            this.checkBoxKittingLg.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxKittingMst
+            // 
+            this.checkBoxKittingMst.AutoSize = true;
+            this.checkBoxKittingMst.Checked = true;
+            this.checkBoxKittingMst.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxKittingMst.Location = new System.Drawing.Point(9, 11);
+            this.checkBoxKittingMst.Name = "checkBoxKittingMst";
+            this.checkBoxKittingMst.Size = new System.Drawing.Size(49, 17);
+            this.checkBoxKittingMst.TabIndex = 0;
+            this.checkBoxKittingMst.Text = "MST";
+            this.checkBoxKittingMst.UseVisualStyleBackColor = true;
+            // 
             // tabPage9
             // 
             this.tabPage9.Controls.Add(this.tabControl3);
-            this.tabPage9.Controls.Add(this.panel23);
+            this.tabPage9.Controls.Add(this.panelControlsSmt);
             this.tabPage9.Location = new System.Drawing.Point(4, 25);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
@@ -2888,7 +2906,7 @@
             // 
             // panel34
             // 
-            this.panel34.Controls.Add(this.comboBoxSmtLedWasteLines);
+            this.panel34.Controls.Add(this.comboBoxSmtLedWasteModels);
             this.panel34.Controls.Add(this.label16);
             this.panel34.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel34.Location = new System.Drawing.Point(410, 3);
@@ -2896,14 +2914,14 @@
             this.panel34.Size = new System.Drawing.Size(366, 24);
             this.panel34.TabIndex = 7;
             // 
-            // comboBoxSmtLedWasteLines
+            // comboBoxSmtLedWasteModels
             // 
-            this.comboBoxSmtLedWasteLines.FormattingEnabled = true;
-            this.comboBoxSmtLedWasteLines.Location = new System.Drawing.Point(166, 2);
-            this.comboBoxSmtLedWasteLines.Name = "comboBoxSmtLedWasteLines";
-            this.comboBoxSmtLedWasteLines.Size = new System.Drawing.Size(96, 21);
-            this.comboBoxSmtLedWasteLines.TabIndex = 1;
-            this.comboBoxSmtLedWasteLines.SelectedIndexChanged += new System.EventHandler(this.comboBoxSmtLedWasteLines_SelectedIndexChanged);
+            this.comboBoxSmtLedWasteModels.FormattingEnabled = true;
+            this.comboBoxSmtLedWasteModels.Location = new System.Drawing.Point(166, 2);
+            this.comboBoxSmtLedWasteModels.Name = "comboBoxSmtLedWasteModels";
+            this.comboBoxSmtLedWasteModels.Size = new System.Drawing.Size(96, 21);
+            this.comboBoxSmtLedWasteModels.TabIndex = 1;
+            this.comboBoxSmtLedWasteModels.SelectedIndexChanged += new System.EventHandler(this.comboBoxSmtLedWasteLines_SelectedIndexChanged);
             // 
             // label16
             // 
@@ -2942,6 +2960,7 @@
             // 
             // panelSmtLedWasteCheckContainer
             // 
+            this.panelSmtLedWasteCheckContainer.Controls.Add(this.checkBoxSmt4);
             this.panelSmtLedWasteCheckContainer.Controls.Add(this.checkBoxTotal);
             this.panelSmtLedWasteCheckContainer.Controls.Add(this.checkBoxSmt8);
             this.panelSmtLedWasteCheckContainer.Controls.Add(this.checkBoxSmt7);
@@ -2957,6 +2976,20 @@
             this.panelSmtLedWasteCheckContainer.Size = new System.Drawing.Size(85, 223);
             this.panelSmtLedWasteCheckContainer.TabIndex = 1;
             // 
+            // checkBoxSmt4
+            // 
+            this.checkBoxSmt4.AutoSize = true;
+            this.checkBoxSmt4.BackColor = System.Drawing.Color.SandyBrown;
+            this.checkBoxSmt4.Checked = true;
+            this.checkBoxSmt4.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSmt4.ForeColor = System.Drawing.Color.White;
+            this.checkBoxSmt4.Location = new System.Drawing.Point(10, 93);
+            this.checkBoxSmt4.Name = "checkBoxSmt4";
+            this.checkBoxSmt4.Size = new System.Drawing.Size(55, 17);
+            this.checkBoxSmt4.TabIndex = 9;
+            this.checkBoxSmt4.Text = "SMT4";
+            this.checkBoxSmt4.UseVisualStyleBackColor = false;
+            // 
             // checkBoxTotal
             // 
             this.checkBoxTotal.AutoSize = true;
@@ -2964,7 +2997,7 @@
             this.checkBoxTotal.Checked = true;
             this.checkBoxTotal.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTotal.ForeColor = System.Drawing.Color.White;
-            this.checkBoxTotal.Location = new System.Drawing.Point(10, 180);
+            this.checkBoxTotal.Location = new System.Drawing.Point(10, 193);
             this.checkBoxTotal.Name = "checkBoxTotal";
             this.checkBoxTotal.Size = new System.Drawing.Size(56, 17);
             this.checkBoxTotal.TabIndex = 8;
@@ -2979,7 +3012,7 @@
             this.checkBoxSmt8.Checked = true;
             this.checkBoxSmt8.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxSmt8.ForeColor = System.Drawing.Color.White;
-            this.checkBoxSmt8.Location = new System.Drawing.Point(10, 159);
+            this.checkBoxSmt8.Location = new System.Drawing.Point(10, 173);
             this.checkBoxSmt8.Name = "checkBoxSmt8";
             this.checkBoxSmt8.Size = new System.Drawing.Size(55, 17);
             this.checkBoxSmt8.TabIndex = 7;
@@ -2994,7 +3027,7 @@
             this.checkBoxSmt7.Checked = true;
             this.checkBoxSmt7.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxSmt7.ForeColor = System.Drawing.Color.White;
-            this.checkBoxSmt7.Location = new System.Drawing.Point(10, 138);
+            this.checkBoxSmt7.Location = new System.Drawing.Point(10, 153);
             this.checkBoxSmt7.Name = "checkBoxSmt7";
             this.checkBoxSmt7.Size = new System.Drawing.Size(55, 17);
             this.checkBoxSmt7.TabIndex = 6;
@@ -3009,7 +3042,7 @@
             this.checkBoxSmt6.Checked = true;
             this.checkBoxSmt6.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxSmt6.ForeColor = System.Drawing.Color.White;
-            this.checkBoxSmt6.Location = new System.Drawing.Point(10, 117);
+            this.checkBoxSmt6.Location = new System.Drawing.Point(10, 133);
             this.checkBoxSmt6.Name = "checkBoxSmt6";
             this.checkBoxSmt6.Size = new System.Drawing.Size(55, 17);
             this.checkBoxSmt6.TabIndex = 5;
@@ -3024,7 +3057,7 @@
             this.checkBoxSmt5.Checked = true;
             this.checkBoxSmt5.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxSmt5.ForeColor = System.Drawing.Color.White;
-            this.checkBoxSmt5.Location = new System.Drawing.Point(10, 96);
+            this.checkBoxSmt5.Location = new System.Drawing.Point(10, 113);
             this.checkBoxSmt5.Name = "checkBoxSmt5";
             this.checkBoxSmt5.Size = new System.Drawing.Size(55, 17);
             this.checkBoxSmt5.TabIndex = 4;
@@ -3039,7 +3072,7 @@
             this.checkBoxSmt3.Checked = true;
             this.checkBoxSmt3.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxSmt3.ForeColor = System.Drawing.Color.White;
-            this.checkBoxSmt3.Location = new System.Drawing.Point(10, 75);
+            this.checkBoxSmt3.Location = new System.Drawing.Point(10, 73);
             this.checkBoxSmt3.Name = "checkBoxSmt3";
             this.checkBoxSmt3.Size = new System.Drawing.Size(55, 17);
             this.checkBoxSmt3.TabIndex = 3;
@@ -3054,7 +3087,7 @@
             this.checkBoxSmt2.Checked = true;
             this.checkBoxSmt2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxSmt2.ForeColor = System.Drawing.Color.White;
-            this.checkBoxSmt2.Location = new System.Drawing.Point(10, 54);
+            this.checkBoxSmt2.Location = new System.Drawing.Point(10, 53);
             this.checkBoxSmt2.Name = "checkBoxSmt2";
             this.checkBoxSmt2.Size = new System.Drawing.Size(55, 17);
             this.checkBoxSmt2.TabIndex = 2;
@@ -3296,25 +3329,49 @@
             this.textBoxSmtTraceLedId.TabIndex = 0;
             this.textBoxSmtTraceLedId.Text = "94MWS59R80JZ3E-137099";
             // 
-            // panel23
+            // panelControlsSmt
             // 
-            this.panel23.Controls.Add(this.label17);
-            this.panel23.Controls.Add(this.dateTimePickerSmtStart);
-            this.panel23.Controls.Add(this.dateTimePickerSmtEnd);
-            this.panel23.Controls.Add(this.buttonSmtRefresh);
-            this.panel23.Controls.Add(this.label11);
-            this.panel23.Controls.Add(this.buttonShowOneLot);
-            this.panel23.Controls.Add(this.textBoxSmtLot);
-            this.panel23.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel23.Location = new System.Drawing.Point(3, 3);
-            this.panel23.Name = "panel23";
-            this.panel23.Size = new System.Drawing.Size(1270, 29);
-            this.panel23.TabIndex = 2;
+            this.panelControlsSmt.Controls.Add(this.cbSmtLg);
+            this.panelControlsSmt.Controls.Add(this.cbSmtMst);
+            this.panelControlsSmt.Controls.Add(this.label17);
+            this.panelControlsSmt.Controls.Add(this.dateTimePickerSmtStart);
+            this.panelControlsSmt.Controls.Add(this.dateTimePickerSmtEnd);
+            this.panelControlsSmt.Controls.Add(this.buttonSmtRefresh);
+            this.panelControlsSmt.Controls.Add(this.label11);
+            this.panelControlsSmt.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelControlsSmt.Location = new System.Drawing.Point(3, 3);
+            this.panelControlsSmt.Name = "panelControlsSmt";
+            this.panelControlsSmt.Size = new System.Drawing.Size(1270, 29);
+            this.panelControlsSmt.TabIndex = 2;
+            // 
+            // cbSmtLg
+            // 
+            this.cbSmtLg.AutoSize = true;
+            this.cbSmtLg.Checked = true;
+            this.cbSmtLg.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSmtLg.Location = new System.Drawing.Point(611, 6);
+            this.cbSmtLg.Name = "cbSmtLg";
+            this.cbSmtLg.Size = new System.Drawing.Size(40, 17);
+            this.cbSmtLg.TabIndex = 9;
+            this.cbSmtLg.Text = "LG";
+            this.cbSmtLg.UseVisualStyleBackColor = true;
+            // 
+            // cbSmtMst
+            // 
+            this.cbSmtMst.AutoSize = true;
+            this.cbSmtMst.Checked = true;
+            this.cbSmtMst.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSmtMst.Location = new System.Drawing.Point(563, 6);
+            this.cbSmtMst.Name = "cbSmtMst";
+            this.cbSmtMst.Size = new System.Drawing.Size(49, 17);
+            this.cbSmtMst.TabIndex = 8;
+            this.cbSmtMst.Text = "MST";
+            this.cbSmtMst.UseVisualStyleBackColor = true;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(622, 8);
+            this.label17.Location = new System.Drawing.Point(242, 7);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(22, 13);
             this.label17.TabIndex = 7;
@@ -3322,21 +3379,21 @@
             // 
             // dateTimePickerSmtStart
             // 
-            this.dateTimePickerSmtStart.Location = new System.Drawing.Point(419, 5);
+            this.dateTimePickerSmtStart.Location = new System.Drawing.Point(39, 4);
             this.dateTimePickerSmtStart.Name = "dateTimePickerSmtStart";
             this.dateTimePickerSmtStart.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerSmtStart.TabIndex = 6;
             // 
             // dateTimePickerSmtEnd
             // 
-            this.dateTimePickerSmtEnd.Location = new System.Drawing.Point(647, 5);
+            this.dateTimePickerSmtEnd.Location = new System.Drawing.Point(267, 4);
             this.dateTimePickerSmtEnd.Name = "dateTimePickerSmtEnd";
             this.dateTimePickerSmtEnd.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerSmtEnd.TabIndex = 5;
             // 
             // buttonSmtRefresh
             // 
-            this.buttonSmtRefresh.Location = new System.Drawing.Point(853, 3);
+            this.buttonSmtRefresh.Location = new System.Drawing.Point(473, 2);
             this.buttonSmtRefresh.Name = "buttonSmtRefresh";
             this.buttonSmtRefresh.Size = new System.Drawing.Size(41, 23);
             this.buttonSmtRefresh.TabIndex = 4;
@@ -3347,28 +3404,11 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(393, 9);
+            this.label11.Location = new System.Drawing.Point(13, 8);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(24, 13);
             this.label11.TabIndex = 3;
             this.label11.Text = "Od:";
-            // 
-            // buttonShowOneLot
-            // 
-            this.buttonShowOneLot.Location = new System.Drawing.Point(149, 0);
-            this.buttonShowOneLot.Name = "buttonShowOneLot";
-            this.buttonShowOneLot.Size = new System.Drawing.Size(119, 23);
-            this.buttonShowOneLot.TabIndex = 1;
-            this.buttonShowOneLot.Text = "Pokaż jedno zlecenie";
-            this.buttonShowOneLot.UseVisualStyleBackColor = true;
-            this.buttonShowOneLot.Click += new System.EventHandler(this.buttonShowOneLot_Click);
-            // 
-            // textBoxSmtLot
-            // 
-            this.textBoxSmtLot.Location = new System.Drawing.Point(3, 3);
-            this.textBoxSmtLot.Name = "textBoxSmtLot";
-            this.textBoxSmtLot.Size = new System.Drawing.Size(140, 20);
-            this.textBoxSmtLot.TabIndex = 0;
             // 
             // tabPage16
             // 
@@ -3849,6 +3889,36 @@
             // 
             this.timerBoxLoadDone.Tick += new System.EventHandler(this.timerBoxLoadDone_Tick);
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Data";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Tydz
+            // 
+            this.Tydz.HeaderText = "Tydz";
+            this.Tydz.Name = "Tydz";
+            this.Tydz.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Zmiana";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Zleceń";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "Wyrobów";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3969,6 +4039,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKittingHistory)).EndInit();
             this.panel22.ResumeLayout(false);
             this.panel22.PerformLayout();
+            this.panel23.ResumeLayout(false);
+            this.panel23.PerformLayout();
             this.tabPage9.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             this.tabPage10.ResumeLayout(false);
@@ -4018,8 +4090,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtTrace)).EndInit();
             this.panel44.ResumeLayout(false);
             this.panel44.PerformLayout();
-            this.panel23.ResumeLayout(false);
-            this.panel23.PerformLayout();
+            this.panelControlsSmt.ResumeLayout(false);
+            this.panelControlsSmt.PerformLayout();
             this.tabPage16.ResumeLayout(false);
             this.tabControl6.ResumeLayout(false);
             this.tabPage25.ResumeLayout(false);
@@ -4143,9 +4215,7 @@
         private System.Windows.Forms.Label labelSplittingSelectedSum;
         private System.Windows.Forms.Panel panel22;
         private System.Windows.Forms.Label labelKittingSelectedSum;
-        private System.Windows.Forms.Panel panel23;
-        private System.Windows.Forms.Button buttonShowOneLot;
-        private System.Windows.Forms.TextBox textBoxSmtLot;
+        private System.Windows.Forms.Panel panelControlsSmt;
         private System.Windows.Forms.TabPage tabPage16;
         private System.Windows.Forms.DataGridView dataGridViewTestProdReport;
         private System.Windows.Forms.Panel panel25;
@@ -4213,7 +4283,7 @@
         private System.Windows.Forms.DataGridView dataGridViewSmtLedWasteTotalPerLine;
         private System.Windows.Forms.Panel panel34;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.ComboBox comboBoxSmtLedWasteLines;
+        private System.Windows.Forms.ComboBox comboBoxSmtLedWasteModels;
         private System.Windows.Forms.DateTimePicker dateTimePickerSmtStart;
         private System.Windows.Forms.DateTimePicker dateTimePickerSmtEnd;
         private System.Windows.Forms.Label label17;
@@ -4263,10 +4333,6 @@
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Tydz;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tydzs;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
@@ -4337,6 +4403,17 @@
         private System.Windows.Forms.RadioButton radioButtonReworkVsNgDaily;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.DataGridView dataGridViewLatestLots;
+        private System.Windows.Forms.CheckBox cbSmtLg;
+        private System.Windows.Forms.CheckBox cbSmtMst;
+        private System.Windows.Forms.CheckBox checkBoxSmt4;
+        private System.Windows.Forms.Panel panel23;
+        private System.Windows.Forms.CheckBox checkBoxKittingLg;
+        private System.Windows.Forms.CheckBox checkBoxKittingMst;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Tydz;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
     }
 }
 
