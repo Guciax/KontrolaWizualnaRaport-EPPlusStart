@@ -17,207 +17,207 @@ namespace KontrolaWizualnaRaport
 {
     class Charting
     {
-        public static DataTable DrawCapaChart(Chart chart, List<WasteDataStructure> inputData, string oper, Dictionary<string, string> modelDictionary, bool customerLGI, List<excelOperations.order12NC> mstOrders)
-        {
-            chart.Series.Clear();
-            chart.ChartAreas.Clear();
+        //public static DataTable DrawCapaChart(Chart chart, List<WasteDataStructure> inputData, string oper, Dictionary<string, string> modelDictionary, bool customerLGI, List<excelOperations.order12NC> mstOrders)
+        //{
+        //    chart.Series.Clear();
+        //    chart.ChartAreas.Clear();
 
-            Series serColumn = new Series();
-            serColumn.IsVisibleInLegend = false;
-            serColumn.IsValueShownAsLabel = false;
-            serColumn.Color = System.Drawing.Color.Blue;
-            serColumn.BorderColor = System.Drawing.Color.Black;
+        //    Series serColumn = new Series();
+        //    serColumn.IsVisibleInLegend = false;
+        //    serColumn.IsValueShownAsLabel = false;
+        //    serColumn.Color = System.Drawing.Color.Blue;
+        //    serColumn.BorderColor = System.Drawing.Color.Black;
 
-            ChartArea area = new ChartArea();
-            area.AxisX.IsLabelAutoFit = true;
-            area.AxisX.LabelAutoFitStyle = LabelAutoFitStyles.LabelsAngleStep45;
-            area.AxisX.LabelStyle.Enabled = true;
-            area.AxisX.LabelStyle.Font = new System.Drawing.Font("Arial", 10);
-            area.AxisX.MajorGrid.LineColor = System.Drawing.Color.Silver;
-            area.AxisY.MajorGrid.LineColor = System.Drawing.Color.Black;
-            area.AxisY.MajorGrid.LineWidth = 1;
-            area.AxisY.MinorGrid.Enabled = true;
-            area.AxisY.MinorGrid.LineColor = System.Drawing.Color.Silver;
-            area.AxisY.MinorGrid.Interval = 1000;
-            area.AxisY.MajorGrid.Interval = 5000;
-            area.AxisX.LabelStyle.Interval = 1;
-            area.AxisY.LabelStyle.Interval = 5000;
+        //    ChartArea area = new ChartArea();
+        //    area.AxisX.IsLabelAutoFit = true;
+        //    area.AxisX.LabelAutoFitStyle = LabelAutoFitStyles.LabelsAngleStep45;
+        //    area.AxisX.LabelStyle.Enabled = true;
+        //    area.AxisX.LabelStyle.Font = new System.Drawing.Font("Arial", 10);
+        //    area.AxisX.MajorGrid.LineColor = System.Drawing.Color.Silver;
+        //    area.AxisY.MajorGrid.LineColor = System.Drawing.Color.Black;
+        //    area.AxisY.MajorGrid.LineWidth = 1;
+        //    area.AxisY.MinorGrid.Enabled = true;
+        //    area.AxisY.MinorGrid.LineColor = System.Drawing.Color.Silver;
+        //    area.AxisY.MinorGrid.Interval = 1000;
+        //    area.AxisY.MajorGrid.Interval = 5000;
+        //    area.AxisX.LabelStyle.Interval = 1;
+        //    area.AxisY.LabelStyle.Interval = 5000;
 
-            Dictionary<DateTime, int> qtyPerDayForAll = new Dictionary<DateTime, int>();
-            Dictionary<DateTime, Dictionary<string, int>> qtyPerDayPerModel = new Dictionary<DateTime, Dictionary<string, int>>();
-            DataTable gridTable = new DataTable();
-            gridTable.Columns.Add("Data");
-            gridTable.Columns.Add("Ilość");
+        //    Dictionary<DateTime, int> qtyPerDayForAll = new Dictionary<DateTime, int>();
+        //    Dictionary<DateTime, Dictionary<string, int>> qtyPerDayPerModel = new Dictionary<DateTime, Dictionary<string, int>>();
+        //    DataTable gridTable = new DataTable();
+        //    gridTable.Columns.Add("Data");
+        //    gridTable.Columns.Add("Ilość");
 
-            if (oper == "Wszyscy")
-            {
-                Dictionary<DateTime, string> labelDict = new Dictionary<DateTime, string>();
-                foreach (var item in inputData)
-                {
-                    if (item.Oper == oper || oper == "Wszyscy")
-                    {
-                       // string orderList = string.Join(Environment.NewLine, mstOrders.Select(o => o.order).ToArray());
-                        if (customerLGI & mstOrders.Select(o => o.order).ToList().Contains(item.NumerZlecenia)) continue;
-                        if (!customerLGI & !mstOrders.Select(o => o.order).ToList().Contains(item.NumerZlecenia)) continue;
+        //    if (oper == "Wszyscy")
+        //    {
+        //        Dictionary<DateTime, string> labelDict = new Dictionary<DateTime, string>();
+        //        foreach (var item in inputData)
+        //        {
+        //            if (item.Oper == oper || oper == "Wszyscy")
+        //            {
+        //               // string orderList = string.Join(Environment.NewLine, mstOrders.Select(o => o.order).ToArray());
+        //                if (customerLGI & mstOrders.Select(o => o.order).ToList().Contains(item.NumerZlecenia)) continue;
+        //                if (!customerLGI & !mstOrders.Select(o => o.order).ToList().Contains(item.NumerZlecenia)) continue;
 
-                            string model = "???";
-                        if (modelDictionary.ContainsKey(item.NumerZlecenia))
-                            model = modelDictionary[item.NumerZlecenia];
+        //                    string model = "???";
+        //                if (modelDictionary.ContainsKey(item.NumerZlecenia))
+        //                    model = modelDictionary[item.NumerZlecenia];
 
-                        if (!qtyPerDayForAll.ContainsKey(item.FixedDateTime.Date))
-                        {
-                            qtyPerDayForAll.Add(item.FixedDateTime.Date, 0);
-                            labelDict.Add(item.FixedDateTime.Date, model);
-                        }
-                        qtyPerDayForAll[item.FixedDateTime.Date] += item.AllQty;
-                        if (!labelDict[item.FixedDateTime.Date].Contains(model))
-                            labelDict[item.FixedDateTime.Date] += Environment.NewLine + model;
-                    }
-                }
+        //                if (!qtyPerDayForAll.ContainsKey(item.FixedDateTime.Date))
+        //                {
+        //                    qtyPerDayForAll.Add(item.FixedDateTime.Date, 0);
+        //                    labelDict.Add(item.FixedDateTime.Date, model);
+        //                }
+        //                qtyPerDayForAll[item.FixedDateTime.Date] += item.AllQty;
+        //                if (!labelDict[item.FixedDateTime.Date].Contains(model))
+        //                    labelDict[item.FixedDateTime.Date] += Environment.NewLine + model;
+        //            }
+        //        }
 
-                serColumn.ChartType = SeriesChartType.Column;
-                foreach (var key in qtyPerDayForAll)
-                {
-                    serColumn.Points.AddXY(key.Key, key.Value);
-                    gridTable.Rows.Add(key.Key.Date.ToShortDateString(), key.Value);
-                }
-                chart.Series.Add(serColumn);
-            }
-            else
-            {
-                gridTable.Columns.Add("NG");
-                gridTable.Columns.Add("NG%");
-                gridTable.Columns.Add("Scrap");
-                gridTable.Columns.Add("Scrap%");
-                HashSet<string> uniqueModels = new HashSet<string>();
-                HashSet<DateTime> uniqueDates = new HashSet<DateTime>();
-                Dictionary<string, Dictionary<DateTime, int>> dictFirstModelThenDate = new Dictionary<string, Dictionary<DateTime, int>>();
+        //        serColumn.ChartType = SeriesChartType.Column;
+        //        foreach (var key in qtyPerDayForAll)
+        //        {
+        //            serColumn.Points.AddXY(key.Key, key.Value);
+        //            gridTable.Rows.Add(key.Key.Date.ToShortDateString(), key.Value);
+        //        }
+        //        chart.Series.Add(serColumn);
+        //    }
+        //    else
+        //    {
+        //        gridTable.Columns.Add("NG");
+        //        gridTable.Columns.Add("NG%");
+        //        gridTable.Columns.Add("Scrap");
+        //        gridTable.Columns.Add("Scrap%");
+        //        HashSet<string> uniqueModels = new HashSet<string>();
+        //        HashSet<DateTime> uniqueDates = new HashSet<DateTime>();
+        //        Dictionary<string, Dictionary<DateTime, int>> dictFirstModelThenDate = new Dictionary<string, Dictionary<DateTime, int>>();
 
-                foreach (var item in inputData)
-                {
-                    if (customerLGI & mstOrders.Select(o => o.order).ToList().Contains(item.NumerZlecenia)) continue;
-                    if (!customerLGI & !mstOrders.Select(o => o.order).ToList().Contains(item.NumerZlecenia)) continue;
+        //        foreach (var item in inputData)
+        //        {
+        //            if (customerLGI & mstOrders.Select(o => o.order).ToList().Contains(item.NumerZlecenia)) continue;
+        //            if (!customerLGI & !mstOrders.Select(o => o.order).ToList().Contains(item.NumerZlecenia)) continue;
 
-                    if (item.Oper != oper) continue;
+        //            if (item.Oper != oper) continue;
 
-                        if (item.Oper == oper)
-                    {
-                        if (!qtyPerDayPerModel.ContainsKey(item.FixedDateTime.Date))
-                        {
-                            qtyPerDayPerModel.Add(item.FixedDateTime.Date, new Dictionary<string, int>());
-                        }
-                        string model = "??";
+        //                if (item.Oper == oper)
+        //            {
+        //                if (!qtyPerDayPerModel.ContainsKey(item.FixedDateTime.Date))
+        //                {
+        //                    qtyPerDayPerModel.Add(item.FixedDateTime.Date, new Dictionary<string, int>());
+        //                }
+        //                string model = "??";
 
-                        if (modelDictionary.ContainsKey(item.NumerZlecenia))
-                            model = modelDictionary[item.NumerZlecenia].Replace("LLFML", "");
+        //                if (modelDictionary.ContainsKey(item.NumerZlecenia))
+        //                    model = modelDictionary[item.NumerZlecenia].Replace("LLFML", "");
 
-                        uniqueModels.Add(model);
-                        uniqueDates.Add(item.FixedDateTime.Date);
+        //                uniqueModels.Add(model);
+        //                uniqueDates.Add(item.FixedDateTime.Date);
 
-                        if (!qtyPerDayPerModel[item.FixedDateTime.Date].ContainsKey(model))
-                            qtyPerDayPerModel[item.FixedDateTime.Date].Add(model, 0);
+        //                if (!qtyPerDayPerModel[item.FixedDateTime.Date].ContainsKey(model))
+        //                    qtyPerDayPerModel[item.FixedDateTime.Date].Add(model, 0);
 
-                        qtyPerDayPerModel[item.FixedDateTime.Date][model] += item.AllQty;
-                    }
-                }
+        //                qtyPerDayPerModel[item.FixedDateTime.Date][model] += item.AllQty;
+        //            }
+        //        }
 
-                serColumn.ChartType = SeriesChartType.StackedColumn;
-                Dictionary<DateTime, int> qtyPerDayPerOperator = new Dictionary<DateTime, int>();
-                Dictionary<DateTime, int> qtyNgPerDayPerOperator = new Dictionary<DateTime, int>();
-                Dictionary<DateTime, int> qtyScrapPerDayPerOperator = new Dictionary<DateTime, int>();
-                foreach (var model in uniqueModels)
-                {
+        //        serColumn.ChartType = SeriesChartType.StackedColumn;
+        //        Dictionary<DateTime, int> qtyPerDayPerOperator = new Dictionary<DateTime, int>();
+        //        Dictionary<DateTime, int> qtyNgPerDayPerOperator = new Dictionary<DateTime, int>();
+        //        Dictionary<DateTime, int> qtyScrapPerDayPerOperator = new Dictionary<DateTime, int>();
+        //        foreach (var model in uniqueModels)
+        //        {
 
-                    dictFirstModelThenDate.Add(model, new Dictionary<DateTime, int>());
-                    foreach (var date in uniqueDates)
-                    {
-                        dictFirstModelThenDate[model].Add(date, 0);
+        //            dictFirstModelThenDate.Add(model, new Dictionary<DateTime, int>());
+        //            foreach (var date in uniqueDates)
+        //            {
+        //                dictFirstModelThenDate[model].Add(date, 0);
 
-                        if (!qtyPerDayPerOperator.ContainsKey(date))
-                        {
-                            qtyPerDayPerOperator.Add(date, 0);
-                            qtyNgPerDayPerOperator.Add(date, 0);
-                            qtyScrapPerDayPerOperator.Add(date, 0);
+        //                if (!qtyPerDayPerOperator.ContainsKey(date))
+        //                {
+        //                    qtyPerDayPerOperator.Add(date, 0);
+        //                    qtyNgPerDayPerOperator.Add(date, 0);
+        //                    qtyScrapPerDayPerOperator.Add(date, 0);
 
-                        }
-                    }
-                }
+        //                }
+        //            }
+        //        }
 
-                foreach (var item in inputData)
-                {
-                    if (item.Oper == oper)
-                    {
+        //        foreach (var item in inputData)
+        //        {
+        //            if (item.Oper == oper)
+        //            {
 
-                        string model = "??";
-                        if (modelDictionary.ContainsKey(item.NumerZlecenia))
-                        {
-                            model = modelDictionary[item.NumerZlecenia].Replace("LLFML", "");
-                        }
-                        if (!dictFirstModelThenDate.ContainsKey(model)) continue;
-                        dictFirstModelThenDate[model][item.FixedDateTime.Date] += item.AllQty;
-                        qtyPerDayPerOperator[item.FixedDateTime.Date] += item.AllQty;
-                        qtyNgPerDayPerOperator[item.FixedDateTime.Date] += item.AllNg;
-                        qtyScrapPerDayPerOperator[item.FixedDateTime.Date] += item.AllScrap;
-                    }
-                }
+        //                string model = "??";
+        //                if (modelDictionary.ContainsKey(item.NumerZlecenia))
+        //                {
+        //                    model = modelDictionary[item.NumerZlecenia].Replace("LLFML", "");
+        //                }
+        //                if (!dictFirstModelThenDate.ContainsKey(model)) continue;
+        //                dictFirstModelThenDate[model][item.FixedDateTime.Date] += item.AllQty;
+        //                qtyPerDayPerOperator[item.FixedDateTime.Date] += item.AllQty;
+        //                qtyNgPerDayPerOperator[item.FixedDateTime.Date] += item.AllNg;
+        //                qtyScrapPerDayPerOperator[item.FixedDateTime.Date] += item.AllScrap;
+        //            }
+        //        }
 
-                int total = qtyPerDayPerOperator.Select(q => q.Value).Sum();
-                int ngTotal = qtyNgPerDayPerOperator.Select(q => q.Value).Sum();
-                double totalNgRate = Math.Round((double)ngTotal / (double)total * 100, 2);
-                int scrapTotal = qtyScrapPerDayPerOperator.Select(q => q.Value).Sum();
-                double totalScrapRate = Math.Round((double)scrapTotal / (double)total * 100, 2);
-                gridTable.Rows.Add("TOTAL", total, ngTotal, totalNgRate, scrapTotal, totalScrapRate);
+        //        int total = qtyPerDayPerOperator.Select(q => q.Value).Sum();
+        //        int ngTotal = qtyNgPerDayPerOperator.Select(q => q.Value).Sum();
+        //        double totalNgRate = Math.Round((double)ngTotal / (double)total * 100, 2);
+        //        int scrapTotal = qtyScrapPerDayPerOperator.Select(q => q.Value).Sum();
+        //        double totalScrapRate = Math.Round((double)scrapTotal / (double)total * 100, 2);
+        //        gridTable.Rows.Add("TOTAL", total, ngTotal, totalNgRate, scrapTotal, totalScrapRate);
 
-                foreach (var keyEntry in qtyPerDayPerOperator)
-                {
-                    int ng = qtyNgPerDayPerOperator[keyEntry.Key];
-                    double ngRate = Math.Round((double)ng / (double)keyEntry.Value * 100, 2);
-                    int scrap = qtyScrapPerDayPerOperator[keyEntry.Key];
-                    double scrapRate = Math.Round((double)scrap / (double)keyEntry.Value * 100, 2);
+        //        foreach (var keyEntry in qtyPerDayPerOperator)
+        //        {
+        //            int ng = qtyNgPerDayPerOperator[keyEntry.Key];
+        //            double ngRate = Math.Round((double)ng / (double)keyEntry.Value * 100, 2);
+        //            int scrap = qtyScrapPerDayPerOperator[keyEntry.Key];
+        //            double scrapRate = Math.Round((double)scrap / (double)keyEntry.Value * 100, 2);
 
-                    gridTable.Rows.Add(keyEntry.Key.ToString("dd-MM-yyyy"), keyEntry.Value, ng, ngRate, scrap, scrapRate);
+        //            gridTable.Rows.Add(keyEntry.Key.ToString("dd-MM-yyyy"), keyEntry.Value, ng, ngRate, scrap, scrapRate);
 
-                }
+        //        }
 
-                foreach (var model in dictFirstModelThenDate)
-                {
-                    chart.Series.Add(new Series(model.Key));
-                    chart.Series[model.Key].ChartType = SeriesChartType.StackedColumn;
-                    chart.Series[model.Key].IsValueShownAsLabel = true;
-                    chart.Series[model.Key].ToolTip = model.Key;
+        //        foreach (var model in dictFirstModelThenDate)
+        //        {
+        //            chart.Series.Add(new Series(model.Key));
+        //            chart.Series[model.Key].ChartType = SeriesChartType.StackedColumn;
+        //            chart.Series[model.Key].IsValueShownAsLabel = true;
+        //            chart.Series[model.Key].ToolTip = model.Key;
 
-                    foreach (var date in model.Value)
-                    {
-                        {
-                            //DataPoint point = new DataPoint();
-                            //point.SetValueXY(date.Key, date.Value);
+        //            foreach (var date in model.Value)
+        //            {
+        //                {
+        //                    //DataPoint point = new DataPoint();
+        //                    //point.SetValueXY(date.Key, date.Value);
                             
-                           // if (date.Value > 0)
-                                //point.Label = date.Value + " " + model.Key;
+        //                   // if (date.Value > 0)
+        //                        //point.Label = date.Value + " " + model.Key;
 
-                            //chart.Series[model.Key].Points.Add(point);
-                            chart.Series[model.Key].Points.AddXY(date.Key, date.Value);
-                        }
-                    }
+        //                    //chart.Series[model.Key].Points.Add(point);
+        //                    chart.Series[model.Key].Points.AddXY(date.Key, date.Value);
+        //                }
+        //            }
 
-                    foreach (var point in chart.Series[model.Key].Points)
-                    {
-                        if (point.YValues[0] == 0) point.IsValueShownAsLabel = false;
-                    }
-                }
+        //            foreach (var point in chart.Series[model.Key].Points)
+        //            {
+        //                if (point.YValues[0] == 0) point.IsValueShownAsLabel = false;
+        //            }
+        //        }
 
-                area.AxisY.LabelStyle.Interval = 500;
-                area.AxisY.MinorGrid.Interval = 100;
-                area.AxisY.MajorGrid.Interval = 500;
-            }
-            chart.ChartAreas.Add(area);
-            //chart.Legends[0].DockedToChartArea = chart.ChartAreas[0].Name;
-            //chart.Legends[0].TableStyle = LegendTableStyle.Auto;
-            chart.Legends.Clear();
+        //        area.AxisY.LabelStyle.Interval = 500;
+        //        area.AxisY.MinorGrid.Interval = 100;
+        //        area.AxisY.MajorGrid.Interval = 500;
+        //    }
+        //    chart.ChartAreas.Add(area);
+        //    //chart.Legends[0].DockedToChartArea = chart.ChartAreas[0].Name;
+        //    //chart.Legends[0].TableStyle = LegendTableStyle.Auto;
+        //    chart.Legends.Clear();
 
            
-            return gridTable;
-        }
+        //    return gridTable;
+        //}
 
         private class WasteStruc
         {
@@ -276,11 +276,13 @@ namespace KontrolaWizualnaRaport
             chart.Series.Add(lineSeriesA);
             chart.Series.Add(lineSeriesB);
         }
+
         private class ledUsedBom
         {
             public int ledsUsed=0;
             public int ledsBom=0;
         }
+
         public static void DrawLedWasteChart(SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary)
         {
             
@@ -431,104 +433,53 @@ namespace KontrolaWizualnaRaport
             public Dictionary<string, Tuple<int, int>> scrapToolTip { get; set; }
         }
 
-        public static DataTable DrawWasteLevel(string frequency, Chart chartWasteLevel, List<WasteDataStructure> inputData, DateTime dateBegin, DateTime dateEnd, Dictionary<string, string> modelDictionary, ComboBox comboModel, string[] smtLines, bool linesCumulated, bool customerLGI, List<excelOperations.order12NC> mstOrders, Dictionary<string, Color> lineColors, double yAxisMax)
+
+        public static void DrawWasteLevel()
         {
-            DataTable result = new DataTable();
-            Dictionary<string, Dictionary<string, WasteLevelChartStruct>> lineDateWaste = new Dictionary<string, Dictionary<string, WasteLevelChartStruct>>();
+            var filteredOrders = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
+            var selectedLines = SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines;
 
-            string frequencyKey = "";
-
-            result.Columns.Add("Data");
-            result.Columns.Add("Ilość");
-            result.Columns.Add("Produkcja");
-            result.Columns.Add("%");
-
-            string[] mstOrdersList = mstOrders.Select(o => o.order).ToArray();
-            string lineKey = "Total";
-            foreach (var wasteEntry in inputData)
+            filteredOrders.Add("Total", new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
+            foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
             {
-                if (customerLGI & mstOrdersList.Contains(wasteEntry.NumerZlecenia)) continue;
-                if (!customerLGI & !mstOrdersList.Contains(wasteEntry.NumerZlecenia)) continue;
-                if (wasteEntry.FixedDateTime.Date < dateBegin || wasteEntry.FixedDateTime.Date > dateEnd) continue;
-
-                string line = wasteEntry.SmtLine;
-                if (line == "" & customerLGI) continue;
-                if (!linesCumulated & !smtLines.Contains(wasteEntry.SmtLine)) continue;
-                if (!linesCumulated)
+                foreach (var dateEntry in lineEntry.Value)
                 {
-                    lineKey = wasteEntry.SmtLine;
-                }
-
-                string model = "";
-                if (!modelDictionary.TryGetValue(wasteEntry.NumerZlecenia, out model)) model = "???";
-
-                switch (frequency)
-                {
-                    case "daily":
-                        {
-                            frequencyKey = wasteEntry.FixedDateTime.Date.ToShortDateString();
-                            break;
-                        }
-                    case "weekly":
-                        {
-                            frequencyKey = wasteEntry.FixedDateTime.Year-2000+ dateTools.GetIso8601WeekOfYear(wasteEntry.FixedDateTime).ToString();
-                            break;
-                        }
-                    case "monthly":
-                        {
-                            frequencyKey = dateTools.productionMonthNumber(dateTools.GetIso8601WeekOfYear(wasteEntry.FixedDateTime), wasteEntry.FixedDateTime.Year).ToString();
-                            break;
-                        }
-                }
-
-                //line key
-                if (!lineDateWaste.ContainsKey(lineKey))
-                {
-                    lineDateWaste.Add(lineKey, new Dictionary<string, WasteLevelChartStruct>());
-                }
-
-                //frequency Key
-                if (!lineDateWaste[lineKey].ContainsKey(frequencyKey))
-                {
-                    lineDateWaste[lineKey].Add(frequencyKey, new WasteLevelChartStruct());
-                    lineDateWaste[lineKey][frequencyKey].ngTooltip = new Dictionary<string, Tuple<int, int>>();
-                    lineDateWaste[lineKey][frequencyKey].scrapToolTip = new Dictionary<string, Tuple<int, int>>();
-                }
-
-                lineDateWaste[lineKey][frequencyKey].ngCount += wasteEntry.AllNg;
-                lineDateWaste[lineKey][frequencyKey].scrapCount += wasteEntry.AllScrap;
-                lineDateWaste[lineKey][frequencyKey].totalProdThisLine += wasteEntry.AllQty;
-
-                if(!lineDateWaste[lineKey][frequencyKey].ngTooltip.ContainsKey(model))
-                {
-                    lineDateWaste[lineKey][frequencyKey].ngTooltip.Add(model, new Tuple<int, int>(0,0));
-                }
-
-                if (!lineDateWaste[lineKey][frequencyKey].scrapToolTip.ContainsKey(model))
-                {
-                    lineDateWaste[lineKey][frequencyKey].scrapToolTip.Add(model, new Tuple<int, int>(0, 0));
-                }
-
-                Tuple<int, int> ngEntry = new Tuple<int, int>(lineDateWaste[lineKey][frequencyKey].ngTooltip[model].Item1 + wasteEntry.AllNg, lineDateWaste[lineKey][frequencyKey].ngTooltip[model].Item2 + wasteEntry.AllQty);
-                Tuple<int, int> scrapEntry = new Tuple<int, int>(lineDateWaste[lineKey][frequencyKey].scrapToolTip[model].Item1 + wasteEntry.AllNg, lineDateWaste[lineKey][frequencyKey].scrapToolTip[model].Item2 + wasteEntry.AllQty);
-
-                lineDateWaste[lineKey][frequencyKey].ngTooltip[model] = ngEntry;
-                lineDateWaste[lineKey][frequencyKey].scrapToolTip[model] = scrapEntry;
-            }
-
-            Dictionary<string, double> totalProduction = new Dictionary<string, double>();
-            foreach (var lineEntry in lineDateWaste)
-            {
-                foreach (var frequencyEntry in lineEntry.Value)
-                {
-                    if (!totalProduction.ContainsKey(frequencyEntry.Key))
+                    foreach (var orderEntry in dateEntry.Value)
                     {
-                        totalProduction.Add(frequencyEntry.Key, 0);
+                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelLg.Checked)
+                        {
+                            if (orderEntry.kitting.odredGroup == "LG") continue;
+                        }
+                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelMst.Checked)
+                        {
+                            if (orderEntry.kitting.odredGroup == "MST") continue;
+                        }
+                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated.Checked)
+                        {
+                            if (!orderEntry.smt.smtOrders.Select(o => o.smtLine).Intersect(selectedLines).Any()) continue;
+                        }
+
+                        if (!filteredOrders.ContainsKey(lineEntry.Key))
+                        {
+                            filteredOrders.Add(lineEntry.Key, new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
+                        }
+                        if (!filteredOrders[lineEntry.Key].ContainsKey(dateEntry.Key))
+                        {
+                            filteredOrders[lineEntry.Key].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                        }
+                        
+                        if (!filteredOrders["Total"].ContainsKey(dateEntry.Key))
+                        {
+                            filteredOrders["Total"].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                        }
+
+                        filteredOrders[lineEntry.Key][dateEntry.Key].Add(orderEntry);
+                        filteredOrders["Total"][dateEntry.Key].Add(orderEntry);
                     }
-                    totalProduction[frequencyEntry.Key] += frequencyEntry.Value.totalProdThisLine;
                 }
-                
             }
+
+            Chart chart = SharedComponents.VisualInspection.PoziomOdpaduTab.chartWasteLevel;
 
             ChartArea ar = new ChartArea();
             ar.AxisX.LabelStyle.Interval = 1;
@@ -538,165 +489,221 @@ namespace KontrolaWizualnaRaport
             ar.AxisY.MinorGrid.Enabled = true;
             ar.AxisY2.MajorGrid.Enabled = false;
             ar.AxisY.LabelStyle.Format = "{0.00} %";
-            DataTable tempScrapTable = result.Clone();
 
             Series productionLevel = new Series();
-            productionLevel.Name = "productionLevel";
             productionLevel.ChartType = SeriesChartType.Column;
             productionLevel.Name = "Poziom produkcji [szt.]";
             productionLevel.YAxisType = AxisType.Secondary;
             productionLevel.Color = System.Drawing.Color.AliceBlue;
             productionLevel.BorderColor = System.Drawing.Color.Silver;
 
-            chartWasteLevel.Series.Clear();
-            chartWasteLevel.ChartAreas.Clear();
+            chart.Series.Clear();
+            chart.ChartAreas.Clear();
 
-            chartWasteLevel.ChartAreas.Add(ar);
-
-            foreach (var dateEntry in totalProduction)
+            chart.ChartAreas.Add(ar);
+            if (SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated.Checked)
             {
-                productionLevel.Points.AddXY(dateEntry.Key, dateEntry.Value);
-
-            }
-            chartWasteLevel.Series.Add(productionLevel);
-
-
-
-            double yMaxValue = 0;
-            foreach (var lineEntry in lineDateWaste)
-            {
-                string line = lineEntry.Key;
-
-                Color seriesColor = Color.Blue;
-                lineColors.TryGetValue(lineEntry.Key, out seriesColor);
-
                 Series ngSeries = new Series();
                 Series scrapSeries = new Series();
                 ngSeries.ChartType = SeriesChartType.Line;
                 ngSeries.BorderWidth = 3;
-                ngSeries.Name = line + " NG [%]";
-                ngSeries.Color = seriesColor;
+                ngSeries.Name = "Total NG [%]";
                 ngSeries.MarkerStyle = MarkerStyle.Circle;
                 ngSeries.MarkerSize = 10;
 
                 scrapSeries.ChartType = SeriesChartType.Line;
                 scrapSeries.BorderWidth = 3;
-                scrapSeries.Name = line + " SCRAP [%]";
-                scrapSeries.Color = seriesColor;
+                scrapSeries.Name = "Total SCRAP [%]";
                 scrapSeries.MarkerStyle = MarkerStyle.Square;
                 scrapSeries.MarkerSize = 10;
 
-                foreach (var frequencyEntry in lineEntry.Value)
+                foreach (var dateKey in filteredOrders["Total"].Reverse())
                 {
-
                     DataPoint ngPoint = new DataPoint();
-                    double ngY = (double)frequencyEntry.Value.ngCount / (double)frequencyEntry.Value.totalProdThisLine * 100;
-                    yMaxValue = Math.Max(yMaxValue, ngY);
-                    ngPoint.SetValueXY(frequencyEntry.Key, ngY);
-                    string ngtoolTip = MakeToolTip(frequencyEntry.Value.ngTooltip);
+                    double ngY = (double)dateKey.Value.Select(o => o.visualInspection.ngCount).Sum() / (double)dateKey.Value.Select(o => o.smt.totalManufacturedQty).Sum() * 100;
+
+                    ngPoint.SetValueXY(dateKey.Key, ngY);
+                    string[] toolTips = MakeToolTip(dateKey.Value);
+                    string ngtoolTip = toolTips[0];
                     ngPoint.ToolTip = ngtoolTip;
                     ngSeries.Points.Add(ngPoint);
 
                     DataPoint scrapPoint = new DataPoint();
-                    double scrapY = (double)frequencyEntry.Value.scrapCount / (double)frequencyEntry.Value.totalProdThisLine * 100;
-                    yMaxValue = Math.Max(yMaxValue, scrapY);
-                    scrapPoint.SetValueXY(frequencyEntry.Key, scrapY);
-                    string scraptoolTip = MakeToolTip(frequencyEntry.Value.scrapToolTip);
+                    double scrapY = (double)dateKey.Value.Select(o => o.visualInspection.scrapCount).Sum() / (double)dateKey.Value.Select(o => o.smt.totalManufacturedQty).Sum() * 100;
+                    scrapPoint.SetValueXY(dateKey.Key, scrapY);
+                    string scraptoolTip = toolTips[1];
                     scrapPoint.ToolTip = scraptoolTip;
                     scrapSeries.Points.Add(scrapPoint);
+
+                    productionLevel.Points.AddXY(dateKey.Key, dateKey.Value.Select(o => o.smt.totalManufacturedQty).Sum());
                 }
-
-                result.Rows.Add("NG:");
-                foreach (var frequencyEntry in lineEntry.Value)
+                chart.Series.Add(productionLevel);
+                chart.Series.Add(ngSeries);
+                chart.Series.Add(scrapSeries);
+            }
+            else
+            {
+                foreach (var dateKey in filteredOrders["Total"].Reverse())
                 {
-                    result.Rows.Add(frequencyEntry.Key, frequencyEntry.Value.totalProdThisLine, frequencyEntry.Value.ngCount, Math.Round((double)frequencyEntry.Value.ngCount / (double)frequencyEntry.Value.totalProdThisLine * 100, 2).ToString()+"%");
+                    productionLevel.Points.AddXY(dateKey.Key, dateKey.Value.Select(o => o.smt.totalManufacturedQty).Sum());
                 }
-                result.Rows.Add("SCRAP:");
-                foreach (var frequencyEntry in lineEntry.Value)
+                chart.Series.Add(productionLevel);
+
+                foreach (var lineEntry in filteredOrders)
                 {
-                    result.Rows.Add(frequencyEntry.Key, frequencyEntry.Value.totalProdThisLine, frequencyEntry.Value.scrapCount, Math.Round((double)frequencyEntry.Value.scrapCount / (double)frequencyEntry.Value.totalProdThisLine * 100, 2).ToString()+"%");
-                }
+                    if (lineEntry.Key == "Total") continue;
+                    Series ngSeries = new Series();
+                    Series scrapSeries = new Series();
+                    ngSeries.ChartType = SeriesChartType.Line;
+                    ngSeries.BorderWidth = 3;
+                    ngSeries.Name = $"{lineEntry.Key} NG [%]";
+                    ngSeries.MarkerStyle = MarkerStyle.Circle;
+                    ngSeries.MarkerSize = 10;
+                    ngSeries.Color = GlobalParameters.smtLinesColors[lineEntry.Key];
 
-                chartWasteLevel.Series.Add(ngSeries);
-                chartWasteLevel.Series.Add(scrapSeries);
-            }
+                    scrapSeries.ChartType = SeriesChartType.Line;
+                    scrapSeries.BorderWidth = 3;
+                    scrapSeries.Name = $"{lineEntry.Key} SCRAP [%]";
+                    scrapSeries.MarkerStyle = MarkerStyle.Square;
+                    scrapSeries.MarkerSize = 10;
+                    scrapSeries.Color = GlobalParameters.smtLinesColors[lineEntry.Key];
 
-            chartWasteLevel.Legends.Clear();
-            //chartWasteLevel.Legends[0].DockedToChartArea = chartWasteLevel.ChartAreas[0].Name;
-            //chartWasteLevel.Legends[0].Position.Auto = false;
-            //chartWasteLevel.Legends[0].Position = new ElementPosition(8, 0, 30, 10);
-            //chartWasteLevel.Legends[0].BackColor = System.Drawing.Color.Transparent;
-
-            if (yAxisMax>0)
-            {
-
-                chartWasteLevel.ChartAreas[0].AxisY.Maximum = yMaxValue * yAxisMax;
-            }
-
-            return result;
-        }
-
-        public static string MakeToolTip(Dictionary<string, Tuple<int, int>> inputDict)
-        {
-            string result = "";
-            List<Tuple<double, string>> list = new List<Tuple<double, string>>();
-            foreach (var modelEntry in inputDict)
-            {
-                if(modelEntry.Value.Item1>0)
-                {
-                    list.Add(new Tuple<double, string>(Math.Round((double)modelEntry.Value.Item1 / (double)modelEntry.Value.Item2*100,2), modelEntry.Value.Item1.ToString() + @"/" + modelEntry.Value.Item2.ToString() + " " + modelEntry.Key));
-                }
-            }
-
-            list = list.OrderByDescending(o => o.Item1).ToList();
-
-            foreach (var item in list)
-            {
-                result += item.Item1.ToString() + "% - " + item.Item2 + Environment.NewLine;
-            }
-            return result;
-        }
-
-        public static DataTable DrawWasteReasonsCHart(Chart ngChart, Chart scrapChart, List<WasteDataStructure> inputData, DateTime dateBegin, DateTime dateEnd, Dictionary<string, string> modelDictionary, string[] smtLines, bool customerLGI, List<excelOperations.order12NC> mstOrders)
-        {
-            DataTable result = new DataTable();
-            result.Columns.Add("Nazwa");
-            result.Columns.Add("Ilość");
-            List<string> mstOrderss = mstOrders.Select(o => o.order).ToList();
-            Dictionary<string, WastePerReasonStructure> wastePerReason = new Dictionary<string, WastePerReasonStructure>();
-
-            foreach (var wasteRecord in inputData)
-            {
-                if (wasteRecord.FixedDateTime.Date < dateBegin.Date || wasteRecord.FixedDateTime.Date > dateEnd.Date) continue;
-
-                if (customerLGI & mstOrderss.Contains(wasteRecord.NumerZlecenia)) continue;
-                if (!customerLGI & !mstOrderss.Contains(wasteRecord.NumerZlecenia)) continue;
-
-                if (!smtLines.Contains( wasteRecord.SmtLine) & customerLGI) continue;
-
-                //only once
-                if (wastePerReason.Count==0)
-                {
-                    foreach (var reasonKey in wasteRecord.WastePerReason)
+                    foreach (var dateKey in lineEntry.Value.Reverse())
                     {
-                        wastePerReason.Add(reasonKey.Key, new WastePerReasonStructure(new List<WasteDataStructure>(),0));
+                        DataPoint ngPoint = new DataPoint();
+                        double ngY = (double)dateKey.Value.Select(o => o.visualInspection.ngCount).Sum() / (double)dateKey.Value.Select(o => o.smt.totalManufacturedQty).Sum() * 100;
+
+                        ngPoint.SetValueXY(dateKey.Key, ngY);
+                        string[] toolTips = MakeToolTip(dateKey.Value);
+                        string ngtoolTip = toolTips[0];
+                        ngPoint.ToolTip = ngtoolTip;
+                        ngSeries.Points.Add(ngPoint);
+
+                        DataPoint scrapPoint = new DataPoint();
+                        double scrapY = (double)dateKey.Value.Select(o => o.visualInspection.scrapCount).Sum() / (double)dateKey.Value.Select(o => o.smt.totalManufacturedQty).Sum() * 100;
+                        scrapPoint.SetValueXY(dateKey.Value, scrapY);
+                        string scraptoolTip = toolTips[1];
+                        scrapPoint.ToolTip = scraptoolTip;
+                        scrapSeries.Points.Add(scrapPoint);
+                    }
+                    chart.Series.Add(ngSeries);
+                    chart.Series.Add(scrapSeries);
+                }
+
+                
+            }
+            if (SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxEnableZoom.Checked)
+            {
+                double maxY = 0;
+                foreach (Series ser in chart.Series)
+                {
+                    if (ser.Name == "Poziom produkcji [szt.]") continue;
+                    foreach (DataPoint pt in ser.Points)
+                    {
+                        if (pt.YValues.Max() > maxY)
+                        {
+                            maxY = pt.YValues.Max();
+                        }
+                    }
+                }
+                chart.ChartAreas[0].AxisY.Maximum = maxY * (100-SharedComponents.VisualInspection.PoziomOdpaduTab.vScrollBarZoomChart.Value)/100;
+            }
+                chart.Legends.Clear();
+        }
+
+        private static string[] MakeToolTip(List<MST.MES.OrderStructureByOrderNo.OneOrderData> value)
+        {
+            string[] result = new string[] { "", "" };
+            var ng = value.GroupBy(o => o.kitting.modelId).ToDictionary(x => x.Key, v => v.Select(o => o.visualInspection.ngCount).Sum());
+            var scrap = value.GroupBy(o => o.kitting.modelId).ToDictionary(x => x.Key, v => v.Select(o => o.visualInspection.scrapCount).Sum());
+            ng.ToList().Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
+            scrap.ToList().Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
+            foreach (var waste in ng)
+            {
+                result[0] += $"{waste.Key} - {waste.Value}szt." + Environment.NewLine;
+            }
+            foreach (var waste in scrap)
+            {
+                result[1] += $"{waste.Key} - {waste.Value}szt." + Environment.NewLine;
+            }
+            return result;
+        }
+
+        public static void DrawWasteReasonsCHart()
+        {
+            var filteredOrders = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
+            var selectedLines = SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines;
+
+            filteredOrders.Add("Total", new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
+            foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
+            {
+                foreach (var dateEntry in lineEntry.Value)
+                {
+                    foreach (var orderEntry in dateEntry.Value)
+                    {
+                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelLg.Checked)
+                        {
+                            if (orderEntry.kitting.odredGroup == "LGI") continue;
+                        }
+                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelMst.Checked)
+                        {
+                            if (orderEntry.kitting.odredGroup == "MST") continue;
+                        }
+                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated.Checked)
+                        {
+                            if (!orderEntry.smt.smtOrders.Select(o => o.smtLine).Intersect(selectedLines).Any()) continue;
+                        }
+
+                        if (!filteredOrders.ContainsKey(lineEntry.Key))
+                        {
+                            filteredOrders.Add(lineEntry.Key, new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
+                        }
+                        if (!filteredOrders[lineEntry.Key].ContainsKey(dateEntry.Key))
+                        {
+                            filteredOrders[lineEntry.Key].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                        }
+
+                        if (!filteredOrders["Total"].ContainsKey(dateEntry.Key))
+                        {
+                            filteredOrders["Total"].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                        }
+
+                        filteredOrders[lineEntry.Key][dateEntry.Key].Add(orderEntry);
+                        filteredOrders["Total"][dateEntry.Key].Add(orderEntry);
+                    }
+                }
+            }
+
+            var ngOrders = filteredOrders.SelectMany(o => o.Value).SelectMany(o => o.Value).Where(o => o.visualInspection.ngCount > 0 || o.visualInspection.scrapCount > 0);
+            
+            Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>> ngPerReason = new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>();
+            Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>> scrapPerReason = new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>();
+
+            foreach (var order in ngOrders)
+            {
+
+                foreach (var reason in order.visualInspection.allReasons)
+                {
+                    if (reason.Key.StartsWith("ng"))
+                    {
+                        if (!ngPerReason.ContainsKey(reason.Key)) ngPerReason.Add(reason.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                        ngPerReason[reason.Key].Add(order);
+                    }
+                    else
+                    {
+                        if (!scrapPerReason.ContainsKey(reason.Key)) scrapPerReason.Add(reason.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                        scrapPerReason[reason.Key].Add(order);
                     }
                 }
 
-                foreach (var reasonKey in wasteRecord.WastePerReason)
-                {
-                    if (wasteRecord.WastePerReason[reasonKey.Key] == 0) continue;
-
-                    wastePerReason[reasonKey.Key].Lots.Add(wasteRecord);
-                    wastePerReason[reasonKey.Key].Quantity += wasteRecord.WastePerReason[reasonKey.Key];
-                }
             }
 
-            wastePerReason = wastePerReason.OrderByDescending(o => o.Value.Quantity).ToDictionary(k => k.Key, o => o.Value);
-            foreach (var reasonEntry in wastePerReason)
-            {
-                reasonEntry.Value.Lots = reasonEntry.Value.Lots.OrderByDescending(q => q.WastePerReason[reasonEntry.Key]).ToList();
-            }
+            ngPerReason = ngPerReason.OrderByDescending(q => q.Value.Select(o => o.visualInspection.allReasons[q.Key]).Sum()).ToDictionary(k => k.Key, v => v.Value);
+            scrapPerReason = scrapPerReason.OrderByDescending(q => q.Value.Select(o => o.visualInspection.allReasons[q.Key]).Sum()).ToDictionary(k => k.Key, v => v.Value);
+            //////////////////////
+
+            Chart ngChart = SharedComponents.VisualInspection.PrzyczynyOdpaduTab.chartPrzyczynyOdpaduNg;
+            Chart scrapChart = SharedComponents.VisualInspection.PrzyczynyOdpaduTab.chartPrzyczynyOdpaduScrap;
 
             ngChart.Series.Clear();
             ngChart.ChartAreas.Clear();
@@ -710,7 +717,6 @@ namespace KontrolaWizualnaRaport
             Series scrapSeries = new Series();
             scrapSeries.ChartType = SeriesChartType.Column;
 
-
             ChartArea ngArea = new ChartArea();
             ngArea.AxisX.LabelStyle.Interval = 1;
             ngArea.AxisX.IsLabelAutoFit = true;
@@ -722,87 +728,29 @@ namespace KontrolaWizualnaRaport
             scrapArea.AxisX.LabelAutoFitStyle = LabelAutoFitStyles.LabelsAngleStep30;
             scrapArea.AxisX.LabelStyle.Font = new System.Drawing.Font(scrapArea.AxisX.LabelStyle.Font.Name, 10f);
 
-            DataTable scrapTempTable = result.Clone();
-            result.Rows.Add("NG", "");
-            foreach (var wasteReason in wastePerReason)
+            foreach (var ngKey in ngPerReason)
             {
-                if (wasteReason.Key.Substring(0, 2) == "ng")
-                {
-                    Dictionary<string, int> labelDictNg = new Dictionary<string, int>();
-                    Dictionary<string, int> labelDictTotal = new Dictionary<string, int>();
-                    foreach (var lot in wasteReason.Value.Lots)
-                    {
-                        if (!labelDictNg.ContainsKey(lot.Model))
-                        {
-                            labelDictNg.Add(lot.Model, 0);
-                            labelDictTotal.Add(lot.Model, 0);
-                        }
-
-                        labelDictNg[lot.Model] += lot.WastePerReason[wasteReason.Key];
-                        labelDictTotal[lot.Model] += lot.GoodQty ;
-                    }
-
-                    labelDictNg=labelDictNg.OrderByDescending(q => q.Value).ToDictionary(k => k.Key, q => q.Value);
-
-                    string label =  string.Join(Environment.NewLine, labelDictNg.Select(m=>(m.Key+"-"+m.Value+"/"+ labelDictTotal[m.Key])).ToArray());
-
-
-                    DataPoint ngPoint = new DataPoint();
-                    ngPoint.SetValueXY(wasteReason.Key, wasteReason.Value.Quantity);
-                    ngPoint.ToolTip = label;
-                    ngPoint.Tag = wastePerReason[wasteReason.Key];
-                    ngSeries.Points.Add(ngPoint);
-
-                    result.Rows.Add(wasteReason.Key, wasteReason.Value.Quantity);
-                }
-
-                else if (wasteReason.Key.Substring(0, 2) == "sc")
-                {
-                    Dictionary<string, int> labelDictNg = new Dictionary<string, int>();
-                    Dictionary<string, int> labelDictTotal = new Dictionary<string, int>();
-                    foreach (var lot in wasteReason.Value.Lots)
-                    {
-                        if (!labelDictNg.ContainsKey(lot.Model))
-                        {
-                            labelDictNg.Add(lot.Model, 0);
-                            labelDictTotal.Add(lot.Model, 0);
-                        }
-
-                        labelDictNg[lot.Model] += lot.WastePerReason[wasteReason.Key];
-                        labelDictTotal[lot.Model] += lot.GoodQty;
-                    }
-
-                    labelDictNg = labelDictNg.OrderByDescending(q => q.Value).ToDictionary(k => k.Key, q => q.Value);
-
-                    string label = string.Join(Environment.NewLine, labelDictNg.Select(m => (m.Key + "-" + m.Value + "/" + labelDictTotal[m.Key])).ToArray());
-
-                    DataPoint scrapPoint = new DataPoint();
-                    scrapPoint.SetValueXY(wasteReason.Key, wasteReason.Value.Quantity);
-                    scrapPoint.ToolTip = label;
-                    scrapPoint.Tag = wastePerReason[wasteReason.Key];
-                    scrapSeries.Points.Add(scrapPoint);
-                    scrapTempTable.Rows.Add(wasteReason.Key, wasteReason.Value.Quantity);
-                }
+                var ngQty = ngKey.Value.Select(o => o.visualInspection.allReasons[ngKey.Key]).Sum();
+                DataPoint ngPt = new DataPoint();
+                ngPt.SetValueXY(ngKey.Key, ngQty);
+                ngPt.Tag = ngKey.Value;
+                ngSeries.Points.Add(ngPt);
             }
 
-            result.Rows.Add();
-            result.Rows.Add("SCRAP:", "");
-            foreach (DataRow row in scrapTempTable.Rows)
+            foreach (var scrapKey in scrapPerReason)
             {
-                result.Rows.Add(row[0].ToString(), row[1].ToString());
+                var scrapQty = scrapKey.Value.Select(o => o.visualInspection.allReasons[scrapKey.Key]).Sum();
+                DataPoint scrapPt = new DataPoint();
+                scrapPt.SetValueXY(scrapKey.Key, scrapQty);
+                scrapPt.Tag = scrapKey.Value;
+                scrapSeries.Points.Add(scrapPt);
             }
 
-            ngChart.Series.Add(ngSeries);
             ngChart.ChartAreas.Add(ngArea);
-            ngChart.Legends.Clear();
-
-            scrapChart.Series.Add(scrapSeries);
             scrapChart.ChartAreas.Add(scrapArea);
-            scrapChart.Legends.Clear();
+            ngChart.Series.Add(ngSeries);
+            scrapChart.Series.Add(scrapSeries);
 
-
-
-            return result;
         }
 
         public static void DrawWasteLevelPerReason(Chart targetChart, string targetModel, List<WasteDataStructure> inputData, string[] reasons, Dictionary<string, string> modelDictionary, string[] smtLines)

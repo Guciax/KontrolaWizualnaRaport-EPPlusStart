@@ -22,7 +22,8 @@ namespace KontrolaWizualnaRaport
             }
 
             // Return the week of our adjusted day
-            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            int week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            return (time.Year-2000)*100+week;
         }
 
         public static DateTime FirstDateOfWeekISO8601(int year, int weekOfYear)
@@ -54,7 +55,8 @@ namespace KontrolaWizualnaRaport
 
         public static int productionMonthNumber(int weekNumber, int year)
         {
-            DateTime monday = FirstDateOfWeekISO8601(year, weekNumber);
+            int week = weekNumber - (year - 2000) * 100;
+            DateTime monday = FirstDateOfWeekISO8601(year, week);
             List<int> months = new List<int>();
 
             for (int i = 0; i < 5; i++)
@@ -64,6 +66,22 @@ namespace KontrolaWizualnaRaport
             }
 
             return (int)Math.Round(months.Average(), 0);
+        }
+
+        public static string productionMonthName(int weekNumber, int year)
+        {
+            int week = weekNumber - (year - 2000) * 100;
+            DateTime monday = FirstDateOfWeekISO8601(year, week);
+            List<int> months = new List<int>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                DateTime nextDay = monday.AddDays(i);
+                months.Add(nextDay.Month);
+            }
+            DateTime date = new DateTime(year, (int)Math.Round(months.Average(), 0), 1);
+
+            return  date.ToString("MMM");
         }
 
         public class dateShiftNo

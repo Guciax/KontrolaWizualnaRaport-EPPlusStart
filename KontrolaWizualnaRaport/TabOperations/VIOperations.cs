@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KontrolaWizualnaRaport.CentalDataStorage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,7 +21,6 @@ namespace KontrolaWizualnaRaport
         public static List<excelOperations.order12NC> mstOrders = new List<excelOperations.order12NC>();
         public static DataTable masterVITable = new DataTable();
         public static Dictionary<string, string> lotToSmtLine = new Dictionary<string, string>();
-
 
         public static void ReLoadViTab(
             ref Dictionary<string, string> lotModelDictionary,
@@ -60,429 +60,212 @@ namespace KontrolaWizualnaRaport
             bool chartDaily
             )
         {
-            mstOrders = excelOperations.loadExcel(ref lotModelDictionary);
-
-            if (masterVITable.Rows.Count < 1)
-            {
-                masterVITable = SQLoperations.DownloadVisInspFromSQL(120);
-            }
-
-            //textBox1.Text += "SQL table: " + masterVITable.Rows.Count + " rows" + Environment.NewLine;
-            comboBoxViOperatorsCapa.Items.AddRange(CreateOperatorsList(masterVITable).ToArray());
-            lotToSmtLine = SQLoperations.lotToSmtLine(80); // to remove???
-            inspectionData = ViDataLoader.LoadData(masterVITable, lotToSmtLine, lotModelDictionary);
-
-            string[] smtLines = lotToSmtLine.Select(l => l.Value).Distinct().OrderBy(o => o).ToArray();
-
-            foreach (var smtLine in smtLines)
-            {
-                checkedListBoxViWasteLevelSmtLines.Items.Add(smtLine, true);
-
-                checkedListBoxViReasons.Items.Add(smtLine, true);
-                cBListViReasonAnalysesSmtLines.Items.Add(smtLine, true);
-                cBListViModelAnalysesSmtLines.Items.Add(smtLine, true);
-            }
+            DataContainer.VisualInspection.finishedOrders = DataContainer.sqlDataByOrder.Where(o => o.Value.smt.ledsUsed > 0).ToDictionary(x=>x.Key, v=>v.Value);
             
-            comboBoxModel.Items.AddRange(lotModelDictionary.Select(m => m.Value.Replace("LLFML", "")).Distinct().OrderBy(o => o).ToArray());
+            
+            //comboBoxViOperatorsCapa.Items.AddRange(CreateOperatorsList(masterVITable).ToArray());
+            //lotToSmtLine = SQLoperations.lotToSmtLine(80); // to remove???
+            //inspectionData = ViDataLoader.LoadData(masterVITable, lotToSmtLine, lotModelDictionary);
 
-            dateTimePickerPrzyczynyOdpaduOd.Value = DateTime.Now.AddDays(-30);
-            dateTimePickerWasteLevelBegin.Value = DateTime.Now.AddDays(-30);
-            comboBoxViOperatorsCapa.SelectedIndex = comboBoxViOperatorsCapa.Items.IndexOf("Wszyscy");
+            //string[] smtLines = lotToSmtLine.Select(l => l.Value).Distinct().OrderBy(o => o).ToArray();
 
-            dataGridViewDuplikaty.DataSource = SzukajDuplikatow(inspectionData);
-            dgvTools.ColumnsAutoSize(dataGridViewDuplikaty, DataGridViewAutoSizeColumnMode.AllCells);
-            dataGridViewDuplikaty.Sort(dataGridViewDuplikaty.Columns[0], ListSortDirection.Descending);
-            dgvTools.ColumnsAutoSize(dataGridViewDuplikaty, DataGridViewAutoSizeColumnMode.AllCells);
+            //foreach (var smtLine in smtLines)
+            //{
+            //    checkedListBoxViWasteLevelSmtLines.Items.Add(smtLine, true);
 
-            dataGridViewPomylkiIlosc.DataSource = PomylkiIlosci(lotToOrderedQty, inspectionData);
-            dgvTools.ColumnsAutoSize(dataGridViewPomylkiIlosc, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
+            //    checkedListBoxViReasons.Items.Add(smtLine, true);
+            //    cBListViReasonAnalysesSmtLines.Items.Add(smtLine, true);
+            //    cBListViModelAnalysesSmtLines.Items.Add(smtLine, true);
+            //}
+            
+            //comboBoxModel.Items.AddRange(lotModelDictionary.Select(m => m.Value.Replace("LLFML", "")).Distinct().OrderBy(o => o).ToArray());
 
-            dataGridViewPowyzej50.DataSource = MoreThan50(numericUpDownMoreThan50Scrap, numericUpDownMoreThan50Ng, lotModelDictionary, inspectionData);
-            dgvTools.ColumnsAutoSize(dataGridViewPowyzej50, DataGridViewAutoSizeColumnMode.AllCells);
-            dataGridViewPowyzej50.Sort(dataGridViewPowyzej50.Columns["Ile"], ListSortDirection.Descending);
+            //dateTimePickerPrzyczynyOdpaduOd.Value = DateTime.Now.AddDays(-30);
+            //dateTimePickerWasteLevelBegin.Value = DateTime.Now.AddDays(-30);
+            //comboBoxViOperatorsCapa.SelectedIndex = comboBoxViOperatorsCapa.Items.IndexOf("Wszyscy");
+
+            //dataGridViewDuplikaty.DataSource = SzukajDuplikatow(inspectionData);
+            //dgvTools.ColumnsAutoSize(dataGridViewDuplikaty, DataGridViewAutoSizeColumnMode.AllCells);
+            //dataGridViewDuplikaty.Sort(dataGridViewDuplikaty.Columns[0], ListSortDirection.Descending);
+            //dgvTools.ColumnsAutoSize(dataGridViewDuplikaty, DataGridViewAutoSizeColumnMode.AllCells);
+
+            //dataGridViewPomylkiIlosc.DataSource = PomylkiIlosci(lotToOrderedQty, inspectionData);
+            //dgvTools.ColumnsAutoSize(dataGridViewPomylkiIlosc, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
+
+            //dataGridViewPowyzej50.DataSource = MoreThan50(numericUpDownMoreThan50Scrap, numericUpDownMoreThan50Ng, lotModelDictionary, inspectionData);
+            //dgvTools.ColumnsAutoSize(dataGridViewPowyzej50, DataGridViewAutoSizeColumnMode.AllCells);
+            //dataGridViewPowyzej50.Sort(dataGridViewPowyzej50.Columns["Ile"], ListSortDirection.Descending);
 
 
-            HashSet<string> wasteReasonList = new HashSet<string>();
-            foreach (var wasteReason in inspectionData)
+            //HashSet<string> wasteReasonList = new HashSet<string>();
+            //foreach (var wasteReason in inspectionData)
+            //{
+            //    foreach (var r in wasteReason.WastePerReason)
+            //    {
+            //        wasteReasonList.Add(r.Key.Replace("ng", "").Replace("scrap", ""));
+            //    }
+            //    break;
+            //}
+
+            //cBListViReasonList.Items.AddRange(wasteReasonList.ToArray());
+
+
+
+            //comboBoxViModelAnalFamily.Items.AddRange(modelFamilyList(inspectionData, lotModelDictionary));
+            //comboBoxViModelAnalModel.Items.AddRange(uniqueModelsList(inspectionData, lotModelDictionary));
+
+            //dataGridViewBledyNrZlec.DataSource = UnknownOrderNumberTable(lotModelDictionary,  inspectionData);
+
+            //VIOperations.ngRatePerOperator(inspectionData, dateTimePickerViOperatorEfiiciencyStart.Value, dateTimePickerViOperatorEfiiciencyEnd.Value, dataGridViewViOperatorsTotal);
+
+            //SMTOperations.autoSizeGridColumns(dataGridViewViOperatorsTotal);
+
+            //dataGridViewMstOrders.DataSource = VIOperations.checkMstViIfDone(mstOrders, inspectionData);
+
+            //Rework.FillOutGridDailyProdReport(dataGridViewReworkDailyReport, dataGridViewReworkByOperator, SQLoperations.GetLedRework());
+            //RefreshReworkChart(inspectionData, chartServiceVsNg, chartDaily, dataGridViewServiceVsNg);
+
+            //FillOutGridLatestLots(gridLatestLots, inspectionData);
+        }
+
+        
+
+        public static void RefreshViWasteLevelChart()
+        {
+            DataContainer.VisualInspection.finishedOrders = DataContainer.sqlDataByOrder.Where(o => o.Value.smt.ledsUsed > 0).ToDictionary(k=>k.Key, v=>v.Value);
+            // group by date Key
+            var grouppedByLineThenDate = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
+            foreach (var smtLine in GlobalParameters.allLinesByHand)
             {
-                foreach (var r in wasteReason.WastePerReason)
-                {
-                    wasteReasonList.Add(r.Key.Replace("ng", "").Replace("scrap", ""));
-                }
-                break;
+                grouppedByLineThenDate.Add(smtLine, new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
             }
 
-            cBListViReasonList.Items.AddRange(wasteReasonList.ToArray());
+            grouppedByLineThenDate.Add("Total", new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
 
+            foreach (var orderEntry in DataContainer.VisualInspection.finishedOrders)
+            {
+                DateTime orderDate = orderEntry.Value.kitting.endDate;
+                string dateKey = "";
+                if (SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonDaily.Checked)
+                {
+                    dateKey = orderDate.ToString("dd-MMM");
+                }else if (SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonWeekly.Checked)
+                {
+                    dateKey = dateTools.GetIso8601WeekOfYear(orderDate).ToString();
+                }
+                else
+                {
+                    dateKey = orderDate.ToString("MMM").ToUpper();
+                }
+                string lineKey = orderEntry.Value.smt.smtLinesInvolved.First();
 
-
-            comboBoxViModelAnalFamily.Items.AddRange(modelFamilyList(inspectionData, lotModelDictionary));
-            comboBoxViModelAnalModel.Items.AddRange(uniqueModelsList(inspectionData, lotModelDictionary));
-
-            dataGridViewBledyNrZlec.DataSource = UnknownOrderNumberTable(lotModelDictionary,  inspectionData);
-
-            VIOperations.ngRatePerOperator(inspectionData, dateTimePickerViOperatorEfiiciencyStart.Value, dateTimePickerViOperatorEfiiciencyEnd.Value, dataGridViewViOperatorsTotal);
-
-            SMTOperations.autoSizeGridColumns(dataGridViewViOperatorsTotal);
-
-            dataGridViewMstOrders.DataSource = VIOperations.checkMstViIfDone(mstOrders, inspectionData);
-
-            Rework.FillOutGridDailyProdReport(dataGridViewReworkDailyReport, dataGridViewReworkByOperator, SQLoperations.GetLedRework());
-            RefreshReworkChart(inspectionData, chartServiceVsNg, chartDaily, dataGridViewServiceVsNg);
-
-            FillOutGridLatestLots(gridLatestLots, inspectionData);
+                foreach (var lineEntry in grouppedByLineThenDate)
+                {
+                    if (!lineEntry.Value.ContainsKey(dateKey))
+                    {
+                        lineEntry.Value.Add(dateKey, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                    }
+                }
+                
+                grouppedByLineThenDate[lineKey][dateKey].Add(orderEntry.Value);
+                grouppedByLineThenDate["Total"][dateKey].Add(orderEntry.Value);
+            }
+            DataContainer.VisualInspection.wasteReasonsByLineThenDateKey = grouppedByLineThenDate;
+            Charting.DrawWasteLevel();
+            FilloutWasteLevelGrid();
         }
+
+        public static void FilloutWasteLevelGrid()
+        {
+            DataGridView grid = SharedComponents.VisualInspection.PoziomOdpaduTab.dataGridViewWasteLevel;
+            grid.Rows.Clear();
+            grid.Rows.Add("Data", "Prod.", "NG", "NG%");
+            foreach (DataGridViewCell cell in grid.Rows[0].Cells)
+            {
+                cell.Style.BackColor = Color.Red;
+                cell.Style.ForeColor = Color.White;
+            }
+
+            Dictionary<string, double> ngPerDateKey = new Dictionary<string, double>();
+            Dictionary<string, double> scrapPerDateKey = new Dictionary<string, double>();
+            Dictionary<string, double> prodPerDateKey = new Dictionary<string, double>();
+
+            //foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
+            {
+                foreach (var dateEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey["Total"])
+                {
+
+                    //var ngRepaired = dateEntry.Value.SelectMany(o => o.visualInspection.ngScrapList).Where(ng => ng.reworkOK == true).Count();
+                    //double ngCount = dateEntry.Value.Select(o => o.visualInspection.ngCount).Sum();
+                    //double totalProduction = dateEntry.Value.Select(o => o.smt.totalManufacturedQty).Sum();
+                    //double scrapCount = dateEntry.Value.Select(o => o.visualInspection.scrapCount).Sum();
+                    double ngCount = 0;
+                    double totalProduction = 0;
+                    double scrapCount = 0;
+
+                    foreach (var order in dateEntry.Value)
+                    {
+                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelLg.Checked)
+                        {
+                            if (order.kitting.odredGroup == "LG") continue;
+                        }
+                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelMst.Checked)
+                        {
+                            if (order.kitting.odredGroup == "MST") continue;
+                        }
+                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated.Checked)
+                        {
+                            if (!order.smt.smtLinesInvolved.Intersect(SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines).Any()) continue;
+                        }
+
+                        ngCount += order.visualInspection.ngCount;
+                        totalProduction += order.smt.totalManufacturedQty;
+                        scrapCount += order.visualInspection.scrapCount;
+                    }
+
+                    if (!ngPerDateKey.ContainsKey(dateEntry.Key)) ngPerDateKey.Add(dateEntry.Key, 0);
+                    if (!scrapPerDateKey.ContainsKey(dateEntry.Key)) scrapPerDateKey.Add(dateEntry.Key, 0);
+                    if (!prodPerDateKey.ContainsKey(dateEntry.Key)) prodPerDateKey.Add(dateEntry.Key, 0);
+
+                    ngPerDateKey[dateEntry.Key] += ngCount;
+                    scrapPerDateKey[dateEntry.Key] += scrapCount;
+                    prodPerDateKey[dateEntry.Key] += totalProduction;
+                }
+            }
+
+            foreach (var ng in ngPerDateKey)
+            {
+                grid.Rows.Add(ng.Key, prodPerDateKey[ng.Key], ngPerDateKey[ng.Key], Math.Round(ngPerDateKey[ng.Key] / prodPerDateKey[ng.Key] * 100, 2) + "%");
+            }
+
+            grid.Rows.Add();
+            grid.Rows.Add("Data", "Prod.", "SCR", "SCR%");
+
+            
+            foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count-1].Cells)
+            {
+                cell.Style.BackColor = Color.Black;
+                cell.Style.ForeColor = Color.White;
+            }
+
+            foreach (var scr in scrapPerDateKey)
+            {
+                grid.Rows.Add(scr.Key, prodPerDateKey[scr.Key], scrapPerDateKey[scr.Key], Math.Round(scrapPerDateKey[scr.Key] / prodPerDateKey[scr.Key] * 100, 2) + "%");
+            }
+
+
+            dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
+        }
+
 
         public static void RefreshReworkChart(List<WasteDataStructure> inspectionData, Chart chartServiceVsNg, bool chartDaily, DataGridView dataGridViewServiceVsNg)
         {
             Rework.FillOutServiceVsNgGridAndDrawChart(inspectionData, chartServiceVsNg, chartDaily, dataGridViewServiceVsNg);
         }
 
-        public static string chartFrequency(GroupBox grBox)
-        {
-            foreach (var control in grBox.Controls)
-            {
-                if (control is RadioButton)
-                {
-                    RadioButton rBtn = (RadioButton)control;
-                    if (rBtn.Checked)
-                    {
-                        return rBtn.Tag.ToString();
-                    }
-                }
-            }
-
-            return "noRadio";
-        }
-
-        public static DataTable UnknownOrderNumberTable(Dictionary<string, string> lotModelDictionary, List<WasteDataStructure> inspectionData)
-        {
-            DataTable result = new DataTable();
-            result.Columns.Add("Data");
-            result.Columns.Add("Operator");
-            result.Columns.Add("Nr zlecenia");
-
-            foreach (var record in inspectionData)
-            {
-                string model = "";
-                if (lotModelDictionary.TryGetValue(record.NumerZlecenia, out model)) continue;
-                result.Rows.Add(record.RealDateTime, record.Oper, record.NumerZlecenia);
-            }
-            return result;
-        }
-
-        public static  DataTable LotWrongNumber(List<WasteDataStructure> inputData, Dictionary<string, string> lotModelDictionary) 
-        {
-            DataTable result = new DataTable();
-            result.Columns.Add("LOT");
-            result.Columns.Add("Operator");
-            result.Columns.Add("Data");
-
-            foreach (var record in inputData)
-            {
-                if (lotModelDictionary.ContainsKey(record.NumerZlecenia)) continue;
-                result.Rows.Add(record.NumerZlecenia, record.Oper, record.RealDateTime);
-            }
-            return result;
-        }
-
-        public static string[] uniqueModelsList(List<WasteDataStructure> inputData, Dictionary<string, string> lotModelDictionary)
-        {
-            HashSet<string> uniquemodels = new HashSet<string>();
-            foreach (var item in inputData)
-            {
-                if (lotModelDictionary.ContainsKey(item.NumerZlecenia))
-                    uniquemodels.Add(lotModelDictionary[item.NumerZlecenia]);
-            }
-
-            return uniquemodels.OrderBy(o => o).ToArray();
-        }
-
-        public static string[] modelFamilyList(List<WasteDataStructure> inputData, Dictionary<string, string> lotModelDictionary)
-        {
-            HashSet<string> uniquemodels = new HashSet<string>();
-            foreach (var item in inputData)
-            {
-                if (lotModelDictionary.ContainsKey(item.NumerZlecenia))
-                    uniquemodels.Add(lotModelDictionary[item.NumerZlecenia].Substring(0, 6));
-            }
-
-            return uniquemodels.ToList().OrderBy(o => o).ToArray();
-        }
-
-        public static DataTable MoreThan50(NumericUpDown numericUpDownMoreThan50Scrap, NumericUpDown numericUpDownMoreThan50Ng, Dictionary<string, string> lotModelDictionary, List<WasteDataStructure> inspectionData)
-        {
-            DataTable result = new DataTable();
-            result.Columns.Add("Data");
-            result.Columns.Add("Operator");
-            result.Columns.Add("Model");
-            result.Columns.Add("LOT");
-            result.Columns.Add("Typ");
-            result.Columns.Add("Ile", typeof(int));
-            decimal ngThreshold = numericUpDownMoreThan50Ng.Value;
-            decimal scrapThreshold = numericUpDownMoreThan50Scrap.Value;
-
-            foreach (var record in inspectionData)
-            {
-                if (lotModelDictionary.ContainsKey(record.NumerZlecenia))
-                {
-                    if (record.AllNg >= ngThreshold)
-                    {
-                        result.Rows.Add(record.RealDateTime, record.Oper, lotModelDictionary[record.NumerZlecenia], record.NumerZlecenia, "NG", record.AllNg);
-                    }
-                    if (record.AllScrap >= scrapThreshold)
-                    {
-                        result.Rows.Add(record.RealDateTime, record.Oper, lotModelDictionary[record.NumerZlecenia], record.NumerZlecenia, "SCRAP", record.AllScrap);
-                    }
-                }
-            }
-            return result;
-        }
-
-        public static  DataTable PomylkiIlosci(Dictionary<string, string> lotToOrderedQty, List<WasteDataStructure> inspectionData)
-        {
-            DataTable result = new DataTable();
-            result.Columns.Add("Numer zlecenia");
-            result.Columns.Add("Operator");
-            result.Columns.Add("Data");
-
-            result.Columns.Add("NG");
-            result.Columns.Add("Wszystkie");
-            result.Columns.Add("Zlecone");
-            result.Columns.Add("Różnica");
-
-            foreach (var record in inspectionData)
-            {
-
-                string orderedQty = "";
-                lotToOrderedQty.TryGetValue(record.NumerZlecenia, out orderedQty);
-                int orderedQtyInt = 0;
-                int allQty = 0;
-                int.TryParse(orderedQty, out orderedQtyInt);
-                int.TryParse(record.AllQty.ToString(), out allQty);
 
 
-
-                if ((allQty > 0 & orderedQtyInt > 0) & (allQty > orderedQtyInt))
-                {
-                    result.Rows.Add(record.NumerZlecenia, record.Oper, record.RealDateTime, record.AllNg, record.AllQty, orderedQty, (allQty - orderedQtyInt).ToString());
-                }
-
-            }
-
-
-            return result;
-        }
-
-        public static  DataTable SzukajDuplikatow(List<WasteDataStructure> inspectionData)
-        {
-            DataTable result = new DataTable();
-            result.Columns.Add("Numer zlecenia");
-            result.Columns.Add("Operator");
-            result.Columns.Add("Data");
-            result.Columns.Add("Dobrych");
-            result.Columns.Add("NG");
-
-            var duplicateKeys = inspectionData.GroupBy(x => x.NumerZlecenia)
-                        .Where(group => group.Count() > 1)
-                        .Select(group => group.Key).ToList();
-
-            foreach (var record in inspectionData)
-            {
-                if (duplicateKeys.Contains(record.NumerZlecenia))
-                {
-                    result.Rows.Add(record.NumerZlecenia, record.Oper, record.RealDateTime, record.GoodQty, (record.AllNg).ToString());
-                }
-            }
-
-            return result;
-        }
-
-        public static List<string> CreateOperatorsList(DataTable inputTable)
-        {
-            HashSet<string> result = new HashSet<string>();
-            result.Add("Wszyscy");
-            foreach (DataRow row in inputTable.Rows)
-            {
-                result.Add(row["Operator"].ToString());
-            }
-
-            return result.OrderBy(o => o).ToList();
-        }
-
-        public static Dictionary<string, string>[] lotArray(DataTable lotTable)
-        {
-            Dictionary<string, string> result1 = new Dictionary<string, string>();
-            Dictionary<string, string> result2 = new Dictionary<string, string>();
-            Dictionary<string, string> result3 = new Dictionary<string, string>();
-            Dictionary<string, string> result4 = new Dictionary<string, string>();
-
-            foreach (DataRow row in lotTable.Rows)
-            {
-                if (result1.ContainsKey(row["Nr_Zlecenia_Produkcyjnego"].ToString())) continue;
-                result1.Add(row["Nr_Zlecenia_Produkcyjnego"].ToString(), row["NC12_wyrobu"].ToString().Replace("LLFML", ""));
-                result2.Add(row["Nr_Zlecenia_Produkcyjnego"].ToString(), row["Ilosc_wyrobu_zlecona"].ToString());
-                result3.Add(row["Nr_Zlecenia_Produkcyjnego"].ToString(), row["LiniaProdukcyjna"].ToString());
-            }
-            return new Dictionary<string, string>[] { result1, result2, result3, result4 };
-        }
-
-        public static void ngRatePerOperator(List<WasteDataStructure> inspectionData, DateTime startDate, DateTime endDate, DataGridView gridNgRate)
-        {
-            gridNgRate.Columns.Clear();
-            
-            Dictionary<string, List<WasteDataStructure>> inspectionDataPerOperator = inspectionData.GroupBy(op => op.Oper).ToDictionary(op => op.Key, op => op.ToList());
-
-            //result.Columns.Add("Operator");
-            //result.Columns.Add("Sprawdzone", typeof (double));
-            //result.Columns.Add("Śr.na zmianę", typeof (double));
-            //result.Columns.Add("h/zmiane", typeof (double));
-            //result.Columns.Add("śr/h", typeof (double));
-            //result.Columns.Add("NG", typeof(double));
-            //result.Columns.Add("NG%", typeof(double));
-            //result.Columns.Add("Scrap", typeof(double));
-            //result.Columns.Add("Scrap%", typeof(double));
-
-            gridNgRate.Columns.Add("Operator", "Operator");
-            gridNgRate.Columns.Add("Sprawdzone", "Sprawdzone");
-            gridNgRate.Columns.Add("Śr.na zmianę", "Śr.na zmianę");
-            gridNgRate.Columns.Add("h/zmiane","h/zmiane");
-            gridNgRate.Columns.Add("na godz.", "na godz.");
-            gridNgRate.Columns.Add("NG", "NG");
-            gridNgRate.Columns.Add("NG%", "NG%");
-            gridNgRate.Columns.Add("Scrap", "Scrap");
-            gridNgRate.Columns.Add("Scrap%", "Scrap % ");
-
-           
-            foreach (var operatorEntry in inspectionDataPerOperator)
-            {
-                //double totalInspected = operatorEntry.Value.Select(t => t.AllQty).Sum();
-                //double totalNg = operatorEntry.Value.Select(t => t.AllNg).Sum();
-                //double ngPercent = Math.Round(totalNg / totalInspected * 100, 2);
-                //double totalScrap = operatorEntry.Value.Select(t => t.AllScrap).Sum();
-                //double scrapPercent = Math.Round(totalScrap / totalInspected * 100, 2);
-                Dictionary<DateTime, Dictionary<string, List<WasteDataStructure>>> operatorperDay = new Dictionary<DateTime, Dictionary<string, List<WasteDataStructure>>>();
-
-                double totalInspected = 0;
-                double totalNg = 0;
-                double totalScrap = 0;
-                HashSet<DateTime> daysOfWork = new HashSet<DateTime>();
-                
-                
-                foreach (var wasteEntry in operatorEntry.Value)
-                {
-                    if (wasteEntry.FixedDateTime.Date < startDate.Date || wasteEntry.FixedDateTime.Date > endDate.Date) continue;
-                    totalInspected += wasteEntry.AllQty;
-                    totalNg += wasteEntry.AllNg;
-                    totalScrap += wasteEntry.AllScrap;
-                    daysOfWork.Add(wasteEntry.FixedDateTime.Date);
-
-                    if(!operatorperDay.ContainsKey(wasteEntry.FixedDateTime.Date))
-                    {
-                        operatorperDay.Add(wasteEntry.FixedDateTime.Date, new Dictionary<string, List<WasteDataStructure>>());
-                    }
-                    if (!operatorperDay[wasteEntry.FixedDateTime.Date].ContainsKey(wasteEntry.Model))
-                    {
-                        operatorperDay[wasteEntry.FixedDateTime.Date].Add(wasteEntry.Model, new List<WasteDataStructure>());
-                    }
-                    operatorperDay[wasteEntry.FixedDateTime.Date][wasteEntry.Model].Add(wasteEntry);
-                }
-                if (totalInspected == 0) continue;
-
-                double ngPercent = Math.Round(totalNg / totalInspected * 100, 2);
-                double scrapPercent = Math.Round(totalScrap / totalInspected * 100, 2);
-                double avg = Math.Round(totalInspected / (double)daysOfWork.Count,1);
-                string[] operators12h = Load12hOperatorsList();
-
-                DataTable tagTable = new DataTable();
-                tagTable.Columns.Add("Data");
-                tagTable.Columns.Add("Model");
-                tagTable.Columns.Add("Ilość");
-                tagTable.Columns.Add("NG");
-                tagTable.Columns.Add("Scrap");
-
-                foreach (var dateEntry in operatorperDay)
-                {
-                    double dayTotal = 0;
-                    double dayTotalNg = 0;
-                    double dayTotalScrap = 0;
-                    foreach (var modelEnry in dateEntry.Value)
-                    {
-                        double total = modelEnry.Value.Select(q => q.AllQty).Sum();
-                        double totNg = modelEnry.Value.Select(q => q.AllNg).Sum();
-                        double totScrap = modelEnry.Value.Select(q => q.AllScrap).Sum();
-                        dayTotal += total;
-                        dayTotalNg += totNg;
-                        dayTotalScrap += totScrap;
-
-                        tagTable.Rows.Add("", modelEnry.Key, total, totNg, totScrap);
-                    }
-
-                    tagTable.Rows.Add(dateEntry.Key.ToString("dd-MM-yyyy"), "Total", dayTotal, dayTotalNg, dayTotalScrap);
-                }
-                double h = 8;
-                System.Drawing.Color rowClr = System.Drawing.Color.White;
-                if (operators12h.Length > 0)
-                    if (operators12h.Contains(operatorEntry.Key))
-                    {
-                        h = 12;
-                        rowClr = System.Drawing.Color.LightBlue;
-                    }
-
-                
-                gridNgRate.Rows.Add(operatorEntry.Key, totalInspected, avg, h, Math.Round(avg/h,0), totalNg, ngPercent, totalScrap, scrapPercent);
-                gridNgRate.Rows[gridNgRate.Rows.Count - 1].Cells["Operator"].Tag = tagTable;
-
-                if (h == 12)
-                {
-                    foreach (DataGridViewCell cell in gridNgRate.Rows[gridNgRate.Rows.Count - 1].Cells)
-                    {
-                        cell.Style.BackColor = rowClr;
-                    }
-                }
-            }
-
-            SMTOperations.autoSizeGridColumns(gridNgRate);
-            //grid.DataSource = result;
-           // grid.Columns.Add(hoursCol);
-
-        }
-
-        public static DataTable checkMstViIfDone(List<excelOperations.order12NC> mstOrders, List<WasteDataStructure> inspectionData)
-        {
-            DataTable result = new DataTable();
-            result.Columns.Add("12NC");
-            result.Columns.Add("NrZlecenia");
-            result.Columns.Add("Ilość");
-            result.Columns.Add("Data przesunięcia");
-            result.Columns.Add("Kontrola wzrokowa");
-            List<string> ordersInspected = inspectionData.Select(o => o.NumerZlecenia).ToList();
-            
-
-            foreach (var mstOrder in mstOrders)
-            {
-                string date = "";
-                string inspectionStatus = "";
-                if (ordersInspected.Contains(mstOrder.order))
-                    {
-                    inspectionStatus = "OK";
-                }
-                else
-                {
-                    inspectionStatus = "NIE";
-
-                }
-                //Debug.WriteLine(mstOrder.endDate);
-                if (mstOrder.endDate > new DateTime(2017, 01, 01))
-                {
-                    date = mstOrder.endDate.ToString("dd-MM-yyyy");
-                }
-                
-
-                result.Rows.Add(mstOrder.nc12, mstOrder.order, mstOrder.quantity, date, inspectionStatus);
-            }
-            return result;
-        }
+        
 
         public static string[] Load12hOperatorsList()
         {

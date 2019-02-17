@@ -35,31 +35,46 @@ namespace KontrolaWizualnaRaport
         }
 
         public static SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary = new SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>>();
+        public static SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortedTableByDayAndShift = new SortedDictionary<DateTime, SortedDictionary<int, List<OrderStructureByOrderNo.SmtRecords>>>();
 
-        public static void ReLoadSmtTab()
+        private static void ReloadProductionReportsTab()
         {
-            SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortedTableByDayAndShift = SMTOperations.sortTableByDayAndShift();
-            SMTOperations.shiftSummaryDataSource(sortedTableByDayAndShift, SharedComponents.Smt.productionReportTab.dataGridViewSmtProduction);
+            Stopwatch st = new Stopwatch();
+            st.Start();
+            sortedTableByDayAndShift = SMTOperations.sortListByDayAndShift();
+            Debug.WriteLine($"SMT sortedByDayAndShift done in {st.ElapsedMilliseconds}");
+            st.Reset();
+            SMTOperations.FillOutProductionReportGrid(sortedTableByDayAndShift, SharedComponents.Smt.productionReportTab.dataGridViewSmtProduction);
+            Debug.WriteLine($"SMT wykonGrid filled in {st.ElapsedMilliseconds}");
+            st.Stop();
+        }
 
-            //smtModelLineQuantity = SMTOperations.smtQtyPerModelPerLine(smtRecords, radioButtonSmtShowAllModels.Checked, mesModels);
-            SharedComponents.Smt.ModelAnalysis.comboBoxSmtModels.Items.AddRange(GlobalParameters.allLinesByHand);
-            
-            //ChangeOverTools.BuildSmtChangeOverGrid(ChangeOverTools.BuildDateShiftLineDictionary(smtRecords), dataGridViewChangeOvers);
-            
-            ledWasteDictionary = LedWasteDictionary(sortedTableByDayAndShift, DataContainer.mesModels);
-            SMTOperations.FillOutDailyLedWaste(ledWasteDictionary,SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedDropped);
+        private static void ReloadLedWasteTab()
+        {
+            ledWasteDictionary = CreateLedWasteDictionary(sortedTableByDayAndShift, DataContainer.mesModels);
+            SMTOperations.FillOutDailyLedWaste(ledWasteDictionary, SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedDropped);
             SMTOperations.FillOutLedWasteByModel(ledWasteDictionary, SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedWasteByModel, SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Text);
             SMTOperations.FillOutLedWasteTotalWeekly(ledWasteDictionary, SharedComponents.Smt.LedWasteTab.dataGridViewSmtWasteTotal);
 
             Charting.DrawLedWasteChart(ledWasteDictionary);
 
             SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteModels.Items.Add("Wszystkie");
-            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteModels.Items.AddRange(DataContainer.sqlDataByProcess.Smt.Select(o=>o.Value.modelId).Distinct().ToArray());
+            SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteModels.Items.AddRange(DataContainer.sqlDataByProcess.Smt.Select(o => o.Value.modelId).Distinct().ToArray());
             SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Text = "Wszystkie";
             SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Items.AddRange(GlobalParameters.smtLines);
             SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Items.Insert(0, "Wszystkie");
             SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteLine.Text = "Wszystkie";
             SMTOperations.FillOutLedWasteTotalByLine(ledWasteDictionary, SharedComponents.Smt.LedWasteTab.dataGridViewSmtLedWasteTotalPerLine, SharedComponents.Smt.LedWasteTab.comboBoxSmtLedWasteModels.Text);
+        }
+
+        public static void ReLoadSmtTab()
+        {
+            ReloadProductionReportsTab();
+            ReloadLedWasteTab();
+
+            //smtModelLineQuantity = SMTOperations.smtQtyPerModelPerLine(smtRecords, radioButtonSmtShowAllModels.Checked, mesModels);
+            SharedComponents.Smt.ModelAnalysis.comboBoxSmtModels.Items.AddRange(GlobalParameters.allLinesByHand);
+            //ChangeOverTools.BuildSmtChangeOverGrid(ChangeOverTools.BuildDateShiftLineDictionary(smtRecords), dataGridViewChangeOvers);
             FillOutStencilTable(SharedComponents.Smt.StencilsTab.dataGridViewSmtStencilUsage, DataContainer.mesModels);
         }
 
@@ -294,11 +309,12 @@ namespace KontrolaWizualnaRaport
                 }
             }
             autoSizeGridColumns(grid);
+            if (grid.Rows.Count>0)
             grid.FirstDisplayedCell = grid.Rows[grid.Rows.Count - 1].Cells[0];
             grid.ResumeLayout();
         }
 
-        public static SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> LedWasteDictionary(SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> inputSmtData, Dictionary<string, ModelInfo.ModelSpecification> mesModels)
+        public static SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> CreateLedWasteDictionary(SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> inputSmtData, Dictionary<string, ModelInfo.ModelSpecification> mesModels)
         {
             SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> result = new SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>>();
 
@@ -317,6 +333,14 @@ namespace KontrolaWizualnaRaport
                     foreach (var smtRecord in shiftEntry.Value)
                     {
                         //107577:2OPF00050A:0|107658:2OPF00050A:0#107580:2OPF00050A:27|107657:2OPF00050A:23
+                        if (!SharedComponents.Smt.cbSmtLg.Checked)
+                        {
+                            if (smtRecord.orderInfo.clientGroup == "LGI") continue;
+                        }
+                        if (!SharedComponents.Smt.cbSmtMst.Checked)
+                        {
+                            if (smtRecord.orderInfo.clientGroup == "MST") continue;
+                        }
 
                         string lot = smtRecord.orderInfo.orderNo;
                         string model = smtRecord.orderInfo.modelId;
@@ -342,10 +366,11 @@ namespace KontrolaWizualnaRaport
         }
 
 
-        public static SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortTableByDayAndShift()
+        public static SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortListByDayAndShift()
         {
             SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> result = new SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>>();
-            var dictByDate = DataContainer.sqlDataByProcess.Smt.SelectMany(o => o.Value.smtOrders).Where(o => o.ledsUsed > 0).GroupBy(x => dateTools.whatDayShiftIsit(x.smtEndDate).fixedDate).ToDictionary(x => x.Key, x => x.ToList());
+            
+            var dictByDate = DataContainer.sqlDataByProcess.Smt.SelectMany(o => o.Value.smtOrders).GroupBy(x => dateTools.whatDayShiftIsit(x.smtEndDate).fixedDate.Date).ToDictionary(x => x.Key, x => x.ToList());
 
             foreach (var dayEntry in dictByDate)
             {
@@ -356,9 +381,21 @@ namespace KontrolaWizualnaRaport
             return result;
         }
 
-        public static void shiftSummaryDataSource(SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sourceDic, DataGridView grid)
+        public static void FillOutProductionReportGrid(SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sourceDic, DataGridView grid)
         {
             DataTable result = new DataTable();
+
+            DataTable tagTableTemplate = new DataTable();
+            tagTableTemplate.Columns.Add("Start");
+            tagTableTemplate.Columns.Add("Koniec");
+            tagTableTemplate.Columns.Add("Linia");
+            tagTableTemplate.Columns.Add("Operator");
+            tagTableTemplate.Columns.Add("Zlecenie");
+            tagTableTemplate.Columns.Add("Model");
+            tagTableTemplate.Columns.Add("Ilość");
+            tagTableTemplate.Columns.Add("NG");
+            tagTableTemplate.Columns.Add("Stencil");
+             
             grid.Rows.Clear();
             grid.Columns.Clear();
             grid.Columns.Add("Mies", "Mies");
@@ -395,29 +432,41 @@ namespace KontrolaWizualnaRaport
 
                 foreach (var shiftEntry in dayEntry.Value)
                 {
-                    SortedDictionary<string, int> qtyPerLine = new SortedDictionary<string, int>(shiftEntry.Value.GroupBy(l => l.smtLine).ToDictionary(k => k.Key, l => l.ToList().Select(o => o.manufacturedQty).Sum()));
+                    var filteredList = shiftEntry.Value;
+                    if (!SharedComponents.Smt.cbSmtLg.Checked)
+                    {
+                        filteredList.RemoveAll(o => o.orderInfo.clientGroup == "LGI");
+                    }
+                    if (!SharedComponents.Smt.cbSmtMst.Checked)
+                    {
+                        filteredList.RemoveAll(o => o.orderInfo.clientGroup == "MST");
+                    }
+                    SortedDictionary<string, int> qtyPerLine;
+                    if (SharedComponents.Smt.productionReportTab.rbModelsCount.Checked)
+                    {
+                        qtyPerLine = new SortedDictionary<string, int>(filteredList.GroupBy(l => l.smtLine).ToDictionary(k => k.Key, l => l.ToList().Select(o => o.manufacturedQty).Sum()));
+                    }
+                    else
+                    {
+                        qtyPerLine =  new SortedDictionary<string, int>(filteredList.GroupBy(l => l.smtLine).ToDictionary(k => k.Key, l => l.ToList().Select(o => SmtRecordToMontedComponentsCount(o)).Sum()));
+                    }
+                     
                     foreach (var smtLine in GlobalParameters.allLinesByHand)
                     {
                         if (!qtyPerLine.ContainsKey(smtLine)) { qtyPerLine.Add(smtLine, 0); }
                     }
 
-                    Dictionary<string, DataTable> detailPerLine = new Dictionary<string, DataTable>();
 
-                    grid.Rows.Add(dateTools.productionMonthNumber(week, dayEntry.Key.Year), week, dayEntry.Key.ToShortDateString(), shiftEntry.Key.ToString(),  qtyPerLine["SMT2"], qtyPerLine["SMT3"], qtyPerLine["SMT4"], qtyPerLine["SMT5"], qtyPerLine["SMT6"], qtyPerLine["SMT7"], qtyPerLine["SMT8"]);
+                    grid.Rows.Add(dateTools.productionMonthName(week, dayEntry.Key.Year).ToUpper(), week, dayEntry.Key.ToShortDateString(), shiftEntry.Key.ToString(),  qtyPerLine["SMT2"], qtyPerLine["SMT3"], qtyPerLine["SMT4"], qtyPerLine["SMT5"], qtyPerLine["SMT6"], qtyPerLine["SMT7"], qtyPerLine["SMT8"]);
+                    Dictionary<string, DataTable> tagTablesPerLine = new Dictionary<string, DataTable>();
+                    foreach (var smtLine in GlobalParameters.allLinesByHand)
+                    {
+                        tagTablesPerLine.Add(smtLine, tagTableTemplate.Clone());
+                    }
 
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("Start");
-                    dt.Columns.Add("Koniec");
-                    dt.Columns.Add("Linia");
-                    dt.Columns.Add("Operator");
-                    dt.Columns.Add("Zlecenie");
-                    dt.Columns.Add("Model");
-                    dt.Columns.Add("Ilość");
-                    dt.Columns.Add("NG");
-                    dt.Columns.Add("Stencil");
                     foreach (var smtRecord in shiftEntry.Value)
                     {
-                        dt.Rows.Add(smtRecord.smtStartDate, smtRecord.smtEndDate, smtRecord.smtLine, smtRecord.operatorSmt, smtRecord.orderInfo.orderNo, smtRecord.orderInfo.modelId, smtRecord.manufacturedQty, 0, smtRecord.stencilId);
+                        tagTablesPerLine[smtRecord.smtLine].Rows.Add(smtRecord.smtStartDate, smtRecord.smtEndDate, smtRecord.smtLine, smtRecord.operatorSmt, smtRecord.orderInfo.orderNo, smtRecord.orderInfo.modelId, smtRecord.manufacturedQty, 0, smtRecord.stencilId);
                     }
 
 
@@ -425,9 +474,9 @@ namespace KontrolaWizualnaRaport
                     {
                         cell.Style.BackColor = rowColor;
 
-                        if (detailPerLine.TryGetValue(cell.OwningColumn.Name, out dt))
+                        if (tagTablesPerLine.TryGetValue(cell.OwningColumn.Name, out tagTableTemplate))
                         {
-                            cell.Tag = dt;
+                            cell.Tag = tagTableTemplate;
                         }
                     }
                 }
@@ -435,10 +484,17 @@ namespace KontrolaWizualnaRaport
             }
 
             autoSizeGridColumns(grid);
+
             if (grid.Rows.Count > 0)
             {
                 grid.FirstDisplayedScrollingRowIndex = grid.RowCount - 1;
             }
+        }
+
+        private static int SmtRecordToMontedComponentsCount(MST.MES.OrderStructureByOrderNo.SmtRecords record)
+        {
+            var mesModel = DataContainer.mesModels[record.orderInfo.modelId];
+            return record.manufacturedQty * mesModel.connectorCountPerModel + record.manufacturedQty * mesModel.ledCountPerModel + record.manufacturedQty * mesModel.resistorCountPerModel;
         }
 
         public static void autoSizeGridColumns(DataGridView grid)

@@ -58,6 +58,7 @@
     <Compile Include="CentalDataStorage\DataMerge.cs" />
     <Compile Include="CentalDataStorage\GlobalParameters.cs" />
     <Compile Include="CentalDataStorage\SharedComponents.cs" />
+    <Compile Include="CustomChecedListBoxStuff.cs" />
     <Compile Include="DgvImageButtonCell.cs" />
     <Compile Include="dgvTools.cs" />
     <Compile Include="Forms\ShowImagesForm.cs">
@@ -113,11 +114,11 @@
     </Compile>
     <Compile Include="TabOperations\Rework.cs" />
     <Compile Include="TabOperations\SMTOperations.cs" />
-    <Compile Include="Forms\SmtShiftDetails.cs">
+    <Compile Include="Forms\ShowDetailsTable.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SmtShiftDetails.Designer.cs">
-      <DependentUpon>SmtShiftDetails.cs</DependentUpon>
+    <Compile Include="Forms\ShowDetailsTable.Designer.cs">
+      <DependentUpon>ShowDetailsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="SQLoperations.cs" />
     <Compile Include="TabOperations\TestOperations.cs" />
@@ -157,8 +158,8 @@
     <EmbeddedResource Include="Forms\SimpleDetailsDT.resx">
       <DependentUpon>SimpleDetailsDT.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SmtShiftDetails.resx">
-      <DependentUpon>SmtShiftDetails.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ShowDetailsTable.resx">
+      <DependentUpon>ShowDetailsTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\WasteReasonDetails.resx">
       <DependentUpon>WasteReasonDetails.cs</DependentUpon>

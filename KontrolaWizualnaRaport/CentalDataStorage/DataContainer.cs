@@ -15,5 +15,10 @@ namespace KontrolaWizualnaRaport
         public static Dictionary<string, string> nc12ToName = new Dictionary<string, string>();
         public static Dictionary<string, ModelInfo.ModelSpecification> mesModels = new Dictionary<string, ModelInfo.ModelSpecification>();
 
+        public class VisualInspection
+        {
+            public static Dictionary<string, MST.MES.OrderStructureByOrderNo.OneOrderData> finishedOrders;
+            public static Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>> wasteReasonsByLineThenDateKey;
+        }
     }
 }

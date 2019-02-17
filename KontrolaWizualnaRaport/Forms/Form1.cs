@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using static KontrolaWizualnaRaport.CustomChecedListBoxStuff;
 using static KontrolaWizualnaRaport.SMTOperations;
 
 namespace KontrolaWizualnaRaport
@@ -28,16 +29,18 @@ namespace KontrolaWizualnaRaport
         {
             InitializeComponent();
             sqloperations = new SQLoperations(this, textBox1);
-            checkedListBoxViWasteLevelSmtLines.MouseEnter += checkedListBox1_MouseEnter;
-            checkedListBoxViWasteLevelSmtLines.MouseLeave += checkedListBox1_MouseLeave;
-            checkedListBoxViWasteLevelSmtLines.Size = new Size(120, 20);
-            checkedListBoxViWasteLevelSmtLines.Parent = tabPage3;
-            checkedListBoxViWasteLevelSmtLines.BringToFront();
-            checkedListBoxViWasteLevelSmtLines.Location = new Point(965, 13);
-            checkedListBoxViWasteLevelSmtLines.ForeColor = Color.Black;
-            checkedListBoxViWasteLevelSmtLines.CheckOnClick = true;
-            checkedListBoxViWasteLevelSmtLines.SelectedIndexChanged += checkedListBoxViWasteLevel_SelectedIndexChanged;
+            ActionOnCheck reDrawWasteLevel = new ActionOnCheck(Charting.DrawWasteLevel);
+            ActionOnCheck reDrawWasteReasons = new ActionOnCheck(Charting.DrawWasteReasonsCHart);
+
+            CustomChecedListBoxStuff.SetUpListBox(tabPagePoziomOdpadu, checkedListBoxViWasteLevelSmtLines, reDrawWasteLevel);
+            CustomChecedListBoxStuff.SetUpListBox(tabPagePrzyczynyOdpadu, checkedListBoxViWasteReasonsSmtLines, reDrawWasteReasons);
+
+            
         }
+
+
+
+        public delegate void ActionOnCheck();
 
         DataTable masterVITable = new DataTable();
         Dictionary<string, string> lotModelDictionary = new Dictionary<string, string>();
@@ -53,11 +56,16 @@ namespace KontrolaWizualnaRaport
         Dictionary<DateTime, SortedDictionary<int, Dictionary<string, DataTable>>> boxingData = new Dictionary<DateTime, SortedDictionary<int, Dictionary<string, DataTable>>>();
         Dictionary<string, MesModels> mesModels = new Dictionary<string, MesModels>();
         //SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary = new SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>>();
+
         CustomCheckedListBox checkedListBoxViWasteLevelSmtLines = new CustomCheckedListBox();
+        CustomCheckedListBox checkedListBoxViWasteReasonsSmtLines = new CustomCheckedListBox();
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dateTimePickerSmtStart.Value = DateTime.Now.Date.AddDays(-60);
+            dateTimePickerSmtStart.Value = DateTime.Now.Date.AddDays(-90);
+            SharedComponents.Smt.cbSmtLg = cbSmtLg;
+            SharedComponents.Smt.cbSmtMst = cbSmtMst;
             SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt1);
             SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt2);
             SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt3);
@@ -68,11 +76,11 @@ namespace KontrolaWizualnaRaport
             SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt8);
             SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxTotal);
 
-            DataContainer.sqlDataByProcess.Kitting = MST.MES.SqlDataReaderMethods.Kitting.GetOrdersInfoByDataReader(30);
+            DataContainer.sqlDataByProcess.Kitting = MST.MES.SqlDataReaderMethods.Kitting.GetOrdersInfoByDataReader(90);
             Debug.WriteLine("testID");
             DataContainer.sqlDataByProcess.Smt = MST.MES.SqlDataReaderMethods.SMT.GetOrdersDateToDate(dateTimePickerSmtStart.Value.Date, dateTimePickerTestEnd.Value.Date);
             Debug.WriteLine("smt");
-            DataContainer.sqlDataByProcess.VisualInspection = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecords(30);
+            DataContainer.sqlDataByProcess.VisualInspection = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecords(90);
             Debug.WriteLine("vi");
             //sqlDataByProcess.Test = MST.MES.SqlDataReaderMethods.LedTest.GetTestRecords(10, testerIdToName);
             Debug.WriteLine("test");
@@ -99,27 +107,40 @@ namespace KontrolaWizualnaRaport
             SharedComponents.Smt.LedWasteTab.dataGridViewSmtWasteTotal = dataGridViewSmtWasteTotal;
             SharedComponents.Smt.ModelAnalysis.comboBoxSmtModels = comboBoxSmtModels;
             SharedComponents.Smt.productionReportTab.dataGridViewSmtProduction = dataGridViewSmtProduction;
+            SharedComponents.Smt.productionReportTab.rbModelsCount = rbModelsCount;
             SharedComponents.Smt.smtStartDate = dateTimePickerSmtStart;
             SharedComponents.Smt.smtEndDate = dateTimePickerSmtEnd;
             SharedComponents.Smt.StencilsTab.dataGridViewSmtStencilUsage = dataGridViewSmtStencilUsage;
 
-            //---------------OLD
+            SharedComponents.VisualInspection.PoziomOdpaduTab.chartWasteLevel = chartWasteLevel;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelLg = checkBoxViLevelLg;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelMst = checkBoxViLevelMst;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines = checkedListBoxViWasteLevelSmtLines;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.dataGridViewWasteLevel = dataGridViewWasteLevel;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin = dateTimePickerWasteLevelBegin;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelEnd = dateTimePickerWasteLevelEnd;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonDaily = radioButtonDaily;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated = radioButtonViLinesCumulated;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonWeekly = radioButtonWeekly;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxEnableZoom = checkBoxEnableZoom;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.vScrollBarZoomChart = vScrollBarZoomChart;
+            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.chartPrzyczynyOdpaduNg = chartPrzyczynyOdpaduNg;
+            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.chartPrzyczynyOdpaduScrap = chartPrzyczynyOdpaduScrap;
+            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkBoxViReasonsLg = checkBoxViReasonsLg;
+            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkBoxViReasonsMst = checkBoxViReasonsMst;
+            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkedListBoxViWasteReasonsSmtLines = checkedListBoxViWasteReasonsSmtLines;
+            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dataGridViewNgScrapReasons = dataGridViewNgScrapReasons;
+            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduOd = dateTimePickerPrzyczynyOdpaduOd;
+            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerWasteLevelBegin = dateTimePickerWasteLevelBegin;
             
-            smtRecords = SQLoperations.GetSmtRecordsFromDb(dateTimePickerSmtStart.Value, dateTimePickerSmtEnd.Value);
-            lotTable = SQLoperations.lotTable();
-            Dictionary<string, string>[] lotList = VIOperations.lotArray(lotTable);
-            lotModelDictionary = lotList[0];
-            lotToOrderedQty = lotList[1];
-            planModelDictionary = lotList[3];
-            mesModels = SQLoperations.GetMesModels();
+            //---------------OLD
+
             dateTimePickerViOperatorEfiiciencyStart.Value = DateTime.Now.AddDays(-7);
             cBListViReasonAnalysesSmtLines.Parent = tabPage6;
             cBListViReasonList.Parent = tabPage6;
             cBListViReasonAnalysesSmtLines.BringToFront();
             cBListViReasonList.BringToFront();
 
-            checkedListBoxViReasons.Parent = tabPage2;
-            checkedListBoxViReasons.BringToFront();
 
             cBListViModelAnalysesSmtLines.Parent = tabPage7;
             cBListViModelAnalysesSmtLines.BringToFront();
@@ -200,40 +221,8 @@ namespace KontrolaWizualnaRaport
                     {
                         if (inspectionData.Count < 1)
                         {
-                            VIOperations.ReLoadViTab(
-                                ref lotModelDictionary,
-                                ref inspectionData,
-                                ref mstOrders,
-                                comboBoxViOperatorsCapa,
-                                comboBoxModel,
-                                comboBoxViModelAnalFamily,
-                                comboBoxViModelAnalModel,
-
-                                checkedListBoxViWasteLevelSmtLines,
-                                checkedListBoxViReasons,
-                                cBListViReasonAnalysesSmtLines,
-                                cBListViModelAnalysesSmtLines,
-                                cBListViReasonList,
-
-                                dateTimePickerPrzyczynyOdpaduOd,
-                                dateTimePickerWasteLevelBegin,
-                                dataGridViewDuplikaty,
-                                dataGridViewPomylkiIlosc,
-                                dataGridViewPowyzej50,
-                                dataGridViewBledyNrZlec,
-                                dataGridViewMstOrders,
-                                dataGridViewViOperatorsTotal,
-                                dataGridViewLatestLots,
-                                dateTimePickerViOperatorEfiiciencyStart,
-                                dateTimePickerViOperatorEfiiciencyEnd,
-                                numericUpDownMoreThan50Scrap,
-                                numericUpDownMoreThan50Ng,
-                                lotToOrderedQty, dataGridViewReworkDailyReport, 
-                                dataGridViewReworkByOperator,
-                                dgvServiceVsNg,
-                                chartServiceVsNg,
-                                radioButtonReworkVsNgDaily.Checked
-                                );
+                            VIOperations.RefreshViWasteLevelChart();
+                            Charting.DrawWasteReasonsCHart();
                         }
                         break;
                     }
@@ -283,7 +272,7 @@ namespace KontrolaWizualnaRaport
         private void Form1_Resize(object sender, EventArgs e)
         {
             //tab przyczyny odpadu
-            chartPrzyczynyOdpaduScrap.Height = tabPage2.Height / 2;
+            chartPrzyczynyOdpaduScrap.Height = tabPagePrzyczynyOdpadu.Height / 2;
 
             //tab analiza po przyczynie
             chartReasonLevel.Height = tabPage6.Height / 2;
@@ -317,7 +306,7 @@ namespace KontrolaWizualnaRaport
                     dataGridViewEffciency.Height = panel1.Height - comboBoxViOperatorsCapa.Height;
                     break;
                 case 1://tab przyczyny odpadu
-                    chartPrzyczynyOdpaduScrap.Height = tabPage2.Height / 2;
+                    chartPrzyczynyOdpaduScrap.Height = tabPagePrzyczynyOdpadu.Height / 2;
                     break;
                 case 5://tab analiza po przyczynie
                     chartReasonLevel.Height = tabPage6.Height / 2;
@@ -333,30 +322,26 @@ namespace KontrolaWizualnaRaport
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataGridViewEffciency.DataSource = Charting.DrawCapaChart(chartEfficiency, inspectionData, comboBoxViOperatorsCapa.Text, lotModelDictionary, radioButtonCapaLGI.Checked, mstOrders);
-            foreach (DataGridViewColumn col in dataGridViewEffciency.Columns)
-            {
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            }
+            
         }
 
         private void dateTimePickerPrzyczynyOdpaduOd_ValueChanged(object sender, EventArgs e)
         {
-            dataGridViewNgScrapReasons.DataSource = Charting.DrawWasteReasonsCHart(chartPrzyczynyOdpaduNg, chartPrzyczynyOdpaduScrap, inspectionData, dateTimePickerPrzyczynyOdpaduOd.Value, dateTimePickerPrzyczynyOdpaduDo.Value, lotModelDictionary, checkedListBoxViReasons.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(),  radioButtonReasonsLg.Checked, mstOrders);
+            Charting.DrawWasteReasonsCHart();
             dataGridViewNgScrapReasons.Columns[0].Width = 150;
             dataGridViewNgScrapReasons.Columns[1].Width = 35;
         }
 
         private void dateTimePickerPrzyczynyOdpaduDo_ValueChanged(object sender, EventArgs e)
         {
-            dataGridViewNgScrapReasons.DataSource = Charting.DrawWasteReasonsCHart(chartPrzyczynyOdpaduNg, chartPrzyczynyOdpaduScrap, inspectionData, dateTimePickerPrzyczynyOdpaduOd.Value, dateTimePickerPrzyczynyOdpaduDo.Value, lotModelDictionary, checkedListBoxViReasons.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(),  radioButtonReasonsLg.Checked, mstOrders);
+            Charting.DrawWasteReasonsCHart();
             dataGridViewNgScrapReasons.Columns[0].Width = 150;
             dataGridViewNgScrapReasons.Columns[1].Width = 35;
         }
 
         private void dateTimePickerWasteLevelBegin_ValueChanged(object sender, EventArgs e)
         {
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked,  radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, vScrollBar1.Value/vScrollBar1.Maximum);
+            Charting.DrawWasteLevel();
             dgvTools.ColumnsAutoSize(dataGridViewWasteLevel, DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader);
         }
 
@@ -476,12 +461,12 @@ namespace KontrolaWizualnaRaport
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            dataGridViewPowyzej50.DataSource = VIOperations.MoreThan50(numericUpDownMoreThan50Scrap, numericUpDownMoreThan50Ng, lotModelDictionary, inspectionData);
+            
         }
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
         {
-            dataGridViewPowyzej50.DataSource = VIOperations.MoreThan50(numericUpDownMoreThan50Scrap, numericUpDownMoreThan50Ng, lotModelDictionary, inspectionData);
+            
         }
 
         
@@ -574,11 +559,7 @@ namespace KontrolaWizualnaRaport
 
         private void radioButtonCapaLGI_CheckedChanged(object sender, EventArgs e)
         {
-            dataGridViewEffciency.DataSource = Charting.DrawCapaChart(chartEfficiency, inspectionData, comboBoxViOperatorsCapa.Text, lotModelDictionary, radioButtonCapaLGI.Checked, mstOrders);
-            foreach (DataGridViewColumn col in dataGridViewEffciency.Columns)
-            {
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            }
+            
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -725,87 +706,44 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            showJobDetails(e, dataGridViewSmtProduction, "SMT");
+            if (e.ColumnIndex > -1 & e.RowIndex > -1)
+            {
+                string description = "";
+                DataGridViewCell cell = dataGridViewSmtProduction.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                if (cell.Tag != null)
+                {
+                    description = $"{dataGridViewSmtProduction.Rows[e.RowIndex].Cells["Dzien"].Value.ToString()} Linia {dataGridViewSmtProduction.Columns[e.ColumnIndex].Name}";
+                }
+                else
+                {
+                    description = $"{dataGridViewSmtProduction.Columns[e.ColumnIndex].Name}: {dataGridViewSmtProduction.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()}";
+                }
+                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewSmtProduction, cell);
+                if (tagTable != null)
+                {
+                    ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, "SMT", "Model", "Linia", "Ilość");
+                    detailsForm.ShowDialog();
+                }
+            }
         }
 
         private void dataGridViewKitting_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            showJobDetails(e, dataGridViewKitting, "Kitting");
-        }
-
-        private void showJobDetails(DataGridViewCellEventArgs e, DataGridView grid, string station)
-        {
-            if (e.RowIndex > -1 & e.ColumnIndex > -1)
+            if (e.ColumnIndex>-1 & e.RowIndex > -1)
             {
-                string description = "";
-                string[] dateColumns = new string[] { "mies", "tydz", "dzien", "zmiana", "data" };
-                DataGridViewCell cell = grid.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                if (cell.Value != null)
+                DataGridViewCell cell = dataGridViewKitting.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewKitting, cell);
+                if (tagTable != null)
                 {
-                    if (cell.Value.ToString() != "0")
-                    {
-                        if (!dateColumns.Contains(cell.OwningColumn.HeaderText.ToLower()))
-                        {
-                            DataTable dt = (DataTable)cell.Tag;
-                            if (dt.Columns.Contains("NC12_wyrobu"))
-                                dt.Columns["NC12_wyrobu"].ColumnName = "model";
-                            if (dt.Columns.Contains("Ilosc_wyrobu_zlecona"))
-                                dt.Columns["Ilosc_wyrobu_zlecona"].ColumnName = "Ilosc";
-                            if (dt.Columns.Contains("IloscWykonana"))
-                                dt.Columns["IloscWykonana"].ColumnName = "Ilosc";
-
-
-                            if (cell.OwningColumn.Name.StartsWith("SMT"))
-                            {
-                                description = cell.OwningColumn.Name + " " + dataGridViewSmtProduction.Rows[e.RowIndex].Cells[0].Value.ToString() + " Zm." + dataGridViewSmtProduction.Rows[e.RowIndex].Cells[1].Value.ToString();
-                            }
-                            else
-                            {
-                                description = station + " " + grid.Rows[e.RowIndex].Cells[0].Value.ToString() + " Zm." + grid.Rows[e.RowIndex].Cells[1].Value.ToString();
-                            }
-                            SmtShiftDetails detailsForm = new SmtShiftDetails(dt, description);
-                            detailsForm.Show();
-                        }
-                        else
-                        {
-                            DataGridViewCell[] dayCells = dgvTools.GetCellsForSameKeyValue(cell, grid);
-                            Dictionary<string, double> quantityPerModel = new Dictionary<string, double>();
-                            DataTable combinedTable = new DataTable();
-                            foreach (var c in dayCells)
-                            {
-                                DataTable table = (DataTable)c.Tag;
-                                if (table.Columns.Contains("NC12_wyrobu"))
-                                    table.Columns["NC12_wyrobu"].ColumnName = "model";
-                                if (table.Columns.Contains("Ilosc_wyrobu_zlecona"))
-                                    table.Columns["Ilosc_wyrobu_zlecona"].ColumnName = "Ilosc";
-                                if (table.Columns.Contains("IloscWykonana"))
-                                    table.Columns["IloscWykonana"].ColumnName = "Ilosc";
-                                if (combinedTable.Columns.Count == 0)
-                                {
-                                    combinedTable = table.Clone();
-                                }
-
-                                foreach (DataRow row in table.Rows)
-                                {
-                                    combinedTable.Rows.Add(row.ItemArray);
-                                }
-                                description = cell.OwningColumn.HeaderText + " " + cell.Value.ToString();
-                            }
-
-
-
-
-                            SmtShiftDetails detailsForm = new SmtShiftDetails(combinedTable, description);
-                            detailsForm.Show();
-                        }
-                    }
+                    ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, "Kitting", "", "", "");
+                    detailsForm.ShowDialog();
                 }
             }
         }
 
         private void dataGridViewSplitting_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            showJobDetails(e, dataGridViewSplitting, "Splitting");
+            
         }
 
         private void dataGridViewKitting_SelectionChanged(object sender, EventArgs e)
@@ -825,7 +763,16 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridViewTest_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            showJobDetails(e, dataGridViewTestProdReport, "TEST");
+            if (e.ColumnIndex > -1 & e.RowIndex > -1)
+            {
+                DataGridViewCell cell = dataGridViewTestProdReport.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewTestProdReport, cell);
+                if (tagTable != null)
+                {
+                    ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, "Kitting", "", "", "");
+                    detailsForm.ShowDialog();
+                }
+            }
         }
 
         private void dataGridViewTest_SelectionChanged(object sender, EventArgs e)
@@ -835,7 +782,16 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridViewBoxing_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            showJobDetails(e, dataGridViewBoxing, "BOXING");
+            if (e.ColumnIndex > -1 & e.RowIndex > -1)
+            {
+                DataGridViewCell cell = dataGridViewBoxing.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewBoxing, cell);
+                if (tagTable != null)
+                {
+                    ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, "Kitting", "", "", "");
+                    detailsForm.ShowDialog();
+                }
+            }
         }
 
         private void dataGridViewBoxing_SelectionChanged(object sender, EventArgs e)
@@ -870,12 +826,12 @@ namespace KontrolaWizualnaRaport
 
         private void radioButtonReasonsLg_CheckedChanged(object sender, EventArgs e)
         {
-            dataGridViewNgScrapReasons.DataSource = Charting.DrawWasteReasonsCHart(chartPrzyczynyOdpaduNg, chartPrzyczynyOdpaduScrap, inspectionData, dateTimePickerPrzyczynyOdpaduOd.Value, dateTimePickerPrzyczynyOdpaduDo.Value, lotModelDictionary, checkedListBoxViReasons.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonReasonsLg.Checked, mstOrders);
+            
         }
 
         private void radioButtonWasteLevelLG_CheckedChanged(object sender, EventArgs e)
         {
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, (double)vScrollBar1.Value / (double)vScrollBar1.Maximum);
+            
         }
 
         private void dataGridViewChangeOvers_SelectionChanged(object sender, EventArgs e)
@@ -932,7 +888,6 @@ namespace KontrolaWizualnaRaport
 
         private void chartPrzyczynyOdpaduNg_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-
             var results = chartPrzyczynyOdpaduNg.HitTest(e.X, e.Y, false, ChartElementType.DataPoint);
 
             foreach (var result in results)
@@ -940,7 +895,6 @@ namespace KontrolaWizualnaRaport
                 //Debug.WriteLine(result.ChartElementType.ToString());
                 if (result.ChartElementType == ChartElementType.DataPoint)
                 {
-
                     DataPoint pt = (DataPoint)result.Object;
                     WasteReasonDetails detailForm = new WasteReasonDetails((WastePerReasonStructure)pt.Tag, pt.AxisLabel);
                     detailForm.Show();
@@ -1206,13 +1160,11 @@ namespace KontrolaWizualnaRaport
 
         private void dateTimePickerViOperatorEfiiciencyStart_ValueChanged(object sender, EventArgs e)
         {
-            VIOperations.ngRatePerOperator(inspectionData, dateTimePickerViOperatorEfiiciencyStart.Value, dateTimePickerViOperatorEfiiciencyEnd.Value, dataGridViewViOperatorsTotal);
-            
+ 
         }
 
         private void dateTimePickerViOperatorEfiiciencyEnd_ValueChanged(object sender, EventArgs e)
         {
-            VIOperations.ngRatePerOperator(inspectionData, dateTimePickerViOperatorEfiiciencyStart.Value, dateTimePickerViOperatorEfiiciencyEnd.Value, dataGridViewViOperatorsTotal);
         }
 
         private void dataGridViewViOperatorsTotal_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -1229,47 +1181,23 @@ namespace KontrolaWizualnaRaport
             }
         }
 
-        private void checkedListBox1_MouseEnter(object sender, EventArgs e)
-        {
-            checkedListBoxViWasteLevelSmtLines.Height = 120;
-        }
-
-        private void checkedListBox1_MouseLeave(object sender, EventArgs e)
-        {
-            checkedListBoxViWasteLevelSmtLines.Height = 20;
-        }
         
-        private void checkedListBoxViWasteLevel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
-
-            if (smtLines.Length > 0)
-            {
-                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, checkBoxyAxis.Checked ? 1-(double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
-                foreach (DataGridViewColumn col in dataGridViewWasteLevel.Columns)
-                {
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                }
-            }
-            else
-            {
-                chartWasteLevel.Series.Clear();
-            }
-        }
+        
+        
 
         private void checkedListBoxViReasons_MouseEnter(object sender, EventArgs e)
         {
-            checkedListBoxViReasons.Height = 120;
+            
         }
 
         private void checkedListBoxViReasons_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataGridViewNgScrapReasons.DataSource = Charting.DrawWasteReasonsCHart(chartPrzyczynyOdpaduNg, chartPrzyczynyOdpaduScrap, inspectionData, dateTimePickerPrzyczynyOdpaduOd.Value, dateTimePickerPrzyczynyOdpaduDo.Value, lotModelDictionary, checkedListBoxViReasons.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray(), radioButtonReasonsLg.Checked, mstOrders);
+
         }
 
         private void checkedListBoxViReasons_MouseLeave(object sender, EventArgs e)
         {
-            checkedListBoxViReasons.Height = 20;
+
         }
 
         private void dataGridViewMstOrders_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -1478,20 +1406,7 @@ namespace KontrolaWizualnaRaport
 
         private void radioButtonDaily_CheckedChanged_1(object sender, EventArgs e)
         {
-            string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
-
-            if (smtLines.Length > 0)
-            {
-                dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, checkBoxyAxis.Checked ? 1-(double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
-                foreach (DataGridViewColumn col in dataGridViewWasteLevel.Columns)
-                {
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                }
-            }
-            else
-            {
-                chartWasteLevel.Series.Clear();
-            }
+            VIOperations.RefreshViWasteLevelChart();
         }
 
         private void dataGridViewSmtProduction_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
@@ -1499,30 +1414,12 @@ namespace KontrolaWizualnaRaport
             
         }
 
-        public class CustomCheckedListBox : CheckedListBox
-        {
-            protected override void OnDrawItem(DrawItemEventArgs e)
-            {
-                base.OnDrawItem(e);
-
-                if (Items.Count <= 0)
-                    return;
-                string name = Convert.ToString(Items[e.Index]);
-                Color rowColor = Color.White;
-                GlobalParameters.smtLinesColors.TryGetValue(name, out rowColor);
-                SolidBrush rowBrush = new SolidBrush(rowColor);
-
-                var contentRect = e.Bounds;
-                contentRect.X = 16;
-                e.Graphics.FillRectangle(rowBrush, contentRect);
-                e.Graphics.DrawString(Convert.ToString(Items[e.Index]), e.Font, Brushes.White, contentRect);
-            }
-        }
+        
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, checkBoxyAxis.Checked ?1- (double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
+            Charting.DrawWasteLevel();
         }
 
         private void buttonSmtTraceOK_Click(object sender, EventArgs e)
@@ -1532,8 +1429,7 @@ namespace KontrolaWizualnaRaport
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
-            dataGridViewWasteLevel.DataSource = Charting.DrawWasteLevel(VIOperations.chartFrequency(groupBoxFrequency), chartWasteLevel, inspectionData, dateTimePickerWasteLevelBegin.Value.Date, dateTimePickerWasteLevelEnd.Value.Date, lotModelDictionary, comboBoxModel, smtLines, radioButtonViLinesCumulated.Checked, radioButtonWasteLevelLG.Checked, mstOrders, GlobalParameters.smtLinesColors, checkBoxyAxis.Checked ? 1- (double)vScrollBar1.Value / (double)vScrollBar1.Maximum : 0);
+            Charting.DrawWasteLevel();
         }
 
         private void dataGridViewReworkDailyReport_SelectionChanged_1(object sender, EventArgs e)
@@ -1586,6 +1482,21 @@ namespace KontrolaWizualnaRaport
                     imgForm.ShowDialog();
                 }
             }
+        }
+
+        private void cbSmtMst_CheckedChanged(object sender, EventArgs e)
+        {
+            SMTOperations.ReLoadSmtTab();
+        }
+
+        private void checkBoxViLevelMst_CheckedChanged(object sender, EventArgs e)
+        {
+            VIOperations.RefreshViWasteLevelChart();
+        }
+
+        private void rbModelsCount_CheckedChanged(object sender, EventArgs e)
+        {
+            SMTOperations.ReLoadSmtTab();
         }
     }
 }

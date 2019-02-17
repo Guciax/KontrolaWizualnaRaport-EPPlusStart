@@ -99,7 +99,7 @@
             this.panel16 = new System.Windows.Forms.Panel();
             this.radioButtonCapaLGI = new System.Windows.Forms.RadioButton();
             this.radioButtonMST = new System.Windows.Forms.RadioButton();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPagePrzyczynyOdpadu = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
             this.chartPrzyczynyOdpaduNg = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.contextMenuStripPrintPrzyczynyOdpadu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -108,17 +108,16 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.dataGridViewNgScrapReasons = new System.Windows.Forms.DataGridView();
             this.panel17 = new System.Windows.Forms.Panel();
-            this.radioButtonReasonsLg = new System.Windows.Forms.RadioButton();
-            this.radioButtonReasonsMst = new System.Windows.Forms.RadioButton();
+            this.checkBoxViReasonsLg = new System.Windows.Forms.CheckBox();
+            this.checkBoxViReasonsMst = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.checkedListBoxViReasons = new System.Windows.Forms.CheckedListBox();
             this.label7 = new System.Windows.Forms.Label();
             this.dateTimePickerPrzyczynyOdpaduDo = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerPrzyczynyOdpaduOd = new System.Windows.Forms.DateTimePicker();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPagePoziomOdpadu = new System.Windows.Forms.TabPage();
             this.panel43 = new System.Windows.Forms.Panel();
-            this.checkBoxyAxis = new System.Windows.Forms.CheckBox();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
+            this.checkBoxEnableZoom = new System.Windows.Forms.CheckBox();
+            this.vScrollBarZoomChart = new System.Windows.Forms.VScrollBar();
             this.chartWasteLevel = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.contextMenuStripPrintPoziomOdpadu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -132,9 +131,9 @@
             this.radioButtonDaily = new System.Windows.Forms.RadioButton();
             this.radioButtonWeekly = new System.Windows.Forms.RadioButton();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.radioButtonWasteLevelLG = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.comboBoxModel = new System.Windows.Forms.ComboBox();
+            this.checkBoxViLevelLg = new System.Windows.Forms.CheckBox();
+            this.checkBoxViLevelMst = new System.Windows.Forms.CheckBox();
+            this.comboBox = new System.Windows.Forms.ComboBox();
             this.dateTimePickerWasteLevelEnd = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerWasteLevelBegin = new System.Windows.Forms.DateTimePicker();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -229,6 +228,11 @@
             this.label8 = new System.Windows.Forms.Label();
             this.dataGridViewKittingReadyLots = new System.Windows.Forms.DataGridView();
             this.dataGridViewKitting = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tydz = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label29 = new System.Windows.Forms.Label();
             this.panel10 = new System.Windows.Forms.Panel();
@@ -366,11 +370,13 @@
             this.timerTestLoadDone = new System.Windows.Forms.Timer(this.components);
             this.timerBoxLoadDone = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tydz = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rbModelsCount = new System.Windows.Forms.RadioButton();
+            this.rbComponentsMounted = new System.Windows.Forms.RadioButton();
+            this.label33 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chartEfficiency)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -380,7 +386,7 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEffciency)).BeginInit();
             this.panel16.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabPagePrzyczynyOdpadu.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartPrzyczynyOdpaduNg)).BeginInit();
             this.contextMenuStripPrintPrzyczynyOdpadu.SuspendLayout();
@@ -389,7 +395,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNgScrapReasons)).BeginInit();
             this.panel17.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.tabPagePoziomOdpadu.SuspendLayout();
             this.panel43.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartWasteLevel)).BeginInit();
             this.contextMenuStripPrintPoziomOdpadu.SuspendLayout();
@@ -562,8 +568,8 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPagePrzyczynyOdpadu);
+            this.tabControl1.Controls.Add(this.tabPagePoziomOdpadu);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
@@ -696,18 +702,18 @@
             this.radioButtonMST.Text = "MST";
             this.radioButtonMST.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // tabPagePrzyczynyOdpadu
             // 
-            this.tabPage2.Controls.Add(this.panel4);
-            this.tabPage2.Controls.Add(this.panel3);
-            this.tabPage2.Controls.Add(this.panel2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1262, 560);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Przczyny odpadu";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPagePrzyczynyOdpadu.Controls.Add(this.panel4);
+            this.tabPagePrzyczynyOdpadu.Controls.Add(this.panel3);
+            this.tabPagePrzyczynyOdpadu.Controls.Add(this.panel2);
+            this.tabPagePrzyczynyOdpadu.Location = new System.Drawing.Point(4, 22);
+            this.tabPagePrzyczynyOdpadu.Name = "tabPagePrzyczynyOdpadu";
+            this.tabPagePrzyczynyOdpadu.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePrzyczynyOdpadu.Size = new System.Drawing.Size(1262, 560);
+            this.tabPagePrzyczynyOdpadu.TabIndex = 1;
+            this.tabPagePrzyczynyOdpadu.Text = "Przczyny odpadu";
+            this.tabPagePrzyczynyOdpadu.UseVisualStyleBackColor = true;
             // 
             // panel4
             // 
@@ -802,40 +808,40 @@
             // panel17
             // 
             this.panel17.BackColor = System.Drawing.Color.White;
-            this.panel17.Controls.Add(this.radioButtonReasonsLg);
-            this.panel17.Controls.Add(this.radioButtonReasonsMst);
+            this.panel17.Controls.Add(this.checkBoxViReasonsLg);
+            this.panel17.Controls.Add(this.checkBoxViReasonsMst);
             this.panel17.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel17.Location = new System.Drawing.Point(0, 0);
             this.panel17.Name = "panel17";
             this.panel17.Size = new System.Drawing.Size(205, 24);
             this.panel17.TabIndex = 1;
             // 
-            // radioButtonReasonsLg
+            // checkBoxViReasonsLg
             // 
-            this.radioButtonReasonsLg.AutoSize = true;
-            this.radioButtonReasonsLg.Checked = true;
-            this.radioButtonReasonsLg.Location = new System.Drawing.Point(14, 3);
-            this.radioButtonReasonsLg.Name = "radioButtonReasonsLg";
-            this.radioButtonReasonsLg.Size = new System.Drawing.Size(42, 17);
-            this.radioButtonReasonsLg.TabIndex = 3;
-            this.radioButtonReasonsLg.TabStop = true;
-            this.radioButtonReasonsLg.Text = "LGI";
-            this.radioButtonReasonsLg.UseVisualStyleBackColor = true;
-            this.radioButtonReasonsLg.CheckedChanged += new System.EventHandler(this.radioButtonReasonsLg_CheckedChanged);
+            this.checkBoxViReasonsLg.AutoSize = true;
+            this.checkBoxViReasonsLg.Checked = true;
+            this.checkBoxViReasonsLg.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxViReasonsLg.Location = new System.Drawing.Point(78, 4);
+            this.checkBoxViReasonsLg.Name = "checkBoxViReasonsLg";
+            this.checkBoxViReasonsLg.Size = new System.Drawing.Size(40, 17);
+            this.checkBoxViReasonsLg.TabIndex = 1;
+            this.checkBoxViReasonsLg.Text = "LG";
+            this.checkBoxViReasonsLg.UseVisualStyleBackColor = true;
             // 
-            // radioButtonReasonsMst
+            // checkBoxViReasonsMst
             // 
-            this.radioButtonReasonsMst.AutoSize = true;
-            this.radioButtonReasonsMst.Location = new System.Drawing.Point(71, 3);
-            this.radioButtonReasonsMst.Name = "radioButtonReasonsMst";
-            this.radioButtonReasonsMst.Size = new System.Drawing.Size(48, 17);
-            this.radioButtonReasonsMst.TabIndex = 2;
-            this.radioButtonReasonsMst.Text = "MST";
-            this.radioButtonReasonsMst.UseVisualStyleBackColor = true;
+            this.checkBoxViReasonsMst.AutoSize = true;
+            this.checkBoxViReasonsMst.Checked = true;
+            this.checkBoxViReasonsMst.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxViReasonsMst.Location = new System.Drawing.Point(21, 4);
+            this.checkBoxViReasonsMst.Name = "checkBoxViReasonsMst";
+            this.checkBoxViReasonsMst.Size = new System.Drawing.Size(49, 17);
+            this.checkBoxViReasonsMst.TabIndex = 0;
+            this.checkBoxViReasonsMst.Text = "MST";
+            this.checkBoxViReasonsMst.UseVisualStyleBackColor = true;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.checkedListBoxViReasons);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.dateTimePickerPrzyczynyOdpaduDo);
             this.panel2.Controls.Add(this.dateTimePickerPrzyczynyOdpaduOd);
@@ -845,22 +851,10 @@
             this.panel2.Size = new System.Drawing.Size(1256, 27);
             this.panel2.TabIndex = 2;
             // 
-            // checkedListBoxViReasons
-            // 
-            this.checkedListBoxViReasons.CheckOnClick = true;
-            this.checkedListBoxViReasons.FormattingEnabled = true;
-            this.checkedListBoxViReasons.Location = new System.Drawing.Point(514, 5);
-            this.checkedListBoxViReasons.Name = "checkedListBoxViReasons";
-            this.checkedListBoxViReasons.Size = new System.Drawing.Size(101, 19);
-            this.checkedListBoxViReasons.TabIndex = 8;
-            this.checkedListBoxViReasons.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxViReasons_SelectedIndexChanged);
-            this.checkedListBoxViReasons.MouseEnter += new System.EventHandler(this.checkedListBoxViReasons_MouseEnter);
-            this.checkedListBoxViReasons.MouseLeave += new System.EventHandler(this.checkedListBoxViReasons_MouseLeave);
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(457, 7);
+            this.label7.Location = new System.Drawing.Point(885, 7);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(51, 13);
             this.label7.TabIndex = 4;
@@ -882,48 +876,50 @@
             this.dateTimePickerPrzyczynyOdpaduOd.TabIndex = 1;
             this.dateTimePickerPrzyczynyOdpaduOd.ValueChanged += new System.EventHandler(this.dateTimePickerPrzyczynyOdpaduOd_ValueChanged);
             // 
-            // tabPage3
+            // tabPagePoziomOdpadu
             // 
-            this.tabPage3.Controls.Add(this.panel43);
-            this.tabPage3.Controls.Add(this.chartWasteLevel);
-            this.tabPage3.Controls.Add(this.dataGridViewWasteLevel);
-            this.tabPage3.Controls.Add(this.panel5);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1262, 560);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Poziom odpadu";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tabPagePoziomOdpadu.Controls.Add(this.panel43);
+            this.tabPagePoziomOdpadu.Controls.Add(this.chartWasteLevel);
+            this.tabPagePoziomOdpadu.Controls.Add(this.dataGridViewWasteLevel);
+            this.tabPagePoziomOdpadu.Controls.Add(this.panel5);
+            this.tabPagePoziomOdpadu.Location = new System.Drawing.Point(4, 22);
+            this.tabPagePoziomOdpadu.Name = "tabPagePoziomOdpadu";
+            this.tabPagePoziomOdpadu.Size = new System.Drawing.Size(1262, 560);
+            this.tabPagePoziomOdpadu.TabIndex = 2;
+            this.tabPagePoziomOdpadu.Text = "Poziom odpadu";
+            this.tabPagePoziomOdpadu.UseVisualStyleBackColor = true;
             // 
             // panel43
             // 
-            this.panel43.Controls.Add(this.checkBoxyAxis);
-            this.panel43.Controls.Add(this.vScrollBar1);
+            this.panel43.Controls.Add(this.checkBoxEnableZoom);
+            this.panel43.Controls.Add(this.vScrollBarZoomChart);
             this.panel43.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel43.Location = new System.Drawing.Point(1247, 39);
             this.panel43.Name = "panel43";
             this.panel43.Size = new System.Drawing.Size(15, 521);
             this.panel43.TabIndex = 8;
             // 
-            // checkBoxyAxis
+            // checkBoxEnableZoom
             // 
-            this.checkBoxyAxis.AutoSize = true;
-            this.checkBoxyAxis.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBoxyAxis.Location = new System.Drawing.Point(0, 0);
-            this.checkBoxyAxis.Name = "checkBoxyAxis";
-            this.checkBoxyAxis.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxyAxis.TabIndex = 8;
-            this.checkBoxyAxis.UseVisualStyleBackColor = true;
-            this.checkBoxyAxis.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBoxEnableZoom.AutoSize = true;
+            this.checkBoxEnableZoom.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBoxEnableZoom.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxEnableZoom.Name = "checkBoxEnableZoom";
+            this.checkBoxEnableZoom.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxEnableZoom.TabIndex = 8;
+            this.checkBoxEnableZoom.UseVisualStyleBackColor = true;
+            this.checkBoxEnableZoom.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // vScrollBar1
+            // vScrollBarZoomChart
             // 
-            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vScrollBar1.Location = new System.Drawing.Point(0, 0);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(15, 521);
-            this.vScrollBar1.TabIndex = 7;
-            this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
+            this.vScrollBarZoomChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vScrollBarZoomChart.Location = new System.Drawing.Point(0, 0);
+            this.vScrollBarZoomChart.Maximum = 99;
+            this.vScrollBarZoomChart.Name = "vScrollBarZoomChart";
+            this.vScrollBarZoomChart.Size = new System.Drawing.Size(15, 521);
+            this.vScrollBarZoomChart.TabIndex = 7;
+            this.vScrollBarZoomChart.Value = 1;
+            this.vScrollBarZoomChart.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
             // 
             // chartWasteLevel
             // 
@@ -933,13 +929,13 @@
             this.chartWasteLevel.Dock = System.Windows.Forms.DockStyle.Fill;
             legend4.Name = "Legend1";
             this.chartWasteLevel.Legends.Add(legend4);
-            this.chartWasteLevel.Location = new System.Drawing.Point(240, 39);
+            this.chartWasteLevel.Location = new System.Drawing.Point(274, 39);
             this.chartWasteLevel.Name = "chartWasteLevel";
             series4.ChartArea = "ChartArea1";
             series4.Legend = "Legend1";
             series4.Name = "Series1";
             this.chartWasteLevel.Series.Add(series4);
-            this.chartWasteLevel.Size = new System.Drawing.Size(1022, 521);
+            this.chartWasteLevel.Size = new System.Drawing.Size(988, 521);
             this.chartWasteLevel.TabIndex = 6;
             this.chartWasteLevel.Text = "chartWasteLevel";
             this.chartWasteLevel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chartWasteLevel_MouseDown);
@@ -965,11 +961,17 @@
             this.dataGridViewWasteLevel.AllowUserToDeleteRows = false;
             this.dataGridViewWasteLevel.AllowUserToResizeRows = false;
             this.dataGridViewWasteLevel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewWasteLevel.ColumnHeadersVisible = false;
+            this.dataGridViewWasteLevel.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column8,
+            this.Column9,
+            this.Column10,
+            this.Column11});
             this.dataGridViewWasteLevel.Dock = System.Windows.Forms.DockStyle.Left;
             this.dataGridViewWasteLevel.Location = new System.Drawing.Point(0, 39);
             this.dataGridViewWasteLevel.Name = "dataGridViewWasteLevel";
             this.dataGridViewWasteLevel.RowHeadersVisible = false;
-            this.dataGridViewWasteLevel.Size = new System.Drawing.Size(240, 521);
+            this.dataGridViewWasteLevel.Size = new System.Drawing.Size(274, 521);
             this.dataGridViewWasteLevel.TabIndex = 5;
             // 
             // panel5
@@ -977,7 +979,7 @@
             this.panel5.Controls.Add(this.groupBox3);
             this.panel5.Controls.Add(this.groupBoxFrequency);
             this.panel5.Controls.Add(this.panel6);
-            this.panel5.Controls.Add(this.comboBoxModel);
+            this.panel5.Controls.Add(this.comboBox);
             this.panel5.Controls.Add(this.dateTimePickerWasteLevelEnd);
             this.panel5.Controls.Add(this.dateTimePickerWasteLevelBegin);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1073,45 +1075,48 @@
             // 
             // panel6
             // 
-            this.panel6.Controls.Add(this.radioButtonWasteLevelLG);
-            this.panel6.Controls.Add(this.radioButton4);
+            this.panel6.Controls.Add(this.checkBoxViLevelLg);
+            this.panel6.Controls.Add(this.checkBoxViLevelMst);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(149, 39);
             this.panel6.TabIndex = 7;
             // 
-            // radioButtonWasteLevelLG
+            // checkBoxViLevelLg
             // 
-            this.radioButtonWasteLevelLG.AutoSize = true;
-            this.radioButtonWasteLevelLG.Checked = true;
-            this.radioButtonWasteLevelLG.Location = new System.Drawing.Point(22, 13);
-            this.radioButtonWasteLevelLG.Name = "radioButtonWasteLevelLG";
-            this.radioButtonWasteLevelLG.Size = new System.Drawing.Size(42, 17);
-            this.radioButtonWasteLevelLG.TabIndex = 5;
-            this.radioButtonWasteLevelLG.TabStop = true;
-            this.radioButtonWasteLevelLG.Text = "LGI";
-            this.radioButtonWasteLevelLG.UseVisualStyleBackColor = true;
-            this.radioButtonWasteLevelLG.CheckedChanged += new System.EventHandler(this.radioButtonWasteLevelLG_CheckedChanged);
+            this.checkBoxViLevelLg.AutoSize = true;
+            this.checkBoxViLevelLg.Checked = true;
+            this.checkBoxViLevelLg.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxViLevelLg.Location = new System.Drawing.Point(83, 11);
+            this.checkBoxViLevelLg.Name = "checkBoxViLevelLg";
+            this.checkBoxViLevelLg.Size = new System.Drawing.Size(40, 17);
+            this.checkBoxViLevelLg.TabIndex = 3;
+            this.checkBoxViLevelLg.Text = "LG";
+            this.checkBoxViLevelLg.UseVisualStyleBackColor = true;
+            this.checkBoxViLevelLg.CheckedChanged += new System.EventHandler(this.checkBoxViLevelMst_CheckedChanged);
             // 
-            // radioButton4
+            // checkBoxViLevelMst
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(79, 13);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(48, 17);
-            this.radioButton4.TabIndex = 4;
-            this.radioButton4.Text = "MST";
-            this.radioButton4.UseVisualStyleBackColor = true;
+            this.checkBoxViLevelMst.AutoSize = true;
+            this.checkBoxViLevelMst.Checked = true;
+            this.checkBoxViLevelMst.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxViLevelMst.Location = new System.Drawing.Point(26, 11);
+            this.checkBoxViLevelMst.Name = "checkBoxViLevelMst";
+            this.checkBoxViLevelMst.Size = new System.Drawing.Size(49, 17);
+            this.checkBoxViLevelMst.TabIndex = 2;
+            this.checkBoxViLevelMst.Text = "MST";
+            this.checkBoxViLevelMst.UseVisualStyleBackColor = true;
+            this.checkBoxViLevelMst.CheckedChanged += new System.EventHandler(this.checkBoxViLevelMst_CheckedChanged);
             // 
-            // comboBoxModel
+            // comboBox
             // 
-            this.comboBoxModel.FormattingEnabled = true;
-            this.comboBoxModel.Location = new System.Drawing.Point(1182, 2);
-            this.comboBoxModel.Name = "comboBoxModel";
-            this.comboBoxModel.Size = new System.Drawing.Size(133, 21);
-            this.comboBoxModel.TabIndex = 5;
-            this.comboBoxModel.Visible = false;
+            this.comboBox.FormattingEnabled = true;
+            this.comboBox.Location = new System.Drawing.Point(1182, 2);
+            this.comboBox.Name = "comboBox";
+            this.comboBox.Size = new System.Drawing.Size(133, 21);
+            this.comboBox.TabIndex = 5;
+            this.comboBox.Visible = false;
             // 
             // dateTimePickerWasteLevelEnd
             // 
@@ -2327,6 +2332,36 @@
             this.dataGridViewKitting.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKitting_CellDoubleClick);
             this.dataGridViewKitting.SelectionChanged += new System.EventHandler(this.dataGridViewKitting_SelectionChanged);
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Data";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Tydz
+            // 
+            this.Tydz.HeaderText = "Tydz";
+            this.Tydz.Name = "Tydz";
+            this.Tydz.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Zmiana";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Zleceń";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "Wyrobów";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
             // panel7
             // 
             this.panel7.Controls.Add(this.label29);
@@ -3331,6 +3366,9 @@
             // 
             // panelControlsSmt
             // 
+            this.panelControlsSmt.Controls.Add(this.label33);
+            this.panelControlsSmt.Controls.Add(this.rbComponentsMounted);
+            this.panelControlsSmt.Controls.Add(this.rbModelsCount);
             this.panelControlsSmt.Controls.Add(this.cbSmtLg);
             this.panelControlsSmt.Controls.Add(this.cbSmtMst);
             this.panelControlsSmt.Controls.Add(this.label17);
@@ -3349,24 +3387,26 @@
             this.cbSmtLg.AutoSize = true;
             this.cbSmtLg.Checked = true;
             this.cbSmtLg.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSmtLg.Location = new System.Drawing.Point(611, 6);
+            this.cbSmtLg.Location = new System.Drawing.Point(586, 6);
             this.cbSmtLg.Name = "cbSmtLg";
             this.cbSmtLg.Size = new System.Drawing.Size(40, 17);
             this.cbSmtLg.TabIndex = 9;
             this.cbSmtLg.Text = "LG";
             this.cbSmtLg.UseVisualStyleBackColor = true;
+            this.cbSmtLg.CheckedChanged += new System.EventHandler(this.cbSmtMst_CheckedChanged);
             // 
             // cbSmtMst
             // 
             this.cbSmtMst.AutoSize = true;
             this.cbSmtMst.Checked = true;
             this.cbSmtMst.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSmtMst.Location = new System.Drawing.Point(563, 6);
+            this.cbSmtMst.Location = new System.Drawing.Point(538, 6);
             this.cbSmtMst.Name = "cbSmtMst";
             this.cbSmtMst.Size = new System.Drawing.Size(49, 17);
             this.cbSmtMst.TabIndex = 8;
             this.cbSmtMst.Text = "MST";
             this.cbSmtMst.UseVisualStyleBackColor = true;
+            this.cbSmtMst.CheckedChanged += new System.EventHandler(this.cbSmtMst_CheckedChanged);
             // 
             // label17
             // 
@@ -3889,35 +3929,61 @@
             // 
             this.timerBoxLoadDone.Tick += new System.EventHandler(this.timerBoxLoadDone_Tick);
             // 
-            // Column1
+            // Column8
             // 
-            this.Column1.HeaderText = "Data";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
+            this.Column8.HeaderText = "Data";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
             // 
-            // Tydz
+            // Column9
             // 
-            this.Tydz.HeaderText = "Tydz";
-            this.Tydz.Name = "Tydz";
-            this.Tydz.ReadOnly = true;
+            this.Column9.HeaderText = "Prod.";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
             // 
-            // Column2
+            // Column10
             // 
-            this.Column2.HeaderText = "Zmiana";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
+            this.Column10.HeaderText = "Ng";
+            this.Column10.Name = "Column10";
+            this.Column10.ReadOnly = true;
             // 
-            // Column3
+            // Column11
             // 
-            this.Column3.HeaderText = "Zleceń";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
+            this.Column11.HeaderText = "Ng%";
+            this.Column11.Name = "Column11";
+            this.Column11.ReadOnly = true;
             // 
-            // Column7
+            // rbModelsCount
             // 
-            this.Column7.HeaderText = "Wyrobów";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
+            this.rbModelsCount.AutoSize = true;
+            this.rbModelsCount.Checked = true;
+            this.rbModelsCount.Location = new System.Drawing.Point(737, 3);
+            this.rbModelsCount.Name = "rbModelsCount";
+            this.rbModelsCount.Size = new System.Drawing.Size(70, 17);
+            this.rbModelsCount.TabIndex = 10;
+            this.rbModelsCount.TabStop = true;
+            this.rbModelsCount.Text = "Wyrobów";
+            this.rbModelsCount.UseVisualStyleBackColor = true;
+            this.rbModelsCount.CheckedChanged += new System.EventHandler(this.rbModelsCount_CheckedChanged);
+            // 
+            // rbComponentsMounted
+            // 
+            this.rbComponentsMounted.AutoSize = true;
+            this.rbComponentsMounted.Location = new System.Drawing.Point(804, 3);
+            this.rbComponentsMounted.Name = "rbComponentsMounted";
+            this.rbComponentsMounted.Size = new System.Drawing.Size(162, 17);
+            this.rbComponentsMounted.TabIndex = 11;
+            this.rbComponentsMounted.Text = "Montowanych komponentów";
+            this.rbComponentsMounted.UseVisualStyleBackColor = true;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(667, 7);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(64, 13);
+            this.label33.TabIndex = 12;
+            this.label33.Text = "Pokaż ilość:";
             // 
             // Form1
             // 
@@ -3941,7 +4007,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEffciency)).EndInit();
             this.panel16.ResumeLayout(false);
             this.panel16.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.tabPagePrzyczynyOdpadu.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartPrzyczynyOdpaduNg)).EndInit();
             this.contextMenuStripPrintPrzyczynyOdpadu.ResumeLayout(false);
@@ -3952,7 +4018,7 @@
             this.panel17.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
+            this.tabPagePoziomOdpadu.ResumeLayout(false);
             this.panel43.ResumeLayout(false);
             this.panel43.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartWasteLevel)).EndInit();
@@ -4133,13 +4199,13 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chartEfficiency;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPagePrzyczynyOdpadu;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartPrzyczynyOdpaduNg;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DateTimePicker dateTimePickerPrzyczynyOdpaduDo;
         private System.Windows.Forms.DateTimePicker dateTimePickerPrzyczynyOdpaduOd;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartPrzyczynyOdpaduScrap;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPagePoziomOdpadu;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView dataGridViewNgScrapReasons;
@@ -4194,8 +4260,6 @@
         private System.Windows.Forms.RadioButton radioButtonCapaLGI;
         private System.Windows.Forms.RadioButton radioButtonMST;
         private System.Windows.Forms.Panel panel17;
-        private System.Windows.Forms.RadioButton radioButtonReasonsLg;
-        private System.Windows.Forms.RadioButton radioButtonReasonsMst;
         private System.Windows.Forms.Panel panel18;
         private System.Windows.Forms.Label label1SmtSelectedSum;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripPrintPrzyczynyOdpadu;
@@ -4238,8 +4302,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.RadioButton radioButtonWasteLevelLG;
-        private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.TabPage tabPage17;
         private System.Windows.Forms.DataGridView dataGridViewChangeOvers;
         private System.Windows.Forms.Panel panel12;
@@ -4316,7 +4378,6 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.DateTimePicker dateTimePickerViOperatorEfiiciencyStart;
         private System.Windows.Forms.DateTimePicker dateTimePickerViOperatorEfiiciencyEnd;
-        private System.Windows.Forms.CheckedListBox checkedListBoxViReasons;
         private System.Windows.Forms.TabPage tabPage22;
         private System.Windows.Forms.DataGridView dataGridViewMstOrders;
         private System.Windows.Forms.Panel panel38;
@@ -4364,14 +4425,14 @@
         private System.Windows.Forms.RadioButton radioButtonViLinesCumulated;
         private System.Windows.Forms.GroupBox groupBoxFrequency;
         private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.ComboBox comboBoxModel;
+        private System.Windows.Forms.ComboBox comboBox;
         private System.Windows.Forms.Panel panel42;
         private System.Windows.Forms.ComboBox comboBoxKittingModels;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridView dataGridViewKittingHistory;
         private System.Windows.Forms.Panel panel43;
-        private System.Windows.Forms.CheckBox checkBoxyAxis;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.CheckBox checkBoxEnableZoom;
+        private System.Windows.Forms.VScrollBar vScrollBarZoomChart;
         private System.Windows.Forms.TabPage tabPage27;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
         private System.Windows.Forms.DataGridView dgvTestWaitingForTest;
@@ -4414,6 +4475,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.CheckBox checkBoxViReasonsMst;
+        private System.Windows.Forms.CheckBox checkBoxViReasonsLg;
+        private System.Windows.Forms.CheckBox checkBoxViLevelLg;
+        private System.Windows.Forms.CheckBox checkBoxViLevelMst;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.RadioButton rbComponentsMounted;
+        private System.Windows.Forms.RadioButton rbModelsCount;
     }
 }
 

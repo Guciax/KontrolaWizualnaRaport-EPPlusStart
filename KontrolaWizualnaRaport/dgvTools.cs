@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -135,6 +136,57 @@ namespace KontrolaWizualnaRaport
             }
 
             return cellsList.ToArray();
+        }
+
+        public static DataTable AgregateCellsTables(DataGridView grid, DataGridViewCell startCell)
+        {
+            DataTable result = null;
+            
+            if (startCell.Tag != null)
+            {
+                return (DataTable)startCell.Tag;
+            }
+            if (startCell.Value == null) return null;
+            string startCellValue = startCell.Value.ToString();
+            for (int r = startCell.RowIndex; r >= 0; r--)
+            {
+                if (grid.Rows[r].Cells[startCell.ColumnIndex].Value.ToString() != startCellValue) break;
+                foreach (DataGridViewCell cell in grid.Rows[r].Cells)
+                {
+                    if (cell.Tag == null) continue;
+                    DataTable cellTable = (DataTable)cell.Tag;
+                    if (result==null) {
+                        result = cellTable.Clone();
+                    }
+
+                    foreach (DataRow row in cellTable.Rows)
+                    {
+                        result.Rows.Add(row.ItemArray);
+                    }
+                }
+            }
+            if (startCell.RowIndex == grid.Rows.Count - 1) return result;
+
+            for(int r = startCell.RowIndex + 1;r<grid.Rows.Count; r++)
+            {
+                if (grid.Rows[r].Cells[startCell.ColumnIndex].Value.ToString() != startCellValue) break;
+                foreach (DataGridViewCell cell in grid.Rows[r].Cells)
+                {
+                    if (cell.Tag == null) continue;
+                    DataTable cellTable = (DataTable)cell.Tag;
+                    if (result == null)
+                    {
+                        result = cellTable.Clone();
+                    }
+
+                    foreach (DataRow row in cellTable.Rows)
+                    {
+                        result.Rows.Add(row.ItemArray);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
