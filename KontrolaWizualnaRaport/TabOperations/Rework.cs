@@ -182,7 +182,7 @@ namespace KontrolaWizualnaRaport
 
                     
 
-                    dailyReportGrid.Rows.Add(dateEntry.Key.ToString("dd-MM-yyyy"), dateTools.GetIso8601WeekOfYear(dateEntry.Key), shiftEntry.Key, pcbCount, operationCount);
+                    dailyReportGrid.Rows.Add(dateEntry.Key.ToString("dd-MM-yyyy"), dateTools.WeekNumber(dateEntry.Key), shiftEntry.Key, pcbCount, operationCount);
                     foreach (DataGridViewCell cell in dailyReportGrid.Rows[dailyReportGrid.Rows.Count-1].Cells)
                     {
                         cell.Style.BackColor = rowColor;
@@ -215,7 +215,7 @@ namespace KontrolaWizualnaRaport
                 }
                 else
                 {
-                    dateKey = dateTools.GetIso8601WeekOfYear(item.FixedDateTime).ToString();
+                    dateKey = dateTools.WeekNumber(item.FixedDateTime).ToString();
                 }
                 if (!ngPerDay.ContainsKey(dateKey))
                 {
@@ -237,7 +237,7 @@ namespace KontrolaWizualnaRaport
                 }
                 else
                 {
-                    dateKey = dateTools.GetIso8601WeekOfYear(dateEntry.Key.Date).ToString();
+                    dateKey = dateTools.WeekNumber(dateEntry.Key.Date).ToString();
                 }
                 
                 foreach (var shiftEntry in dateEntry.Value)

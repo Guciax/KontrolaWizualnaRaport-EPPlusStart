@@ -32,7 +32,7 @@ namespace KontrolaWizualnaRaport
 
             public class productionReportTab
             {
-                public static DataGridView dataGridViewSmtProduction;
+                public static CustomDataGridView dataGridViewSmtProduction;
                 public static RadioButton rbModelsCount;
             }
 
@@ -87,7 +87,7 @@ namespace KontrolaWizualnaRaport
                 public static DateTimePicker dateTimePickerPrzyczynyOdpaduOd;
                 public static DateTimePicker dateTimePickerWasteLevelBegin;
                 public static CustomCheckedListBox checkedListBoxViWasteReasonsSmtLines;
-                public static DataGridView dataGridViewNgScrapReasons;
+                public static CustomDataGridView dataGridViewNgScrapReasons;
                 public static Chart chartPrzyczynyOdpaduNg;
                 public static Chart chartPrzyczynyOdpaduScrap;
                 public static CheckBox checkBoxViReasonsMst;
@@ -116,6 +116,18 @@ namespace KontrolaWizualnaRaport
                 public static DataGridView dataGridViewServiceVsNg;
                 public static Chart chartServiceVsNg;
             }
+
+            
+        }
+        public class Boxing
+        {
+            public static CheckBox cbLg;
+            public static CheckBox cbMst;
+            public static DateTimePicker datetimePickerStart;
+            public static DateTimePicker datetimePickerEnd;
+            public static RadioButton rbModules;
+            public static RadioButton rbComponentsCount;
+            public static CustomDataGridView dataGridViewBoxing;
         }
     }
 }

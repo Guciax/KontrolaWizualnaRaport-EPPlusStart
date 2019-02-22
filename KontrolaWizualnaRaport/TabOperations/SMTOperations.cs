@@ -142,7 +142,7 @@ namespace KontrolaWizualnaRaport
                 grid.Rows[1].Cells[line.Key].Value = waste+"%";
             }
 
-            autoSizeGridColumns(grid);
+            //autoSizeGridColumns(grid);
             grid.ResumeLayout();
         }
 
@@ -227,7 +227,7 @@ namespace KontrolaWizualnaRaport
                     monthwaste = 0;
                     monthByBom = 0;
                 }
-                string week = dateTools.GetIso8601WeekOfYear(dateEntry.Key).ToString();
+                string week = dateTools.WeekNumber(dateEntry.Key).ToString();
                 monthName = dateEntry.Key.ToString("MMM", CultureInfo.InvariantCulture);
 
                 if (!ledMounted.ContainsKey(week))
@@ -335,7 +335,7 @@ namespace KontrolaWizualnaRaport
                         //107577:2OPF00050A:0|107658:2OPF00050A:0#107580:2OPF00050A:27|107657:2OPF00050A:23
                         if (!SharedComponents.Smt.cbSmtLg.Checked)
                         {
-                            if (smtRecord.orderInfo.clientGroup == "LGI") continue;
+                            if (smtRecord.orderInfo.clientGroup == "LG") continue;
                         }
                         if (!SharedComponents.Smt.cbSmtMst.Checked)
                         {
@@ -369,8 +369,9 @@ namespace KontrolaWizualnaRaport
         public static SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortListByDayAndShift()
         {
             SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> result = new SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>>();
-            
-            var dictByDate = DataContainer.sqlDataByProcess.Smt.SelectMany(o => o.Value.smtOrders).GroupBy(x => dateTools.whatDayShiftIsit(x.smtEndDate).fixedDate.Date).ToDictionary(x => x.Key, x => x.ToList());
+
+            //var dictByDate = DataContainer.sqlDataByProcess.Smt.SelectMany(o => o.Value.smtOrders).GroupBy(x => dateTools.whatDayShiftIsit(x.smtEndDate).fixedDate.Date).ToDictionary(x => x.Key, x => x.ToList());
+            var dictByDate = DataContainer.sqlDataByProcess.Smt.GroupBy(o => o.Value.latestEnd).ToDictionary(k => k.Key, v => v.SelectMany(rec => rec.Value.smtOrders).ToList());// Many(o => o.Value.smtOrders).GroupBy(x => dateTools.whatDayShiftIsit(x.smtEndDate).fixedDate.Date).ToDictionary(x => x.Key, x => x.ToList());
 
             foreach (var dayEntry in dictByDate)
             {
@@ -428,18 +429,22 @@ namespace KontrolaWizualnaRaport
                 {
                     rowColor = System.Drawing.Color.LightBlue;
                 }
-                var week = dateTools.GetIso8601WeekOfYear(dayEntry.Key);
+                var week = dateTools.WeekNumber(dayEntry.Key);
 
                 foreach (var shiftEntry in dayEntry.Value)
                 {
                     var filteredList = shiftEntry.Value;
                     if (!SharedComponents.Smt.cbSmtLg.Checked)
                     {
-                        filteredList.RemoveAll(o => o.orderInfo.clientGroup == "LGI");
+                        filteredList.RemoveAll(o => o.orderInfo.clientGroup == "LG");
                     }
                     if (!SharedComponents.Smt.cbSmtMst.Checked)
                     {
                         filteredList.RemoveAll(o => o.orderInfo.clientGroup == "MST");
+                    }
+                    if (filteredList.Count > 0)
+                    {
+                        ;
                     }
                     SortedDictionary<string, int> qtyPerLine;
                     if (SharedComponents.Smt.productionReportTab.rbModelsCount.Checked)
@@ -456,8 +461,11 @@ namespace KontrolaWizualnaRaport
                         if (!qtyPerLine.ContainsKey(smtLine)) { qtyPerLine.Add(smtLine, 0); }
                     }
 
+                    var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+                    nfi.NumberGroupSeparator = " ";
 
-                    grid.Rows.Add(dateTools.productionMonthName(week, dayEntry.Key.Year).ToUpper(), week, dayEntry.Key.ToShortDateString(), shiftEntry.Key.ToString(),  qtyPerLine["SMT2"], qtyPerLine["SMT3"], qtyPerLine["SMT4"], qtyPerLine["SMT5"], qtyPerLine["SMT6"], qtyPerLine["SMT7"], qtyPerLine["SMT8"]);
+                    grid.Rows.Add(dateTools.productionMonthName(week, dayEntry.Key.Year).ToUpper(), week, dayEntry.Key.ToShortDateString(), shiftEntry.Key.ToString(),  qtyPerLine["SMT2"].ToString("#,0", nfi), qtyPerLine["SMT3"].ToString("#,0", nfi), qtyPerLine["SMT4"].ToString("#,0", nfi), qtyPerLine["SMT5"].ToString("#,0", nfi), qtyPerLine["SMT6"].ToString("#,0", nfi), qtyPerLine["SMT7"].ToString("#,0", nfi), qtyPerLine["SMT8"].ToString("#,0", nfi));
+
                     Dictionary<string, DataTable> tagTablesPerLine = new Dictionary<string, DataTable>();
                     foreach (var smtLine in GlobalParameters.allLinesByHand)
                     {
@@ -489,6 +497,13 @@ namespace KontrolaWizualnaRaport
             {
                 grid.FirstDisplayedScrollingRowIndex = grid.RowCount - 1;
             }
+        }
+
+        private static string StringFormatThousandSpaceSeparated(int input)
+        {
+            var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            nfi.NumberGroupSeparator = " ";
+            return input.ToString("#,0", nfi); 
         }
 
         private static int SmtRecordToMontedComponentsCount(MST.MES.OrderStructureByOrderNo.SmtRecords record)

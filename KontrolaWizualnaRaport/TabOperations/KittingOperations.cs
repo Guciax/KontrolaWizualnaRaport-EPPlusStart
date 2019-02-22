@@ -42,7 +42,7 @@ namespace KontrolaWizualnaRaport
                 var groupByShift = dayEntry.Value.GroupBy(o=>dateTools.whatDayShiftIsit(o.kittingDate).shift).ToDictionary(x => x.Key, v => v.ToList());
                 foreach (var shift in groupByShift)
                 {
-                    SharedComponents.Kitting.dataGridViewKitting.Rows.Add(dayEntry.Key, dateTools.GetIso8601WeekOfYear(dayEntry.Key), shift.Key, shift.Value.Count(), shift.Value.Select(o => o.orderedQty).Sum());
+                    SharedComponents.Kitting.dataGridViewKitting.Rows.Add(dayEntry.Key, dateTools.WeekNumber(dayEntry.Key), shift.Key, shift.Value.Count(), shift.Value.Select(o => o.orderedQty).Sum());
                 }
                 
             }

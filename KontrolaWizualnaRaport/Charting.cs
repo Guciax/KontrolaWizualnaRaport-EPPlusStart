@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using static KontrolaWizualnaRaport.Form1;
 using static KontrolaWizualnaRaport.SMTOperations;
 
 namespace KontrolaWizualnaRaport
@@ -305,7 +306,7 @@ namespace KontrolaWizualnaRaport
             {
                 string chartFrequency = SharedComponents.Smt.LedWasteTab.comboBoxSmtLewWasteFreq.Text;
                 string dateKey = dayEntry.Key.ToString("dd-MMM");
-                if (chartFrequency == "Tygodniowo") { dateKey = dateTools.GetIso8601WeekOfYear(dayEntry.Key).ToString(); }
+                if (chartFrequency == "Tygodniowo") { dateKey = dateTools.WeekNumber(dayEntry.Key).ToString(); }
                 if (chartFrequency == "Miesiecznie") { dateKey = dayEntry.Key.ToString("MMM"); }
 
                 foreach (var shiftEntry in dayEntry.Value)
@@ -440,23 +441,32 @@ namespace KontrolaWizualnaRaport
             var selectedLines = SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines;
 
             filteredOrders.Add("Total", new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
+
             foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
             {
+                Debug.WriteLine(lineEntry.Key + " " + lineEntry.Value.Keys.First() + "-" + lineEntry.Value.Keys.Last());
                 foreach (var dateEntry in lineEntry.Value)
                 {
+                    if (!filteredOrders["Total"].ContainsKey(dateEntry.Key))
+                    {
+                        filteredOrders["Total"].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                    }
                     foreach (var orderEntry in dateEntry.Value)
                     {
                         if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelLg.Checked)
                         {
-                            if (orderEntry.kitting.odredGroup == "LG") continue;
+                            if (orderEntry.kitting.odredGroup == "LG")
+                                continue;
                         }
                         if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelMst.Checked)
                         {
-                            if (orderEntry.kitting.odredGroup == "MST") continue;
+                            if (orderEntry.kitting.odredGroup == "MST")
+                                continue;
                         }
                         if (!SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated.Checked)
                         {
-                            if (!orderEntry.smt.smtOrders.Select(o => o.smtLine).Intersect(selectedLines).Any()) continue;
+                            if (!orderEntry.smt.smtOrders.Select(o => o.smtLine).Intersect(selectedLines).Any())
+                                continue;
                         }
 
                         if (!filteredOrders.ContainsKey(lineEntry.Key))
@@ -468,13 +478,11 @@ namespace KontrolaWizualnaRaport
                             filteredOrders[lineEntry.Key].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
                         }
                         
-                        if (!filteredOrders["Total"].ContainsKey(dateEntry.Key))
-                        {
-                            filteredOrders["Total"].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
-                        }
+                        
 
                         filteredOrders[lineEntry.Key][dateEntry.Key].Add(orderEntry);
                         filteredOrders["Total"][dateEntry.Key].Add(orderEntry);
+                        Debug.WriteLine($"adding day {dateEntry.Key}");
                     }
                 }
             }
@@ -517,7 +525,7 @@ namespace KontrolaWizualnaRaport
                 scrapSeries.MarkerStyle = MarkerStyle.Square;
                 scrapSeries.MarkerSize = 10;
 
-                foreach (var dateKey in filteredOrders["Total"].Reverse())
+                foreach (var dateKey in filteredOrders["Total"])
                 {
                     DataPoint ngPoint = new DataPoint();
                     double ngY = (double)dateKey.Value.Select(o => o.visualInspection.ngCount).Sum() / (double)dateKey.Value.Select(o => o.smt.totalManufacturedQty).Sum() * 100;
@@ -543,7 +551,7 @@ namespace KontrolaWizualnaRaport
             }
             else
             {
-                foreach (var dateKey in filteredOrders["Total"].Reverse())
+                foreach (var dateKey in filteredOrders["Total"])
                 {
                     productionLevel.Points.AddXY(dateKey.Key, dateKey.Value.Select(o => o.smt.totalManufacturedQty).Sum());
                 }
@@ -568,7 +576,7 @@ namespace KontrolaWizualnaRaport
                     scrapSeries.MarkerSize = 10;
                     scrapSeries.Color = GlobalParameters.smtLinesColors[lineEntry.Key];
 
-                    foreach (var dateKey in lineEntry.Value.Reverse())
+                    foreach (var dateKey in lineEntry.Value)
                     {
                         DataPoint ngPoint = new DataPoint();
                         double ngY = (double)dateKey.Value.Select(o => o.visualInspection.ngCount).Sum() / (double)dateKey.Value.Select(o => o.smt.totalManufacturedQty).Sum() * 100;
@@ -614,8 +622,8 @@ namespace KontrolaWizualnaRaport
         private static string[] MakeToolTip(List<MST.MES.OrderStructureByOrderNo.OneOrderData> value)
         {
             string[] result = new string[] { "", "" };
-            var ng = value.GroupBy(o => o.kitting.modelId).ToDictionary(x => x.Key, v => v.Select(o => o.visualInspection.ngCount).Sum());
-            var scrap = value.GroupBy(o => o.kitting.modelId).ToDictionary(x => x.Key, v => v.Select(o => o.visualInspection.scrapCount).Sum());
+            var ng = value.GroupBy(o => o.kitting.modelId).ToDictionary(x => x.Key, v => v.Select(o => o.visualInspection.ngCount).Sum()).OrderByDescending(o=>o.Value);
+            var scrap = value.GroupBy(o => o.kitting.modelId).ToDictionary(x => x.Key, v => v.Select(o => o.visualInspection.scrapCount).Sum()).OrderByDescending(o => o.Value);
             ng.ToList().Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
             scrap.ToList().Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
             foreach (var waste in ng)
@@ -632,7 +640,7 @@ namespace KontrolaWizualnaRaport
         public static void DrawWasteReasonsCHart()
         {
             var filteredOrders = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
-            var selectedLines = SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines;
+            var selectedLines = SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkedListBoxViWasteReasonsSmtLines.selectedLines;
 
             filteredOrders.Add("Total", new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
             foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
@@ -641,18 +649,15 @@ namespace KontrolaWizualnaRaport
                 {
                     foreach (var orderEntry in dateEntry.Value)
                     {
-                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelLg.Checked)
+                        if (!SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkBoxViReasonsLg.Checked)
                         {
-                            if (orderEntry.kitting.odredGroup == "LGI") continue;
+                            if (orderEntry.kitting.odredGroup == "LG") continue;
                         }
-                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelMst.Checked)
+                        if (!SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkBoxViReasonsMst.Checked)
                         {
                             if (orderEntry.kitting.odredGroup == "MST") continue;
                         }
-                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated.Checked)
-                        {
-                            if (!orderEntry.smt.smtOrders.Select(o => o.smtLine).Intersect(selectedLines).Any()) continue;
-                        }
+                        if (!orderEntry.smt.smtOrders.Select(o => o.smtLine).Intersect(selectedLines).Any()) continue;
 
                         if (!filteredOrders.ContainsKey(lineEntry.Key))
                         {
@@ -678,21 +683,30 @@ namespace KontrolaWizualnaRaport
             
             Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>> ngPerReason = new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>();
             Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>> scrapPerReason = new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>();
+            List<string> controlListNgOrdersAdded = new List<string>();
+            List<string> controlListScrapOrdersAdded = new List<string>();
 
             foreach (var order in ngOrders)
             {
-
                 foreach (var reason in order.visualInspection.allReasons)
                 {
                     if (reason.Key.StartsWith("ng"))
                     {
                         if (!ngPerReason.ContainsKey(reason.Key)) ngPerReason.Add(reason.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
-                        ngPerReason[reason.Key].Add(order);
+                        {
+                            if (controlListNgOrdersAdded.Contains(order.kitting.orderNo)) continue;
+                            ngPerReason[reason.Key].Add(order);
+                            controlListNgOrdersAdded.Add(order.kitting.orderNo);
+                        }
                     }
                     else
                     {
                         if (!scrapPerReason.ContainsKey(reason.Key)) scrapPerReason.Add(reason.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
-                        scrapPerReason[reason.Key].Add(order);
+                        {
+                            if (controlListScrapOrdersAdded.Contains(order.kitting.orderNo)) continue;
+                            scrapPerReason[reason.Key].Add(order);
+                            controlListScrapOrdersAdded.Add(order.kitting.orderNo);
+                        }
                     }
                 }
 
@@ -713,9 +727,11 @@ namespace KontrolaWizualnaRaport
 
             Series ngSeries = new Series();
             ngSeries.ChartType = SeriesChartType.Column;
+            ngSeries.LegendText = "NG";
 
             Series scrapSeries = new Series();
             scrapSeries.ChartType = SeriesChartType.Column;
+            scrapSeries.LegendText = "SCRAP";
 
             ChartArea ngArea = new ChartArea();
             ngArea.AxisX.LabelStyle.Interval = 1;
@@ -728,6 +744,18 @@ namespace KontrolaWizualnaRaport
             scrapArea.AxisX.LabelAutoFitStyle = LabelAutoFitStyles.LabelsAngleStep30;
             scrapArea.AxisX.LabelStyle.Font = new System.Drawing.Font(scrapArea.AxisX.LabelStyle.Font.Name, 10f);
 
+            CustomDataGridView grid = SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dataGridViewNgScrapReasons;
+            grid.Rows.Clear();
+            grid.Rows.Add("NG");
+            foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count-1].Cells)
+            {
+                cell.Style.BackColor = Color.Red;
+                cell.Style.ForeColor = Color.White;
+            }
+
+            double allNg = ngPerReason.SelectMany(ng => ng.Value).Select(o => o.visualInspection.ngCount).Sum();
+            double allScr = ngPerReason.SelectMany(ng => ng.Value).Select(o => o.visualInspection.scrapCount).Sum();
+
             foreach (var ngKey in ngPerReason)
             {
                 var ngQty = ngKey.Value.Select(o => o.visualInspection.allReasons[ngKey.Key]).Sum();
@@ -735,6 +763,16 @@ namespace KontrolaWizualnaRaport
                 ngPt.SetValueXY(ngKey.Key, ngQty);
                 ngPt.Tag = ngKey.Value;
                 ngSeries.Points.Add(ngPt);
+
+                grid.Rows.Add(ngKey.Key.Replace("ng",""), ngQty, Math.Round(ngQty / allNg * 100, 1));
+            }
+
+            grid.Rows.Add();
+            grid.Rows.Add("SCRAP");
+            foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count - 1].Cells)
+            {
+                cell.Style.BackColor = Color.Black;
+                cell.Style.ForeColor = Color.White;
             }
 
             foreach (var scrapKey in scrapPerReason)
@@ -744,13 +782,19 @@ namespace KontrolaWizualnaRaport
                 scrapPt.SetValueXY(scrapKey.Key, scrapQty);
                 scrapPt.Tag = scrapKey.Value;
                 scrapSeries.Points.Add(scrapPt);
+
+                grid.Rows.Add(scrapKey.Key.Replace("scrap", ""), scrapQty, Math.Round(scrapQty / allScr * 100, 1));
             }
+
+            autoSizeGridColumns(grid);
 
             ngChart.ChartAreas.Add(ngArea);
             scrapChart.ChartAreas.Add(scrapArea);
             ngChart.Series.Add(ngSeries);
             scrapChart.Series.Add(scrapSeries);
-
+            ngChart.Legends[0].Docking = Docking.Top;
+            scrapChart.Legends[0].Docking = Docking.Top;
+            //ngChart.Legends[0].Position.Auto = false;
         }
 
         public static void DrawWasteLevelPerReason(Chart targetChart, string targetModel, List<WasteDataStructure> inputData, string[] reasons, Dictionary<string, string> modelDictionary, string[] smtLines)

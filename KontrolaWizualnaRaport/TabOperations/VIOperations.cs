@@ -132,7 +132,7 @@ namespace KontrolaWizualnaRaport
 
         public static void RefreshViWasteLevelChart()
         {
-            DataContainer.VisualInspection.finishedOrders = DataContainer.sqlDataByOrder.Where(o => o.Value.smt.ledsUsed > 0).ToDictionary(k=>k.Key, v=>v.Value);
+            DataContainer.VisualInspection.finishedOrders = DataContainer.sqlDataByOrder.Where(o => o.Value.smt.ledsUsed > 0).OrderBy(o=>o.Value.kitting.endDate).ToDictionary(k => k.Key, v => v.Value);
             // group by date Key
             var grouppedByLineThenDate = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
             foreach (var smtLine in GlobalParameters.allLinesByHand)
@@ -145,13 +145,15 @@ namespace KontrolaWizualnaRaport
             foreach (var orderEntry in DataContainer.VisualInspection.finishedOrders)
             {
                 DateTime orderDate = orderEntry.Value.kitting.endDate;
+                if (orderDate.Year < 2017) continue;
                 string dateKey = "";
                 if (SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonDaily.Checked)
                 {
                     dateKey = orderDate.ToString("dd-MMM");
-                }else if (SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonWeekly.Checked)
+                }
+                else if (SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonWeekly.Checked)
                 {
-                    dateKey = dateTools.GetIso8601WeekOfYear(orderDate).ToString();
+                    dateKey = dateTools.WeekNumber(orderDate).ToString();
                 }
                 else
                 {
@@ -164,12 +166,14 @@ namespace KontrolaWizualnaRaport
                     if (!lineEntry.Value.ContainsKey(dateKey))
                     {
                         lineEntry.Value.Add(dateKey, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                        //Debug.WriteLine(dateKey);
                     }
                 }
-                
+
                 grouppedByLineThenDate[lineKey][dateKey].Add(orderEntry.Value);
                 grouppedByLineThenDate["Total"][dateKey].Add(orderEntry.Value);
             }
+            
             DataContainer.VisualInspection.wasteReasonsByLineThenDateKey = grouppedByLineThenDate;
             Charting.DrawWasteLevel();
             FilloutWasteLevelGrid();
@@ -361,7 +365,6 @@ namespace KontrolaWizualnaRaport
             {
                 Network.ConnectPDrive();
             }
-
             grid.Columns.Clear();
             grid.Columns.Add("Data", "Data");
             grid.Columns.Add("Model", "Model");

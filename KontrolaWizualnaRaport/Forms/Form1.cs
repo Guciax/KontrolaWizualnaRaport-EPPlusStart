@@ -59,11 +59,28 @@ namespace KontrolaWizualnaRaport
 
         CustomCheckedListBox checkedListBoxViWasteLevelSmtLines = new CustomCheckedListBox();
         CustomCheckedListBox checkedListBoxViWasteReasonsSmtLines = new CustomCheckedListBox();
-        
+
+        public class CustomDataGridView : DataGridView
+        {
+            public CustomDataGridView()
+            {
+                DoubleBuffered = true;
+            }
+
+            private Dictionary<int, Dictionary<int, DataTable>> _cellTags = new Dictionary<int, Dictionary<int, DataTable>>();
+            public Dictionary<int, Dictionary<int, DataTable>> cellTags
+            {
+                get { return _cellTags; }
+                set { _cellTags = value; }
+            }
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             dateTimePickerSmtStart.Value = DateTime.Now.Date.AddDays(-90);
+            dateTimePickerStart.Value = DateTime.Now.AddDays(-30);
+
+
             SharedComponents.Smt.cbSmtLg = cbSmtLg;
             SharedComponents.Smt.cbSmtMst = cbSmtMst;
             SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt1);
@@ -85,6 +102,8 @@ namespace KontrolaWizualnaRaport
             //sqlDataByProcess.Test = MST.MES.SqlDataReaderMethods.LedTest.GetTestRecords(10, testerIdToName);
             Debug.WriteLine("test");
             //sqlDataByProcess.Rework = MST.MES.SqlDataReaderMethods.LedRework.GetReworkList(90);
+            DataContainer.sqlDataByProcess.Boxing = MST.MES.SqlDataReaderMethods.Boxing.GetMstBoxingForTimePeriod(dateTimePickerStart.Value, dateTimePickerEnd.Value);
+            MST.MES.SqlDataReaderMethods.Boxing.AddLgBoxesToExisting(DataContainer.sqlDataByProcess,dateTimePickerStart.Value, dateTimePickerEnd.Value);
             DataMerger.MergeData();
 
             DataContainer.mesModels = MST.MES.SqlDataReaderMethods.MesModels.allModels();
@@ -132,7 +151,15 @@ namespace KontrolaWizualnaRaport
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dataGridViewNgScrapReasons = dataGridViewNgScrapReasons;
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduOd = dateTimePickerPrzyczynyOdpaduOd;
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerWasteLevelBegin = dateTimePickerWasteLevelBegin;
-            
+
+            SharedComponents.Boxing.cbLg = cbLg;
+            SharedComponents.Boxing.cbMst = cbMst;
+            SharedComponents.Boxing.datetimePickerStart = dateTimePickerStart;
+            SharedComponents.Boxing.datetimePickerEnd = dateTimePickerEnd;
+            SharedComponents.Boxing.rbComponentsCount = rbComponentsCount;
+            SharedComponents.Boxing.rbModules = rbModules;
+            SharedComponents.Boxing.dataGridViewBoxing = dataGridViewBoxing;
+
             //---------------OLD
 
             dateTimePickerViOperatorEfiiciencyStart.Value = DateTime.Now.AddDays(-7);
@@ -173,24 +200,7 @@ namespace KontrolaWizualnaRaport
                     {
                         if (dataGridViewBoxing.Rows.Count == 0)
                         {
-                            loadDone = false;
-                            PictureBox loadPB = new PictureBox();
-                            Image loadImg = KontrolaWizualnaRaport.Properties.Resources.load;
-
-                            loadPB.Size = loadImg.Size;
-                            loadPB.Parent = dataGridViewBoxing;
-                            loadPB.Location = new Point(0, 0);
-                            loadPB.Image = loadImg;
-                            timerBoxLoadDone.Enabled = true;
-                            dataGridViewBoxing.Tag = loadPB;
-                            new Thread(() =>
-                            {
-                                Thread.CurrentThread.IsBackground = true;
-                                boxingData = SQLoperations.GetBoxing(20);
-                                
-                                loadDone = true;
-                            }).Start();
-                            
+                            BoxingOperations.FillOutBoxingLedQty();
                         }
                         break;
                     }
@@ -265,22 +275,12 @@ namespace KontrolaWizualnaRaport
                 timerBoxLoadDone.Enabled = false;
                 PictureBox loadPB = (PictureBox)dataGridViewBoxing.Tag;
                 dataGridViewBoxing.Controls.Remove(loadPB);
-                BoxingOperations.FillOutBoxingLedQty(boxingData, mesModels, dataGridViewBoxingLedQty);
             }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            //tab przyczyny odpadu
-            chartPrzyczynyOdpaduScrap.Height = tabPagePrzyczynyOdpadu.Height / 2;
 
-            //tab analiza po przyczynie
-            chartReasonLevel.Height = tabPage6.Height / 2;
-            chartReasonPareto.Width = tabPage6.Width / 2;
-
-            //tab analiza po modelu
-            chartModelLevel.Height = tabPage7.Height / 2;
-            chartModelReasonsNg.Width = panel13.Width / 2;
         }
 
        private Dictionary<string, Color> PrepareSmtLinesColros()
@@ -718,10 +718,10 @@ namespace KontrolaWizualnaRaport
                 {
                     description = $"{dataGridViewSmtProduction.Columns[e.ColumnIndex].Name}: {dataGridViewSmtProduction.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()}";
                 }
-                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewSmtProduction, cell);
+                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewSmtProduction, cell, new string[] { "SMT1", "SMT2", "SMT3", "SMT4", "SMT5", "SMT6", "SMT7", "SMT8" } );
                 if (tagTable != null)
                 {
-                    ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, "SMT", "Model", "Linia", "Ilość");
+                    ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, description, "Model", "Linia", "Ilość");
                     detailsForm.ShowDialog();
                 }
             }
@@ -732,7 +732,7 @@ namespace KontrolaWizualnaRaport
             if (e.ColumnIndex>-1 & e.RowIndex > -1)
             {
                 DataGridViewCell cell = dataGridViewKitting.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewKitting, cell);
+                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewKitting, cell, new string[] { "Ilosc KITow", "Ilosc wyrobow" });
                 if (tagTable != null)
                 {
                     ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, "Kitting", "", "", "");
@@ -766,7 +766,7 @@ namespace KontrolaWizualnaRaport
             if (e.ColumnIndex > -1 & e.RowIndex > -1)
             {
                 DataGridViewCell cell = dataGridViewTestProdReport.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewTestProdReport, cell);
+                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewTestProdReport, cell, new string[] { "IloscLot", "Ilosc" });
                 if (tagTable != null)
                 {
                     ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, "Kitting", "", "", "");
@@ -785,10 +785,10 @@ namespace KontrolaWizualnaRaport
             if (e.ColumnIndex > -1 & e.RowIndex > -1)
             {
                 DataGridViewCell cell = dataGridViewBoxing.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewBoxing, cell);
+                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewBoxing, cell, new string[] { "Wszystkie" });
                 if (tagTable != null)
                 {
-                    ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, "Kitting", "", "", "");
+                    ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, "Boxing", "Model ID", "Model ID", "Ilość spakowana");
                     detailsForm.ShowDialog();
                 }
             }
@@ -896,7 +896,7 @@ namespace KontrolaWizualnaRaport
                 if (result.ChartElementType == ChartElementType.DataPoint)
                 {
                     DataPoint pt = (DataPoint)result.Object;
-                    WasteReasonDetails detailForm = new WasteReasonDetails((WastePerReasonStructure)pt.Tag, pt.AxisLabel);
+                    WasteReasonDetails detailForm = new WasteReasonDetails((List<MST.MES.OrderStructureByOrderNo.OneOrderData>)pt.Tag, pt.AxisLabel);
                     detailForm.Show();
                     break;
                 }
@@ -914,7 +914,7 @@ namespace KontrolaWizualnaRaport
                 {
 
                     DataPoint pt = (DataPoint)result.Object;
-                    WasteReasonDetails detailForm = new WasteReasonDetails((WastePerReasonStructure)pt.Tag, pt.AxisLabel);
+                    WasteReasonDetails detailForm = new WasteReasonDetails((List<MST.MES.OrderStructureByOrderNo.OneOrderData>)pt.Tag, pt.AxisLabel);
                     detailForm.Show();
                     break;
                 }
@@ -1497,6 +1497,26 @@ namespace KontrolaWizualnaRaport
         private void rbModelsCount_CheckedChanged(object sender, EventArgs e)
         {
             SMTOperations.ReLoadSmtTab();
+        }
+
+        private void checkBoxViReasonsMst_CheckedChanged(object sender, EventArgs e)
+        {
+            Charting.DrawWasteReasonsCHart();
+        }
+
+        private void checkBoxViReasonsLg_CheckedChanged(object sender, EventArgs e)
+        {
+            Charting.DrawWasteReasonsCHart();
+        }
+
+        private void rbModules_CheckedChanged(object sender, EventArgs e)
+        {
+            BoxingOperations.FillOutBoxingLedQty();
+        }
+
+        private void cbLg_CheckedChanged(object sender, EventArgs e)
+        {
+            BoxingOperations.FillOutBoxingLedQty();
         }
     }
 }

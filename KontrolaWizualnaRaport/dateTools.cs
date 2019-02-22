@@ -10,7 +10,7 @@ namespace KontrolaWizualnaRaport
 {
     public class dateTools
     {
-        public static int GetIso8601WeekOfYear(DateTime time)
+        public static int WeekNumber(DateTime time)
         {
             // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
             // be the same week# as whatever Thursday, Friday or Saturday are,
@@ -23,7 +23,8 @@ namespace KontrolaWizualnaRaport
 
             // Return the week of our adjusted day
             int week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-            return (time.Year-2000)*100+week;
+            int result = (time.Year - 2000) * 100 + week;
+            return result;
         }
 
         public static DateTime FirstDateOfWeekISO8601(int year, int weekOfYear)

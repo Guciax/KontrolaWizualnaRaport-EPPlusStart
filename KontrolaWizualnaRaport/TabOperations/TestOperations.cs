@@ -324,7 +324,7 @@ namespace KontrolaWizualnaRaport
                 {
                     rowColor = System.Drawing.Color.LightBlue;
                 }
-                var week = dateTools.GetIso8601WeekOfYear(dateEntry.Key);
+                var week = dateTools.WeekNumber(dateEntry.Key);
                 foreach (var shiftEntry in dateEntry.Value)
                 {
                     string date = dateEntry.Key.Date.ToString("yyyy-MM-dd");

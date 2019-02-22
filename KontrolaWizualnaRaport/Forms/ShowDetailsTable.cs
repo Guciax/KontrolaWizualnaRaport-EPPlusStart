@@ -18,6 +18,7 @@ namespace KontrolaWizualnaRaport
         private readonly string bottomSummaryColName;
         private readonly string qtyColName;
 
+
         public ShowDetailsTable(DataTable dtSource, string description, string topSummaryColCname, string bottomSummaryColName, string qtyColName)
         {
             InitializeComponent();
@@ -26,6 +27,7 @@ namespace KontrolaWizualnaRaport
             this.topSummaryColCname = topSummaryColCname;
             this.bottomSummaryColName = bottomSummaryColName;
             this.qtyColName = qtyColName;
+
         }
 
         private void SmtShiftDetails_Load(object sender, EventArgs e)

@@ -68,6 +68,7 @@
             this.dataGridViewTopSummary.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewTopSummary.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewTopSummary.Name = "dataGridViewTopSummary";
+            this.dataGridViewTopSummary.RowHeadersVisible = false;
             this.dataGridViewTopSummary.Size = new System.Drawing.Size(194, 324);
             this.dataGridViewTopSummary.TabIndex = 1;
             // 
@@ -107,10 +108,11 @@
             this.dataGridViewBottomSummary.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewBottomSummary.Location = new System.Drawing.Point(3, 333);
             this.dataGridViewBottomSummary.Name = "dataGridViewBottomSummary";
+            this.dataGridViewBottomSummary.RowHeadersVisible = false;
             this.dataGridViewBottomSummary.Size = new System.Drawing.Size(194, 324);
             this.dataGridViewBottomSummary.TabIndex = 4;
             // 
-            // SmtShiftDetails
+            // ShowDetailsTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -118,7 +120,7 @@
             this.Controls.Add(this.dataGridViewShiftDetails);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel1);
-            this.Name = "SmtShiftDetails";
+            this.Name = "ShowDetailsTable";
             this.Text = "Widok szczegółowy";
             this.Load += new System.EventHandler(this.SmtShiftDetails_Load);
             this.panel1.ResumeLayout(false);

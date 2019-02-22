@@ -59,7 +59,7 @@ namespace KontrolaWizualnaRaport
             Int32 result = 0;
             if (cell.Value != null)
             {
-                Int32.TryParse(cell.Value.ToString(), out result);
+                Int32.TryParse(cell.Value.ToString().Replace(" ",""), out result);
             }
 
             return result;
@@ -138,7 +138,7 @@ namespace KontrolaWizualnaRaport
             return cellsList.ToArray();
         }
 
-        public static DataTable AgregateCellsTables(DataGridView grid, DataGridViewCell startCell)
+        public static DataTable AgregateCellsTables(DataGridView grid, DataGridViewCell startCell, string[] colNameWithTags)
         {
             DataTable result = null;
             
@@ -154,6 +154,7 @@ namespace KontrolaWizualnaRaport
                 foreach (DataGridViewCell cell in grid.Rows[r].Cells)
                 {
                     if (cell.Tag == null) continue;
+                    if (!colNameWithTags.Contains(cell.OwningColumn.Name)) continue;
                     DataTable cellTable = (DataTable)cell.Tag;
                     if (result==null) {
                         result = cellTable.Clone();

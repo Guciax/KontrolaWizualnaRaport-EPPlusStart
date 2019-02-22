@@ -16,15 +16,15 @@ namespace KontrolaWizualnaRaport
 {
     public partial class WasteReasonDetails : Form
     {
-        private readonly WastePerReasonStructure inputWasteData;
-        private readonly string title;
+        private readonly List<MST.MES.OrderStructureByOrderNo.OneOrderData> inputWasteData;
+        private readonly string reason;
         private Dictionary<string, List<FileInfo>> imagesPerLot = new Dictionary<string, List<FileInfo>>();
 
-        public WasteReasonDetails(WastePerReasonStructure inputWasteData, string reason)
+        public WasteReasonDetails(List<MST.MES.OrderStructureByOrderNo.OneOrderData> inputWasteData, string reason)
         {
             InitializeComponent();
             this.inputWasteData = inputWasteData;
-            this.title = reason;
+            this.reason = reason;
         }
 
         private void WasteReasonDetails_Load(object sender, EventArgs e)
@@ -34,9 +34,8 @@ namespace KontrolaWizualnaRaport
             sourceTable.Columns.Add("Ng");
             sourceTable.Columns.Add("LOT");
             sourceTable.Columns.Add("Model");
-            sourceTable.Columns.Add("Data");
+            sourceTable.Columns.Add("Data SMT");
             sourceTable.Columns.Add("LiniaSMT");
-            sourceTable.Columns.Add("Operator");
             //sourceTable.Columns.Add("Zdjecia");
 
 
@@ -45,36 +44,34 @@ namespace KontrolaWizualnaRaport
             Dictionary<string, Int32> qtyPerModel = new Dictionary<string, int>();
             Dictionary<string, Int32> qtyPerLine = new Dictionary<string, int>();
 
-            foreach (var lot in inputWasteData.Lots)
+            foreach (var lot in inputWasteData.OrderByDescending(o=>o.smt.latestEnd))
             {
-                string model = lot.Model;
-                string line = lot.SmtLine;
+                string model = lot.kitting.modelId_12NCFormat;
+                string line = string.Join(", ", lot.smt.smtLinesInvolved);
 
                 if (!qtyPerLine.ContainsKey(line)) qtyPerLine.Add(line, 0);
                 if (!qtyPerModel.ContainsKey(model)) qtyPerModel.Add(model, 0);
 
-                Int32 qty = lot.WastePerReason[title];
+                Int32 qty = lot.visualInspection.allReasons[reason];
                 qtyPerLine[line] += qty;
                 qtyPerModel[model] += qty;
 
-                var imageList = VIOperations.TryGetFileInfoOfImagesForLot(lot.NumerZlecenia, lot.RealDateTime.ToString("dd-MM-yyyy"));
-                if (imageList.Count>0)
+                var imageList = VIOperations.TryGetFileInfoOfImagesForLot(lot.kitting.orderNo, lot.visualInspection.ngScrapList.First().ngRegistrationDate.ToString("dd-MM-yyyy"));
+                if (imageList.Count > 0) 
                 {
-                    if (!imagesPerLot.ContainsKey(lot.NumerZlecenia))
+                    if (!imagesPerLot.ContainsKey(lot.kitting.orderNo))
                     {
-                        imagesPerLot.Add(lot.NumerZlecenia, new List<FileInfo>());
+                        imagesPerLot.Add(lot.kitting.orderNo, new List<FileInfo>());
                     }
-                    imagesPerLot[lot.NumerZlecenia].AddRange(imageList);
+                    imagesPerLot[lot.kitting.orderNo].AddRange(imageList);
                 }
                 
-                sourceTable.Rows.Add(lot.GoodQty, lot.WastePerReason[title], lot.NumerZlecenia, lot.Model, lot.RealDateTime, lot.SmtLine, lot.Oper);
+                sourceTable.Rows.Add(lot.smt.totalManufacturedQty - lot.visualInspection.ngCount - lot.visualInspection.scrapCount, qty, lot.kitting.orderNo, model, lot.smt.latestEnd, string.Join(", ", lot.smt.smtLinesInvolved) );
             }
 
-            DataView dv = sourceTable.DefaultView;
-            dv.Sort = "Dobrych desc";
-            dataGridView1.DataSource = dv.ToTable();
+            dataGridView1.DataSource = sourceTable;
 
-            label1.Text = title;
+            label1.Text = reason;
 
             DataTable modelSource = new DataTable();
             modelSource.Columns.Add("Model");

@@ -83,7 +83,26 @@ namespace KontrolaWizualnaRaport.CentalDataStorage
                     DataContainer.sqlDataByOrder[reworkEntry.Key].rework = reworkEntry.Value;
                     }
                 }
+
+            if (DataContainer.sqlDataByProcess.Boxing != null)
+            {
+                foreach (var boxingEntry in DataContainer.sqlDataByProcess.Boxing)
+                {
+                    if (!DataContainer.sqlDataByProcess.Kitting.ContainsKey(boxingEntry.Key)) continue;
+                    if (!DataContainer.sqlDataByOrder.ContainsKey(boxingEntry.Key))
+                    {
+                        DataContainer.sqlDataByOrder.Add(boxingEntry.Key, new OneOrderData());
+                    }
+                    if (DataContainer.sqlDataByProcess.Kitting[boxingEntry.Key] == null) continue;
+                    foreach (var pcb in boxingEntry.Value)
+                    {
+                        pcb.kittingInfo = DataContainer.sqlDataByProcess.Kitting[boxingEntry.Key];
+                    }
+                     
+                    DataContainer.sqlDataByOrder[boxingEntry.Key].ledsInBoxesList = boxingEntry.Value;
+                }
             }
+        }
 
 
 
