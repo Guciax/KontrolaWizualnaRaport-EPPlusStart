@@ -1,4 +1,5 @@
 ﻿using KontrolaWizualnaRaport.CentalDataStorage;
+using KontrolaWizualnaRaport.TabOperations.SMT_tabs;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +13,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static KontrolaWizualnaRaport.Form1;
+using static KontrolaWizualnaRaport.SharedComponents.Smt;
 using static KontrolaWizualnaRaport.SMTOperations;
+using static KontrolaWizualnaRaport.TabOperations.SMT_tabs.LedWasteTabOperations;
 
 namespace KontrolaWizualnaRaport
 {
@@ -284,14 +287,16 @@ namespace KontrolaWizualnaRaport
             public int ledsBom=0;
         }
 
-        public static void DrawLedWasteChart(SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary)
+        public static void DrawLedWasteChart()
         {
-            
+            SortedDictionary<DateTime, SortedDictionary<int, List<LotLedWasteStruc>>> ledWasteDictionary = LedWasteTabOperations.ledWasteDictionary;
             Chart chart = SharedComponents.Smt.LedWasteTab.chartLedWasteChart;
             string frequency = SharedComponents.Smt.LedWasteTab.comboBoxSmtLewWasteFreq.Text;
             Dictionary<string, bool> selectedLines = SharedComponents.Smt.LedWasteTab.selectedLines;
             Dictionary<string, Dictionary<string, double>> dataPointsProd = new Dictionary<string, Dictionary<string, double>>();
             Dictionary<string, Dictionary<string, ledUsedBom>> dataPointsWaste = new Dictionary<string, Dictionary<string, ledUsedBom>>();
+
+
             foreach (var smtLine in GlobalParameters.allLinesByHand)
             {
                 dataPointsWaste.Add(smtLine, new Dictionary<string, ledUsedBom>());
@@ -304,6 +309,7 @@ namespace KontrolaWizualnaRaport
             
             foreach (var dayEntry in ledWasteDictionary)
             {
+
                 string chartFrequency = SharedComponents.Smt.LedWasteTab.comboBoxSmtLewWasteFreq.Text;
                 string dateKey = dayEntry.Key.ToString("dd-MMM");
                 if (chartFrequency == "Tygodniowo") { dateKey = dateTools.WeekNumber(dayEntry.Key).ToString(); }
@@ -314,18 +320,25 @@ namespace KontrolaWizualnaRaport
                     var grouppedByLine = shiftEntry.Value.GroupBy(k => k.smtLine).ToDictionary(k => k.Key, v => v.ToList());
                     foreach (var smtLine in grouppedByLine)
                     {
-
+                        if (!selectedLines[smtLine.Key]) continue;
                         if (!dataPointsWaste[smtLine.Key].ContainsKey(dateKey))
                         {
                             dataPointsWaste[smtLine.Key].Add(dateKey, new ledUsedBom());
-                            if (!dataPointsWaste["Total"].ContainsKey(dateKey))
+                            if (selectedLines["Total"])
                             {
-                                dataPointsWaste["Total"].Add(dateKey, new ledUsedBom());
+                                if (!dataPointsWaste["Total"].ContainsKey(dateKey))
+                                {
+                                    dataPointsWaste["Total"].Add(dateKey, new ledUsedBom());
+                                }
                             }
                         }
                         dataPointsWaste[smtLine.Key][dateKey].ledsUsed += smtLine.Value.Select(o => o.ledsUsed).Sum();
                         dataPointsWaste[smtLine.Key][dateKey].ledsBom += smtLine.Value.Select(o => o.ledsUsageFromBom).Sum();
-                        dataPointsWaste["Total"][dateKey].ledsBom += smtLine.Value.Select(o => o.ledsUsageFromBom).Sum();
+                        if (selectedLines["Total"])
+                        {
+                            dataPointsWaste["Total"][dateKey].ledsBom += smtLine.Value.Select(o => o.ledsUsageFromBom).Sum();
+                        }
+                        
                     }
                 }
             }
@@ -437,6 +450,7 @@ namespace KontrolaWizualnaRaport
 
         public static void DrawWasteLevel()
         {
+            if (DataContainer.VisualInspection.wasteReasonsByLineThenDateKey == null) return;
             var filteredOrders = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
             var selectedLines = SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines;
 

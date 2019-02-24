@@ -71,18 +71,14 @@ namespace KontrolaWizualnaRaport
 
         public static string productionMonthName(int weekNumber, int year)
         {
+
             int week = weekNumber - (year - 2000) * 100;
             DateTime monday = FirstDateOfWeekISO8601(year, week);
-            List<int> months = new List<int>();
+            DateTime wednesday = monday.AddDays(2);
 
-            for (int i = 0; i < 5; i++)
-            {
-                DateTime nextDay = monday.AddDays(i);
-                months.Add(nextDay.Month);
-            }
-            DateTime date = new DateTime(year, (int)Math.Round(months.Average(), 0), 1);
+            var result = wednesday.ToString("MMM");
 
-            return  date.ToString("MMM");
+            return result;
         }
 
         public class dateShiftNo

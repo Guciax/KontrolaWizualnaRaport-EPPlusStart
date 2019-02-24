@@ -72,6 +72,7 @@
     <Compile Include="TabOperations\BoxingOperations.cs" />
     <Compile Include="TabOperations\ChangeOverTools.cs" />
     <Compile Include="Charting.cs" />
+    <Compile Include="TabOperations\SMT tabs\LedWasteTab.cs" />
     <Compile Include="TabOperations\ViDataLoader.cs" />
     <Compile Include="dataStructure.cs" />
     <Compile Include="DateTimeParser.cs" />
@@ -113,7 +114,7 @@
       <DependentUpon>SimpleDetailsDT.cs</DependentUpon>
     </Compile>
     <Compile Include="TabOperations\Rework.cs" />
-    <Compile Include="TabOperations\SMTOperations.cs" />
+    <Compile Include="TabOperations\SMT tabs\SMTOperations.cs" />
     <Compile Include="Forms\ShowDetailsTable.cs">
       <SubType>Form</SubType>
     </Compile>

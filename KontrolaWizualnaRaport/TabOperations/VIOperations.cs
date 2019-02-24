@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms.VisualStyles;
 using static KontrolaWizualnaRaport.DgvImageButtonCell;
+using static KontrolaWizualnaRaport.Form1;
 
 namespace KontrolaWizualnaRaport
 {
@@ -61,74 +62,8 @@ namespace KontrolaWizualnaRaport
             )
         {
             DataContainer.VisualInspection.finishedOrders = DataContainer.sqlDataByOrder.Where(o => o.Value.smt.ledsUsed > 0).ToDictionary(x=>x.Key, v=>v.Value);
-            
-            
-            //comboBoxViOperatorsCapa.Items.AddRange(CreateOperatorsList(masterVITable).ToArray());
-            //lotToSmtLine = SQLoperations.lotToSmtLine(80); // to remove???
-            //inspectionData = ViDataLoader.LoadData(masterVITable, lotToSmtLine, lotModelDictionary);
 
-            //string[] smtLines = lotToSmtLine.Select(l => l.Value).Distinct().OrderBy(o => o).ToArray();
-
-            //foreach (var smtLine in smtLines)
-            //{
-            //    checkedListBoxViWasteLevelSmtLines.Items.Add(smtLine, true);
-
-            //    checkedListBoxViReasons.Items.Add(smtLine, true);
-            //    cBListViReasonAnalysesSmtLines.Items.Add(smtLine, true);
-            //    cBListViModelAnalysesSmtLines.Items.Add(smtLine, true);
-            //}
-            
-            //comboBoxModel.Items.AddRange(lotModelDictionary.Select(m => m.Value.Replace("LLFML", "")).Distinct().OrderBy(o => o).ToArray());
-
-            //dateTimePickerPrzyczynyOdpaduOd.Value = DateTime.Now.AddDays(-30);
-            //dateTimePickerWasteLevelBegin.Value = DateTime.Now.AddDays(-30);
-            //comboBoxViOperatorsCapa.SelectedIndex = comboBoxViOperatorsCapa.Items.IndexOf("Wszyscy");
-
-            //dataGridViewDuplikaty.DataSource = SzukajDuplikatow(inspectionData);
-            //dgvTools.ColumnsAutoSize(dataGridViewDuplikaty, DataGridViewAutoSizeColumnMode.AllCells);
-            //dataGridViewDuplikaty.Sort(dataGridViewDuplikaty.Columns[0], ListSortDirection.Descending);
-            //dgvTools.ColumnsAutoSize(dataGridViewDuplikaty, DataGridViewAutoSizeColumnMode.AllCells);
-
-            //dataGridViewPomylkiIlosc.DataSource = PomylkiIlosci(lotToOrderedQty, inspectionData);
-            //dgvTools.ColumnsAutoSize(dataGridViewPomylkiIlosc, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
-
-            //dataGridViewPowyzej50.DataSource = MoreThan50(numericUpDownMoreThan50Scrap, numericUpDownMoreThan50Ng, lotModelDictionary, inspectionData);
-            //dgvTools.ColumnsAutoSize(dataGridViewPowyzej50, DataGridViewAutoSizeColumnMode.AllCells);
-            //dataGridViewPowyzej50.Sort(dataGridViewPowyzej50.Columns["Ile"], ListSortDirection.Descending);
-
-
-            //HashSet<string> wasteReasonList = new HashSet<string>();
-            //foreach (var wasteReason in inspectionData)
-            //{
-            //    foreach (var r in wasteReason.WastePerReason)
-            //    {
-            //        wasteReasonList.Add(r.Key.Replace("ng", "").Replace("scrap", ""));
-            //    }
-            //    break;
-            //}
-
-            //cBListViReasonList.Items.AddRange(wasteReasonList.ToArray());
-
-
-
-            //comboBoxViModelAnalFamily.Items.AddRange(modelFamilyList(inspectionData, lotModelDictionary));
-            //comboBoxViModelAnalModel.Items.AddRange(uniqueModelsList(inspectionData, lotModelDictionary));
-
-            //dataGridViewBledyNrZlec.DataSource = UnknownOrderNumberTable(lotModelDictionary,  inspectionData);
-
-            //VIOperations.ngRatePerOperator(inspectionData, dateTimePickerViOperatorEfiiciencyStart.Value, dateTimePickerViOperatorEfiiciencyEnd.Value, dataGridViewViOperatorsTotal);
-
-            //SMTOperations.autoSizeGridColumns(dataGridViewViOperatorsTotal);
-
-            //dataGridViewMstOrders.DataSource = VIOperations.checkMstViIfDone(mstOrders, inspectionData);
-
-            //Rework.FillOutGridDailyProdReport(dataGridViewReworkDailyReport, dataGridViewReworkByOperator, SQLoperations.GetLedRework());
-            //RefreshReworkChart(inspectionData, chartServiceVsNg, chartDaily, dataGridViewServiceVsNg);
-
-            //FillOutGridLatestLots(gridLatestLots, inspectionData);
         }
-
-        
 
         public static void RefreshViWasteLevelChart()
         {
@@ -161,6 +96,7 @@ namespace KontrolaWizualnaRaport
                 }
                 string lineKey = orderEntry.Value.smt.smtLinesInvolved.First();
 
+
                 foreach (var lineEntry in grouppedByLineThenDate)
                 {
                     if (!lineEntry.Value.ContainsKey(dateKey))
@@ -181,7 +117,8 @@ namespace KontrolaWizualnaRaport
 
         public static void FilloutWasteLevelGrid()
         {
-            DataGridView grid = SharedComponents.VisualInspection.PoziomOdpaduTab.dataGridViewWasteLevel;
+            CustomDataGridView grid = SharedComponents.VisualInspection.PoziomOdpaduTab.dataGridViewWasteLevel;
+            grid.SuspendLayout();
             grid.Rows.Clear();
             grid.Rows.Add("Data", "Prod.", "NG", "NG%");
             foreach (DataGridViewCell cell in grid.Rows[0].Cells)
@@ -259,6 +196,7 @@ namespace KontrolaWizualnaRaport
 
 
             dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
+            grid.ResumeLayout();
         }
 
 
@@ -266,10 +204,6 @@ namespace KontrolaWizualnaRaport
         {
             Rework.FillOutServiceVsNgGridAndDrawChart(inspectionData, chartServiceVsNg, chartDaily, dataGridViewServiceVsNg);
         }
-
-
-
-        
 
         public static string[] Load12hOperatorsList()
         {

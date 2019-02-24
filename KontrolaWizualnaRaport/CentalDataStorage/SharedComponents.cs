@@ -102,7 +102,7 @@ namespace KontrolaWizualnaRaport
                 public static RadioButton radioButtonDaily;
                 public static RadioButton radioButtonWeekly;
                 public static RadioButton radioButtonViLinesCumulated;
-                public static DataGridView dataGridViewWasteLevel;
+                public static CustomDataGridView dataGridViewWasteLevel;
                 public static Chart chartWasteLevel;
                 public static CustomCheckedListBox checkedListBoxViWasteLevelSmtLines;
                 public static VScrollBar vScrollBarZoomChart;

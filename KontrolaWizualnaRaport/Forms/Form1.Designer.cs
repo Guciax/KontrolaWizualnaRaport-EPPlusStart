@@ -697,7 +697,7 @@
             this.radioButtonCapaLGI.Checked = true;
             this.radioButtonCapaLGI.Location = new System.Drawing.Point(21, 5);
             this.radioButtonCapaLGI.Name = "radioButtonCapaLGI";
-            this.radioButtonCapaLGI.Size = new System.Drawing.Size(42, 17);
+            this.radioButtonCapaLGI.Size = new System.Drawing.Size(39, 17);
             this.radioButtonCapaLGI.TabIndex = 1;
             this.radioButtonCapaLGI.TabStop = true;
             this.radioButtonCapaLGI.Text = "LG";
@@ -3002,9 +3002,11 @@
             this.dataGridViewSmtLedDropped.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSmtLedDropped.Location = new System.Drawing.Point(3, 33);
             this.dataGridViewSmtLedDropped.Name = "dataGridViewSmtLedDropped";
+            this.dataGridViewSmtLedDropped.ReadOnly = true;
             this.dataGridViewSmtLedDropped.RowHeadersVisible = false;
             this.dataGridViewSmtLedDropped.Size = new System.Drawing.Size(401, 266);
             this.dataGridViewSmtLedDropped.TabIndex = 0;
+            this.dataGridViewSmtLedDropped.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedDropped_CellDoubleClick);
             // 
             // panel34
             // 
@@ -3091,6 +3093,7 @@
             this.checkBoxSmt4.TabIndex = 9;
             this.checkBoxSmt4.Text = "SMT4";
             this.checkBoxSmt4.UseVisualStyleBackColor = false;
+            this.checkBoxSmt4.CheckStateChanged += new System.EventHandler(this.checkBoxSmt1_CheckStateChanged);
             // 
             // checkBoxTotal
             // 
@@ -3101,9 +3104,9 @@
             this.checkBoxTotal.ForeColor = System.Drawing.Color.White;
             this.checkBoxTotal.Location = new System.Drawing.Point(10, 193);
             this.checkBoxTotal.Name = "checkBoxTotal";
-            this.checkBoxTotal.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxTotal.Size = new System.Drawing.Size(50, 17);
             this.checkBoxTotal.TabIndex = 8;
-            this.checkBoxTotal.Text = "  Total";
+            this.checkBoxTotal.Text = "Total";
             this.checkBoxTotal.UseVisualStyleBackColor = false;
             this.checkBoxTotal.CheckStateChanged += new System.EventHandler(this.checkBoxSmt1_CheckStateChanged);
             // 

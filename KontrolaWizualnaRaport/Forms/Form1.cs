@@ -1,5 +1,6 @@
 ﻿using KontrolaWizualnaRaport.CentalDataStorage;
 using KontrolaWizualnaRaport.Forms;
+using KontrolaWizualnaRaport.TabOperations.SMT_tabs;
 using MST.MES;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,6 @@ namespace KontrolaWizualnaRaport
 {
     public partial class Form1 : Form
     {
-
         public Form1()
         {
             InitializeComponent();
@@ -34,11 +34,7 @@ namespace KontrolaWizualnaRaport
 
             CustomChecedListBoxStuff.SetUpListBox(tabPagePoziomOdpadu, checkedListBoxViWasteLevelSmtLines, reDrawWasteLevel);
             CustomChecedListBoxStuff.SetUpListBox(tabPagePrzyczynyOdpadu, checkedListBoxViWasteReasonsSmtLines, reDrawWasteReasons);
-
-            
         }
-
-
 
         public delegate void ActionOnCheck();
 
@@ -77,36 +73,15 @@ namespace KontrolaWizualnaRaport
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dateTimePickerSmtStart.Value = DateTime.Now.Date.AddDays(-90);
-            dateTimePickerStart.Value = DateTime.Now.AddDays(-30);
+            
 
-
-            SharedComponents.Smt.cbSmtLg = cbSmtLg;
-            SharedComponents.Smt.cbSmtMst = cbSmtMst;
-            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt1);
-            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt2);
-            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt3);
-            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt4);
-            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt5);
-            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt6);
-            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt7);
-            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt8);
-            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxTotal);
-
-            DataContainer.sqlDataByProcess.Kitting = MST.MES.SqlDataReaderMethods.Kitting.GetOrdersInfoByDataReader(90);
-            Debug.WriteLine("testID");
-            DataContainer.sqlDataByProcess.Smt = MST.MES.SqlDataReaderMethods.SMT.GetOrdersDateToDate(dateTimePickerSmtStart.Value.Date, dateTimePickerTestEnd.Value.Date);
-            Debug.WriteLine("smt");
-            DataContainer.sqlDataByProcess.VisualInspection = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecords(90);
-            Debug.WriteLine("vi");
-            //sqlDataByProcess.Test = MST.MES.SqlDataReaderMethods.LedTest.GetTestRecords(10, testerIdToName);
-            Debug.WriteLine("test");
-            //sqlDataByProcess.Rework = MST.MES.SqlDataReaderMethods.LedRework.GetReworkList(90);
-            DataContainer.sqlDataByProcess.Boxing = MST.MES.SqlDataReaderMethods.Boxing.GetMstBoxingForTimePeriod(dateTimePickerStart.Value, dateTimePickerEnd.Value);
-            MST.MES.SqlDataReaderMethods.Boxing.AddLgBoxesToExisting(DataContainer.sqlDataByProcess,dateTimePickerStart.Value, dateTimePickerEnd.Value);
-            DataMerger.MergeData();
-
-            DataContainer.mesModels = MST.MES.SqlDataReaderMethods.MesModels.allModels();
+            foreach (var cb in panelSmtLedWasteCheckContainer.Controls)
+            {
+                if (cb is CheckBox)
+                {
+                    (cb as CheckBox).BackColor = GlobalParameters.smtLinesColors[(cb as CheckBox).Text.Trim()];
+                }
+            }
 
             SharedComponents.Kitting.checkBoxKittingLg = checkBoxKittingLg;
             SharedComponents.Kitting.checkBoxKittingMst = checkBoxKittingMst;
@@ -128,7 +103,19 @@ namespace KontrolaWizualnaRaport
             SharedComponents.Smt.productionReportTab.dataGridViewSmtProduction = dataGridViewSmtProduction;
             SharedComponents.Smt.productionReportTab.rbModelsCount = rbModelsCount;
             SharedComponents.Smt.smtStartDate = dateTimePickerSmtStart;
+            SharedComponents.Smt.smtStartDate.Value = DateTime.Now.AddDays(-30);
             SharedComponents.Smt.smtEndDate = dateTimePickerSmtEnd;
+            SharedComponents.Smt.cbSmtLg = cbSmtLg;
+            SharedComponents.Smt.cbSmtMst = cbSmtMst;
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt1);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt2);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt3);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt4);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt5);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt6);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt7);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt8);
+            SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxTotal);
             SharedComponents.Smt.StencilsTab.dataGridViewSmtStencilUsage = dataGridViewSmtStencilUsage;
 
             SharedComponents.VisualInspection.PoziomOdpaduTab.chartWasteLevel = chartWasteLevel;
@@ -137,6 +124,7 @@ namespace KontrolaWizualnaRaport
             SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines = checkedListBoxViWasteLevelSmtLines;
             SharedComponents.VisualInspection.PoziomOdpaduTab.dataGridViewWasteLevel = dataGridViewWasteLevel;
             SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin = dateTimePickerWasteLevelBegin;
+            SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin.Value = DateTime.Now.AddDays(-30);
             SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelEnd = dateTimePickerWasteLevelEnd;
             SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonDaily = radioButtonDaily;
             SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated = radioButtonViLinesCumulated;
@@ -155,22 +143,37 @@ namespace KontrolaWizualnaRaport
             SharedComponents.Boxing.cbLg = cbLg;
             SharedComponents.Boxing.cbMst = cbMst;
             SharedComponents.Boxing.datetimePickerStart = dateTimePickerStart;
+            SharedComponents.Boxing.datetimePickerStart.Value = DateTime.Now.AddDays(-30);
             SharedComponents.Boxing.datetimePickerEnd = dateTimePickerEnd;
             SharedComponents.Boxing.rbComponentsCount = rbComponentsCount;
             SharedComponents.Boxing.rbModules = rbModules;
             SharedComponents.Boxing.dataGridViewBoxing = dataGridViewBoxing;
 
+            DataContainer.mesModels = MST.MES.SqlDataReaderMethods.MesModels.allModels();
+            DataContainer.sqlDataByProcess.Kitting = MST.MES.SqlDataReaderMethods.Kitting.GetOrdersInfoByDataReader(90);
+            Debug.WriteLine("kit");
+            DataContainer.sqlDataByProcess.Smt = MST.MES.SqlDataReaderMethods.SMT.GetOrdersDateToDate(dateTimePickerSmtStart.Value.Date, dateTimePickerTestEnd.Value.Date);
+            Debug.WriteLine("smt");
+            DataContainer.sqlDataByProcess.VisualInspection = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecordsForTimePerdiod(SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin.Value, SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelEnd.Value);
+            Debug.WriteLine("vi");
+            //sqlDataByProcess.Test = MST.MES.SqlDataReaderMethods.LedTest.GetTestRecords(10, testerIdToName);
+            Debug.WriteLine("test");
+            //sqlDataByProcess.Rework = MST.MES.SqlDataReaderMethods.LedRework.GetReworkList(90);
+            DataContainer.sqlDataByProcess.Boxing = MST.MES.SqlDataReaderMethods.Boxing.GetMstBoxingForTimePeriod(dateTimePickerStart.Value, dateTimePickerEnd.Value);
+            MST.MES.SqlDataReaderMethods.Boxing.AddLgBoxesToExisting(DataContainer.sqlDataByProcess,dateTimePickerStart.Value, dateTimePickerEnd.Value);
+            DataMerger.MergeData();
+
             //---------------OLD
 
-            dateTimePickerViOperatorEfiiciencyStart.Value = DateTime.Now.AddDays(-7);
-            cBListViReasonAnalysesSmtLines.Parent = tabPage6;
-            cBListViReasonList.Parent = tabPage6;
-            cBListViReasonAnalysesSmtLines.BringToFront();
-            cBListViReasonList.BringToFront();
+            //dateTimePickerViOperatorEfiiciencyStart.Value = DateTime.Now.AddDays(-7);
+            //cBListViReasonAnalysesSmtLines.Parent = tabPage6;
+            //cBListViReasonList.Parent = tabPage6;
+            //cBListViReasonAnalysesSmtLines.BringToFront();
+            //cBListViReasonList.BringToFront();
 
 
-            cBListViModelAnalysesSmtLines.Parent = tabPage7;
-            cBListViModelAnalysesSmtLines.BringToFront();
+            //cBListViModelAnalysesSmtLines.Parent = tabPage7;
+            //cBListViModelAnalysesSmtLines.BringToFront();
         }
 
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
@@ -181,7 +184,7 @@ namespace KontrolaWizualnaRaport
                     {
                         if (smtModelLineQuantity.Count < 1)
                         {
-                            SMTOperations.ReLoadSmtTab();
+                            SMTOperations.PrepareFreshSmtData();
 
                         }
                             break;
@@ -261,8 +264,7 @@ namespace KontrolaWizualnaRaport
 
         private void buttonSmtRefresh_Click(object sender, EventArgs e)
         {
-            smtRecords = SQLoperations.GetSmtRecordsFromDb(dateTimePickerSmtStart.Value, dateTimePickerSmtEnd.Value);
-            SMTOperations.ReLoadSmtTab();
+            DownloadSqlDataAndMerge();
         }
 
         
@@ -931,25 +933,18 @@ namespace KontrolaWizualnaRaport
                     lineOptions.Add(c.Text.Trim(), ((CheckBox)c).Checked);
                 }
             }
-            Charting.DrawLedWasteChart(ledWasteDictionary);
+            Charting.DrawLedWasteChart();
         }
 
         private void checkBoxSmt1_CheckStateChanged(object sender, EventArgs e)
         {
-            Dictionary<string, bool> lineOptions = new Dictionary<string, bool>();
-            foreach (Control c in panelSmtLedWasteCheckContainer.Controls)
-            {
-                if ((c is CheckBox))
-                {
-                    lineOptions.Add(c.Text.Trim(), ((CheckBox)c).Checked);
-                }
-            }
-            Charting.DrawLedWasteChart(ledWasteDictionary);
+
+            Charting.DrawLedWasteChart();
         }
 
         private void comboBoxSmtLedWasteLine_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SMTOperations.FillOutLedWasteByModel(ledWasteDictionary, dataGridViewSmtLedWasteByModel, comboBoxSmtLedWasteLine.Text);
+            LedWasteTabOperations.FillOutLedWasteByModel(dataGridViewSmtLedWasteByModel, comboBoxSmtLedWasteLine.Text);
         }
 
         private void dataGridViewSmtLedWasteByModel_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -965,7 +960,7 @@ namespace KontrolaWizualnaRaport
 
         private void comboBoxSmtLedWasteLines_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SMTOperations.FillOutLedWasteTotalByLine(ledWasteDictionary, dataGridViewSmtLedWasteTotalPerLine, comboBoxSmtLedWasteModels.Text);
+            LedWasteTabOperations.FillOutLedWasteTotalByLine( dataGridViewSmtLedWasteTotalPerLine, comboBoxSmtLedWasteModels.Text);
         }
 
         private void dataGridViewSmtLedWasteTotalPerLine_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1486,7 +1481,7 @@ namespace KontrolaWizualnaRaport
 
         private void cbSmtMst_CheckedChanged(object sender, EventArgs e)
         {
-            SMTOperations.ReLoadSmtTab();
+            SMTOperations.ReloadProductionReportsGrid();
         }
 
         private void checkBoxViLevelMst_CheckedChanged(object sender, EventArgs e)
@@ -1496,7 +1491,7 @@ namespace KontrolaWizualnaRaport
 
         private void rbModelsCount_CheckedChanged(object sender, EventArgs e)
         {
-            SMTOperations.ReLoadSmtTab();
+            SMTOperations.ReloadProductionReportsGrid();
         }
 
         private void checkBoxViReasonsMst_CheckedChanged(object sender, EventArgs e)
@@ -1517,6 +1512,29 @@ namespace KontrolaWizualnaRaport
         private void cbLg_CheckedChanged(object sender, EventArgs e)
         {
             BoxingOperations.FillOutBoxingLedQty();
+        }
+
+        private void dataGridViewSmtLedDropped_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex > -1 & e.RowIndex > -1)
+            {
+                string description = "";
+                DataGridViewCell cell = dataGridViewSmtLedDropped.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                if (cell.Tag != null)
+                {
+                    description = $"{dataGridViewSmtLedDropped.Rows[e.RowIndex].Cells["Data"].Value.ToString()} Linia {dataGridViewSmtLedDropped.Columns[e.ColumnIndex].Name}";
+                }
+                else
+                {
+                    description = $"{dataGridViewSmtLedDropped.Columns[e.ColumnIndex].Name}: {dataGridViewSmtLedDropped.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()}";
+                }
+                DataTable tagTable = dgvTools.AgregateCellsTables(dataGridViewSmtLedDropped, cell, new string[] { "SMT2", "SMT3", "SMT4", "SMT5", "SMT6", "SMT7", "SMT8" });
+                if (tagTable != null)
+                {
+                    ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, description, "Model", "Linia", "Odpad szt.");
+                    detailsForm.ShowDialog();
+                }
+            }
         }
     }
 }

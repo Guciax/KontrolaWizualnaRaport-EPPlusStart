@@ -20,5 +20,10 @@ namespace KontrolaWizualnaRaport
             public static Dictionary<string, MST.MES.OrderStructureByOrderNo.OneOrderData> finishedOrders;
             public static Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>> wasteReasonsByLineThenDateKey;
         }
+
+        public class Smt
+        {
+            public static SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortedTableByDayAndShift;
+        }
     }
 }
