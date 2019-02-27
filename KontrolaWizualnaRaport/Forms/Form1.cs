@@ -138,7 +138,7 @@ namespace KontrolaWizualnaRaport
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkedListBoxViWasteReasonsSmtLines = checkedListBoxViWasteReasonsSmtLines;
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dataGridViewNgScrapReasons = dataGridViewNgScrapReasons;
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduOd = dateTimePickerPrzyczynyOdpaduOd;
-            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerWasteLevelBegin = dateTimePickerWasteLevelBegin;
+            SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduDo = dateTimePickerPrzyczynyOdpaduDo;
 
             SharedComponents.Boxing.cbLg = cbLg;
             SharedComponents.Boxing.cbMst = cbMst;
@@ -234,7 +234,7 @@ namespace KontrolaWizualnaRaport
                     {
                         if (inspectionData.Count < 1)
                         {
-                            VIOperations.RefreshViWasteLevelChart();
+                            VIOperations.RefreshViWasteLevelTab();
                             Charting.DrawWasteReasonsCHart();
                         }
                         break;
@@ -330,21 +330,17 @@ namespace KontrolaWizualnaRaport
         private void dateTimePickerPrzyczynyOdpaduOd_ValueChanged(object sender, EventArgs e)
         {
             Charting.DrawWasteReasonsCHart();
-            dataGridViewNgScrapReasons.Columns[0].Width = 150;
-            dataGridViewNgScrapReasons.Columns[1].Width = 35;
         }
 
         private void dateTimePickerPrzyczynyOdpaduDo_ValueChanged(object sender, EventArgs e)
         {
             Charting.DrawWasteReasonsCHart();
-            dataGridViewNgScrapReasons.Columns[0].Width = 150;
-            dataGridViewNgScrapReasons.Columns[1].Width = 35;
         }
 
         private void dateTimePickerWasteLevelBegin_ValueChanged(object sender, EventArgs e)
         {
             Charting.DrawWasteLevel();
-            dgvTools.ColumnsAutoSize(dataGridViewWasteLevel, DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader);
+            
         }
 
         
@@ -371,7 +367,7 @@ namespace KontrolaWizualnaRaport
 
         private void dateTimePickerWasteLevelEnd_ValueChanged(object sender, EventArgs e)
         {
-
+            Charting.DrawWasteLevel();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -1401,7 +1397,7 @@ namespace KontrolaWizualnaRaport
 
         private void radioButtonDaily_CheckedChanged_1(object sender, EventArgs e)
         {
-            VIOperations.RefreshViWasteLevelChart();
+            VIOperations.RefreshViWasteLevelTab();
         }
 
         private void dataGridViewSmtProduction_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
@@ -1486,7 +1482,7 @@ namespace KontrolaWizualnaRaport
 
         private void checkBoxViLevelMst_CheckedChanged(object sender, EventArgs e)
         {
-            VIOperations.RefreshViWasteLevelChart();
+            VIOperations.RefreshViWasteLevelTab();
         }
 
         private void rbModelsCount_CheckedChanged(object sender, EventArgs e)
@@ -1533,6 +1529,20 @@ namespace KontrolaWizualnaRaport
                 {
                     ShowDetailsTable detailsForm = new ShowDetailsTable(tagTable, description, "Model", "Linia", "Odpad szt.");
                     detailsForm.ShowDialog();
+                }
+            }
+        }
+
+        private void dataGridViewWasteLevel_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1 & e.ColumnIndex > -1) {
+                DataGridViewCell cell = (sender as DataGridView).Rows[e.RowIndex].Cells[e.ColumnIndex];
+                if (cell.Tag != null) {
+                    SimpleDetailsDT detForm = new SimpleDetailsDT((DataTable)cell.Tag, 
+                                                                   dataGridViewWasteLevel.Rows[e.RowIndex].Cells[0].Value.ToString(),
+                                                                   4,
+                                                                   false);
+                    detForm.ShowDialog();
                 }
             }
         }

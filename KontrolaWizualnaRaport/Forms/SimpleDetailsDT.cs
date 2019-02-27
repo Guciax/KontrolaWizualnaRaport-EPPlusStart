@@ -42,8 +42,19 @@ namespace KontrolaWizualnaRaport
             
             label1.Text = title;
             SMTOperations.autoSizeGridColumns(dataGridView1);
+
             MakeInterlacedColors();
-            MakeImageHyperlinks();
+            if (hyperlinkPcb) {
+                MakeImageHyperlinks();
+            }
+
+            foreach (DataGridViewColumn col in dataGridView1.Columns) {
+                col.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            }
+
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
+            
         }
 
         

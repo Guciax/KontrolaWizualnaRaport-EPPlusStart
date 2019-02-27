@@ -251,6 +251,7 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
             grid.Columns.Clear();
             grid.Columns.Add("Data", "Data");
             grid.Columns.Add("Zm", "Zm");
+            grid.Columns.Add("SMT1", "SMT1");
             grid.Columns.Add("SMT2", "SMT2");
             grid.Columns.Add("SMT3", "SMT3");
             grid.Columns.Add("SMT4", "SMT4");
@@ -282,6 +283,7 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                         if (!wasteByLine.ContainsKey(line)) wasteByLine.Add(line, 0);
                     }
                     Dictionary<string, DataTable> tagPerLine = new Dictionary<string, DataTable>();
+                    tagPerLine.Add("SMT1", tagTableTemplate.Clone());
                     tagPerLine.Add("SMT2", tagTableTemplate.Clone());
                     tagPerLine.Add("SMT3", tagTableTemplate.Clone());
                     tagPerLine.Add("SMT4", tagTableTemplate.Clone());

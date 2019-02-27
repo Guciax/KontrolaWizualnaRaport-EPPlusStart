@@ -65,9 +65,10 @@ namespace KontrolaWizualnaRaport
 
         }
 
-        public static void RefreshViWasteLevelChart()
+        public static void RefreshViWasteLevelTab()
         {
             DataContainer.VisualInspection.finishedOrders = DataContainer.sqlDataByOrder.Where(o => o.Value.smt.ledsUsed > 0).OrderBy(o=>o.Value.kitting.endDate).ToDictionary(k => k.Key, v => v.Value);
+
             // group by date Key
             var grouppedByLineThenDate = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
             foreach (var smtLine in GlobalParameters.allLinesByHand)
@@ -80,7 +81,8 @@ namespace KontrolaWizualnaRaport
             foreach (var orderEntry in DataContainer.VisualInspection.finishedOrders)
             {
                 DateTime orderDate = orderEntry.Value.kitting.endDate;
-                if (orderDate.Year < 2017) continue;
+                if (orderDate.Year < 2017)
+                    continue;
                 string dateKey = "";
                 if (SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonDaily.Checked)
                 {
@@ -94,6 +96,7 @@ namespace KontrolaWizualnaRaport
                 {
                     dateKey = orderDate.ToString("MMM").ToUpper();
                 }
+
                 string lineKey = orderEntry.Value.smt.smtLinesInvolved.First();
 
 
@@ -108,95 +111,17 @@ namespace KontrolaWizualnaRaport
 
                 grouppedByLineThenDate[lineKey][dateKey].Add(orderEntry.Value);
                 grouppedByLineThenDate["Total"][dateKey].Add(orderEntry.Value);
+
             }
-            
+
+            var or = grouppedByLineThenDate.SelectMany(l => l.Value).SelectMany(d => d.Value)
+                .Select(o => o.kitting.orderNo).ToList();
+
+            var ord = grouppedByLineThenDate.SelectMany(l => l.Value).SelectMany(d => d.Value)
+                .Select(o => o.kitting.orderNo).Distinct().ToList();
+
             DataContainer.VisualInspection.wasteReasonsByLineThenDateKey = grouppedByLineThenDate;
             Charting.DrawWasteLevel();
-            FilloutWasteLevelGrid();
-        }
-
-        public static void FilloutWasteLevelGrid()
-        {
-            CustomDataGridView grid = SharedComponents.VisualInspection.PoziomOdpaduTab.dataGridViewWasteLevel;
-            grid.SuspendLayout();
-            grid.Rows.Clear();
-            grid.Rows.Add("Data", "Prod.", "NG", "NG%");
-            foreach (DataGridViewCell cell in grid.Rows[0].Cells)
-            {
-                cell.Style.BackColor = Color.Red;
-                cell.Style.ForeColor = Color.White;
-            }
-
-            Dictionary<string, double> ngPerDateKey = new Dictionary<string, double>();
-            Dictionary<string, double> scrapPerDateKey = new Dictionary<string, double>();
-            Dictionary<string, double> prodPerDateKey = new Dictionary<string, double>();
-
-            //foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
-            {
-                foreach (var dateEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey["Total"])
-                {
-
-                    //var ngRepaired = dateEntry.Value.SelectMany(o => o.visualInspection.ngScrapList).Where(ng => ng.reworkOK == true).Count();
-                    //double ngCount = dateEntry.Value.Select(o => o.visualInspection.ngCount).Sum();
-                    //double totalProduction = dateEntry.Value.Select(o => o.smt.totalManufacturedQty).Sum();
-                    //double scrapCount = dateEntry.Value.Select(o => o.visualInspection.scrapCount).Sum();
-                    double ngCount = 0;
-                    double totalProduction = 0;
-                    double scrapCount = 0;
-
-                    foreach (var order in dateEntry.Value)
-                    {
-                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelLg.Checked)
-                        {
-                            if (order.kitting.odredGroup == "LG") continue;
-                        }
-                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelMst.Checked)
-                        {
-                            if (order.kitting.odredGroup == "MST") continue;
-                        }
-                        if (!SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated.Checked)
-                        {
-                            if (!order.smt.smtLinesInvolved.Intersect(SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines).Any()) continue;
-                        }
-
-                        ngCount += order.visualInspection.ngCount;
-                        totalProduction += order.smt.totalManufacturedQty;
-                        scrapCount += order.visualInspection.scrapCount;
-                    }
-
-                    if (!ngPerDateKey.ContainsKey(dateEntry.Key)) ngPerDateKey.Add(dateEntry.Key, 0);
-                    if (!scrapPerDateKey.ContainsKey(dateEntry.Key)) scrapPerDateKey.Add(dateEntry.Key, 0);
-                    if (!prodPerDateKey.ContainsKey(dateEntry.Key)) prodPerDateKey.Add(dateEntry.Key, 0);
-
-                    ngPerDateKey[dateEntry.Key] += ngCount;
-                    scrapPerDateKey[dateEntry.Key] += scrapCount;
-                    prodPerDateKey[dateEntry.Key] += totalProduction;
-                }
-            }
-
-            foreach (var ng in ngPerDateKey)
-            {
-                grid.Rows.Add(ng.Key, prodPerDateKey[ng.Key], ngPerDateKey[ng.Key], Math.Round(ngPerDateKey[ng.Key] / prodPerDateKey[ng.Key] * 100, 2) + "%");
-            }
-
-            grid.Rows.Add();
-            grid.Rows.Add("Data", "Prod.", "SCR", "SCR%");
-
-            
-            foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count-1].Cells)
-            {
-                cell.Style.BackColor = Color.Black;
-                cell.Style.ForeColor = Color.White;
-            }
-
-            foreach (var scr in scrapPerDateKey)
-            {
-                grid.Rows.Add(scr.Key, prodPerDateKey[scr.Key], scrapPerDateKey[scr.Key], Math.Round(scrapPerDateKey[scr.Key] / prodPerDateKey[scr.Key] * 100, 2) + "%");
-            }
-
-
-            dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
-            grid.ResumeLayout();
         }
 
 

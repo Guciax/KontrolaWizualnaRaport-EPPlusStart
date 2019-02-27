@@ -154,7 +154,11 @@ namespace KontrolaWizualnaRaport
                     var month = dateTools.productionMonthName(week, dayEntry.Key.Year).ToUpper();
 
 
-                    grid.Rows.Add(month, week, dayEntry.Key.ToShortDateString(), shiftEntry.Key.ToString(),  qtyPerLine["SMT2"].ToString("#,0", nfi), qtyPerLine["SMT3"].ToString("#,0", nfi), qtyPerLine["SMT4"].ToString("#,0", nfi), qtyPerLine["SMT5"].ToString("#,0", nfi), qtyPerLine["SMT6"].ToString("#,0", nfi), qtyPerLine["SMT7"].ToString("#,0", nfi), qtyPerLine["SMT8"].ToString("#,0", nfi));
+                    grid.Rows.Add(month, week, dayEntry.Key.ToShortDateString(), shiftEntry.Key.ToString(),
+                        qtyPerLine["SMT1"].ToString("#,0", nfi), qtyPerLine["SMT2"].ToString("#,0", nfi),
+                        qtyPerLine["SMT3"].ToString("#,0", nfi), qtyPerLine["SMT4"].ToString("#,0", nfi),
+                        qtyPerLine["SMT5"].ToString("#,0", nfi), qtyPerLine["SMT6"].ToString("#,0", nfi),
+                        qtyPerLine["SMT7"].ToString("#,0", nfi), qtyPerLine["SMT8"].ToString("#,0", nfi));
 
                     Dictionary<string, DataTable> tagTablesPerLine = new Dictionary<string, DataTable>();
                     foreach (var smtLine in GlobalParameters.allLinesByHand)
@@ -162,9 +166,10 @@ namespace KontrolaWizualnaRaport
                         tagTablesPerLine.Add(smtLine, tagTableTemplate.Clone());
                     }
 
-                    foreach (var smtRecord in shiftEntry.Value)
-                    {
-                        tagTablesPerLine[smtRecord.smtLine].Rows.Add(smtRecord.smtStartDate, smtRecord.smtEndDate, smtRecord.smtLine, smtRecord.operatorSmt, smtRecord.orderInfo.orderNo, smtRecord.orderInfo.modelId, smtRecord.manufacturedQty, 0, smtRecord.stencilId);
+                    foreach (var smtRecord in shiftEntry.Value) {
+                        tagTablesPerLine[smtRecord.smtLine].Rows.Add(smtRecord.smtStartDate, smtRecord.smtEndDate,
+                            smtRecord.smtLine, smtRecord.operatorSmt, smtRecord.orderInfo.orderNo,
+                            smtRecord.orderInfo.modelId, smtRecord.manufacturedQty, 0, smtRecord.stencilId);
                     }
 
 

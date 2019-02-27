@@ -29,6 +29,6 @@ namespace KontrolaWizualnaRaport.CentalDataStorage
                 return DataContainer.sqlDataByProcess.Smt.SelectMany(o => o.Value.smtOrders).Select(o => o.smtLine).Distinct().ToArray();
             }
         }
-        public static string[] allLinesByHand = { "SMT2", "SMT3", "SMT4", "SMT5", "SMT6", "SMT7", "SMT8" };
+        public static string[] allLinesByHand = { "SMT1", "SMT2", "SMT3", "SMT4", "SMT5", "SMT6", "SMT7", "SMT8" };
     }
 }

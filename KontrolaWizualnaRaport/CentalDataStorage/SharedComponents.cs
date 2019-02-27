@@ -85,7 +85,7 @@ namespace KontrolaWizualnaRaport
             public class PrzyczynyOdpaduTab
             {
                 public static DateTimePicker dateTimePickerPrzyczynyOdpaduOd;
-                public static DateTimePicker dateTimePickerWasteLevelBegin;
+                public static DateTimePicker dateTimePickerPrzyczynyOdpaduDo;
                 public static CustomCheckedListBox checkedListBoxViWasteReasonsSmtLines;
                 public static CustomDataGridView dataGridViewNgScrapReasons;
                 public static Chart chartPrzyczynyOdpaduNg;
