@@ -1,5 +1,6 @@
 ﻿using KontrolaWizualnaRaport.CentalDataStorage;
 using KontrolaWizualnaRaport.Forms;
+using KontrolaWizualnaRaport.TabOperations.Grafik;
 using KontrolaWizualnaRaport.TabOperations.SMT_tabs;
 using MST.MES;
 using System;
@@ -31,7 +32,6 @@ namespace KontrolaWizualnaRaport
             sqloperations = new SQLoperations(this, textBox1);
             ActionOnCheck reDrawWasteLevel = new ActionOnCheck(Charting.DrawWasteLevel);
             ActionOnCheck reDrawWasteReasons = new ActionOnCheck(Charting.DrawWasteReasonsCHart);
-
             CustomChecedListBoxStuff.SetUpListBox(tabPagePoziomOdpadu, checkedListBoxViWasteLevelSmtLines, reDrawWasteLevel);
             CustomChecedListBoxStuff.SetUpListBox(tabPagePrzyczynyOdpadu, checkedListBoxViWasteReasonsSmtLines, reDrawWasteReasons);
         }
@@ -149,6 +149,14 @@ namespace KontrolaWizualnaRaport
             SharedComponents.Boxing.rbModules = rbModules;
             SharedComponents.Boxing.dataGridViewBoxing = dataGridViewBoxing;
 
+            SharedComponents.Grafik.daily = rBGrafikDaily;
+            SharedComponents.Grafik.weekly = rBGrafikWeekly;
+            SharedComponents.Grafik.monthly = rBGrafikMonthly;
+            SharedComponents.Grafik.dateStart = dtpGrafikStart;
+            SharedComponents.Grafik.dateEnd = dtpGrafikEnd;
+            SharedComponents.Grafik.grid = dataGridViewGrafik;
+            dtpGrafikStart.Value = DateTime.Now.AddDays(-90);
+
             DataContainer.mesModels = MST.MES.SqlDataReaderMethods.MesModels.allModels();
             DataContainer.sqlDataByProcess.Kitting = MST.MES.SqlDataReaderMethods.Kitting.GetOrdersInfoByDataReader(90);
             Debug.WriteLine("kit");
@@ -163,6 +171,9 @@ namespace KontrolaWizualnaRaport
             MST.MES.SqlDataReaderMethods.Boxing.AddLgBoxesToExisting(DataContainer.sqlDataByProcess,dateTimePickerStart.Value, dateTimePickerEnd.Value);
             DataMerger.MergeData();
 
+
+
+
             //---------------OLD
 
             //dateTimePickerViOperatorEfiiciencyStart.Value = DateTime.Now.AddDays(-7);
@@ -170,7 +181,7 @@ namespace KontrolaWizualnaRaport
             //cBListViReasonList.Parent = tabPage6;
             //cBListViReasonAnalysesSmtLines.BringToFront();
             //cBListViReasonList.BringToFront();
-
+            
 
             //cBListViModelAnalysesSmtLines.Parent = tabPage7;
             //cBListViModelAnalysesSmtLines.BringToFront();
@@ -180,6 +191,15 @@ namespace KontrolaWizualnaRaport
         {
             switch (tabControl2.SelectedTab.Text)
             {
+                case "GRAFIK":
+                    {
+                        if (DataContainer.peopleOnShifts.Count < 1)
+                        {
+                            DataContainer.peopleOnShifts = PplOnShftLoader.loadPeopleOnShifts();
+                            ShowData.FilloutGrid();
+                        }
+                        break;
+                    }
                 case "SMT":
                     {
                         if (smtModelLineQuantity.Count < 1)
@@ -1545,6 +1565,21 @@ namespace KontrolaWizualnaRaport
                     detForm.ShowDialog();
                 }
             }
+        }
+
+        private void rBGrafikDaily_CheckedChanged(object sender, EventArgs e)
+        {
+            ShowData.FilloutGrid();
+        }
+
+        private void dtpGrafikStart_ValueChanged(object sender, EventArgs e)
+        {
+            ShowData.FilloutGrid();
+        }
+
+        private void dtpGrafikEnd_ValueChanged(object sender, EventArgs e)
+        {
+            ShowData.FilloutGrid();
         }
     }
 }

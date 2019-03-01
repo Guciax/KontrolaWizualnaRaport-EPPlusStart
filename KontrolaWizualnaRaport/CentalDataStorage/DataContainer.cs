@@ -1,4 +1,5 @@
-﻿using MST.MES;
+﻿using KontrolaWizualnaRaport.TabOperations.Grafik;
+using MST.MES;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,7 @@ namespace KontrolaWizualnaRaport
         {
             public static SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortedTableByDayAndShift;
         }
+
+        public static Dictionary<DateTime, DayStructure> peopleOnShifts = new Dictionary<DateTime, DayStructure>();
     }
 }

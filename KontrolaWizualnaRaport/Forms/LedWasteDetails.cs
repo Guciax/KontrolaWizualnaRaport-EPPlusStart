@@ -30,7 +30,7 @@ namespace KontrolaWizualnaRaport
             double droppedA = 0;
             double droppedB = 0;
 
-            for (int i=1;i< sourceTable.Rows.Count;i++)
+            for (int i = 1; i < sourceTable.Rows.Count; i++)
             {
                 usedA += double.Parse(sourceTable.Rows[i]["Mont.A"].ToString());
                 usedB += double.Parse(sourceTable.Rows[i]["Mont.B"].ToString());

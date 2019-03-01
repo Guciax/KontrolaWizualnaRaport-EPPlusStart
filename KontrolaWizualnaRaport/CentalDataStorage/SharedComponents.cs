@@ -129,5 +129,15 @@ namespace KontrolaWizualnaRaport
             public static RadioButton rbComponentsCount;
             public static CustomDataGridView dataGridViewBoxing;
         }
+
+        public class Grafik
+        {
+            public static DateTimePicker dateStart;
+            public static DateTimePicker dateEnd;
+            public static RadioButton daily;
+            public static RadioButton weekly;
+            public static RadioButton monthly;
+            public static CustomDataGridView grid;
+        }
     }
 }

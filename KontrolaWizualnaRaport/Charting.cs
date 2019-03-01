@@ -133,9 +133,11 @@ namespace KontrolaWizualnaRaport
                         }
                         dataPointsWaste[smtLine.Key][dateKey].ledsUsed += smtLine.Value.Select(o => o.ledsUsed).Sum();
                         dataPointsWaste[smtLine.Key][dateKey].ledsBom += smtLine.Value.Select(o => o.ledsUsageFromBom).Sum();
+
                         if (selectedLines["Total"])
                         {
                             dataPointsWaste["Total"][dateKey].ledsBom += smtLine.Value.Select(o => o.ledsUsageFromBom).Sum();
+                            dataPointsWaste["Total"][dateKey].ledsUsed += smtLine.Value.Select(o => o.ledsUsed).Sum();
                         }
                         
                     }
@@ -167,8 +169,26 @@ namespace KontrolaWizualnaRaport
             ar.Position.Height = 100;
             ar.Position.Y = 0;
 
-
             chart.ChartAreas.Add(ar);
+
+            Series productionLevel = new Series();
+            productionLevel.ChartType = SeriesChartType.Column;
+            productionLevel.Name = "Użycie LED [szt.]";
+            productionLevel.YAxisType = AxisType.Secondary;
+            productionLevel.Color = System.Drawing.Color.FromArgb(127, Color.AliceBlue);
+            productionLevel.BorderColor = System.Drawing.Color.Silver;
+
+
+            foreach (var dateKey in dataPointsWaste["Total"])
+            {
+                DataPoint pt = new DataPoint();
+                pt.SetValueXY(dateKey.Key, dateKey.Value.ledsUsed);
+                productionLevel.Points.Add(pt);
+            }
+
+
+            chart.Series.Add(productionLevel);
+
             double maxY = 0;
             foreach (var lineEntry in dataPointsWaste)
             {
@@ -196,22 +216,7 @@ namespace KontrolaWizualnaRaport
             chart.ChartAreas[0].AxisY.Maximum = maxY * 1.1;
 
             
-            Series productionLevel = new Series();
-            productionLevel.ChartType = SeriesChartType.Column;
-            productionLevel.Name = "Użycie LED [szt.]";
-            productionLevel.YAxisType = AxisType.Secondary;
-            productionLevel.Color = System.Drawing.Color.AliceBlue;
-            productionLevel.BorderColor = System.Drawing.Color.Silver;
-
-            foreach (var dateKey in dataPointsWaste["Total"])
-            {
-                DataPoint pt = new DataPoint();
-                pt.SetValueXY(dateKey.Key, dateKey.Value.ledsUsed);
-                productionLevel.Points.Add(pt);
-            }
-
-
-            chart.Series.Add(productionLevel);
+            
 
         }
             
@@ -393,7 +398,8 @@ namespace KontrolaWizualnaRaport
                         Name = $"{lineEntry.Key} Total NG [%]",
                         MarkerStyle = MarkerStyle.Circle,
                         MarkerSize = 10,
-                        LegendText = lineEntry.Key
+                        LegendText = lineEntry.Key,
+                        Color = GlobalParameters.smtLinesColors[lineEntry.Key]
                     };
 
                     Series scrapSeries = new Series
@@ -403,13 +409,21 @@ namespace KontrolaWizualnaRaport
                         Name = $"{lineEntry.Key} Total SCRAP [%]",
                         MarkerStyle = MarkerStyle.Square,
                         MarkerSize = 10,
-                        LegendText = lineEntry.Key
+                        LegendText = lineEntry.Key,
+                        Color = GlobalParameters.smtLinesColors[lineEntry.Key],
                     };
 
                     foreach (var dateEntry in lineEntry.Value) {
                         string[] toolTips = MakeToolTip(dateEntry.Value);
 
-                        DataPoint ngPoint = new DataPoint();
+                        DataPoint ngPoint = new DataPoint
+                        {
+                            MarkerStyle = MarkerStyle.Circle,
+                            MarkerSize = 10,
+                            MarkerBorderColor = ControlPaint.Dark(ngSeries.Color, (float).2),
+                            MarkerBorderWidth = 2
+                        };
+                        
                         double ngCount = (double) dateEntry.Value.Select(o => o.visualInspection.ngCount).Sum();
                         double manufactured = (double) dateEntry.Value.Select(o => o.smt.totalManufacturedQty).Sum();
                         double ngY = ngCount / manufactured * 100;
@@ -418,7 +432,13 @@ namespace KontrolaWizualnaRaport
                         ngPoint.ToolTip = ngtoolTip;
                         ngSeries.Points.Add(ngPoint);
 
-                        DataPoint scrapPoint = new DataPoint();
+                        DataPoint scrapPoint = new DataPoint
+                        {
+                            MarkerStyle = MarkerStyle.Triangle,
+                            MarkerSize = 10,
+                            MarkerBorderColor = ControlPaint.Dark(scrapSeries.Color, (float).2),
+                            MarkerBorderWidth = 2
+                        };
                         double scrCount = (double) dateEntry.Value.Select(o => o.visualInspection.scrapCount).Sum();
                         double scrapY = scrCount / manufactured * 100;
                         scrapPoint.SetValueXY(dateEntry.Key, scrapY);
@@ -440,7 +460,7 @@ namespace KontrolaWizualnaRaport
                         chart.Series.Add(ngSeriesPerLine[lineEntry.Key]);
                         chart.Series.Add(scrapSeriesPerLine[lineEntry.Key]);
                     }
-                    else if (!SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated.Checked) {
+                    else if (!SharedComponents.VisualInspection.PoziomOdpaduTab.radioButtonViLinesCumulated.Checked & !lineEntry.Key.Equals("Total")) {
                         chart.Series.Add(ngSeriesPerLine[lineEntry.Key]);
                         chart.Series.Add(scrapSeriesPerLine[lineEntry.Key]);
                     }
@@ -466,8 +486,11 @@ namespace KontrolaWizualnaRaport
                 }
 
                 chart.Legends.Clear();
+
+                
             }
         }
+
 
         private static string[] MakeToolTip(List<MST.MES.OrderStructureByOrderNo.OneOrderData> value)
         {

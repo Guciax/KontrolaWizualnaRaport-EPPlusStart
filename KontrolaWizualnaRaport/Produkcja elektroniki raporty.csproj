@@ -72,6 +72,11 @@
     <Compile Include="TabOperations\BoxingOperations.cs" />
     <Compile Include="TabOperations\ChangeOverTools.cs" />
     <Compile Include="Charting.cs" />
+    <Compile Include="TabOperations\Grafik\DayStructure.cs" />
+    <Compile Include="TabOperations\Grafik\PplOnShftLoader.cs" />
+    <Compile Include="TabOperations\Grafik\shiftStructure.cs" />
+    <Compile Include="TabOperations\Grafik\ShowData.cs" />
+    <Compile Include="TabOperations\Grafik\WorkerShiftStructure.cs" />
     <Compile Include="TabOperations\SMT tabs\LedWasteTab.cs" />
     <Compile Include="TabOperations\ViDataLoader.cs" />
     <Compile Include="dataStructure.cs" />

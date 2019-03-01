@@ -22,6 +22,8 @@ namespace KontrolaWizualnaRaport.CentalDataStorage
                 { "Total", Color.FromArgb(255, 22,160,133) }
         };
 
+        
+
         public static string[] smtLines
         {
             get
@@ -29,6 +31,13 @@ namespace KontrolaWizualnaRaport.CentalDataStorage
                 return DataContainer.sqlDataByProcess.Smt.SelectMany(o => o.Value.smtOrders).Select(o => o.smtLine).Distinct().ToArray();
             }
         }
+
         public static string[] allLinesByHand = { "SMT1", "SMT2", "SMT3", "SMT4", "SMT5", "SMT6", "SMT7", "SMT8" };
+
+        public static Dictionary<int, string> GrafikPerYearPath = new Dictionary<int, string>
+        {
+            {2018, @"Y:\Manufacturing_Center\Manufacturing Elektronika EM\Private\Grafik obecności\grafik 2018\2018\NOWY Grafik obecności elektronika.xlsm" },
+            {2019, @"Y:\Manufacturing_Center\Manufacturing Elektronika EM\Private\Grafik obecności\grafik 2019\Grafik obecności elektronika 2019.xlsm" }
+        };
     }
 }

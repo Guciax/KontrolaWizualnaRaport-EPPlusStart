@@ -18,6 +18,7 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
         public class LotLedWasteStruc
         {
             public string lotId;
+            public DateTime smtDate;
             public string smtLine;
             public string model;
             public int manufacturedModules;
@@ -79,8 +80,6 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                                                                     .GroupBy(r => r.smtLine)
                                                                     .ToDictionary(x => x.Key, v => v.ToList());
 
-            Dictionary<string, DataTable> tagTable = new Dictionary<string, DataTable>();
-
             DataTable template = new DataTable();
             template.Columns.Add("LOT");
             template.Columns.Add("Model");
@@ -90,49 +89,37 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
             template.Columns.Add("Odp%");
 
             grid.Columns.Clear();
-            grid.Columns.Add("Poz", "");
-            foreach (var item in GlobalParameters.allLinesByHand)
+            grid.Columns.Add("Linia", "Linia");
+            grid.Columns.Add("Montaz", "Montaż");
+            grid.Columns.Add("Odpad", "Odpad");
+            grid.Columns.Add("Odpadp", "Odpad%");
+
+            var grouppedByLine = ledWasteDictionary.SelectMany(d => d.Value)
+                                                    .SelectMany(s => s.Value)
+                                                    .GroupBy(o => o.smtLine)
+                                                    .ToDictionary(k => k.Key, v => v.ToList());
+
+            foreach (var lineEntry in grouppedByLine)
             {
-                grid.Columns.Add(item, item);
-                if (!ledsPerLine.ContainsKey(item))
-                {
-                    ledsPerLine.Add(item, new List<LotLedWasteStruc>());
-                }
-                tagTable.Add(item, template.Clone());
-                tagTable[item].Rows.Add();
-            }
-
-            foreach (var dateEntry in ledWasteDictionary)
-            {
-                foreach (var shiftEntry in dateEntry.Value)
-                {
-                    foreach (var lot in shiftEntry.Value)
-                    {
-                        if (lot.model != model & model != "Wszystkie") continue;
-                        if (lot.manufacturedModules < 1) continue;
-
-                        var waste = Math.Round((double)(lot.ledsUsed - lot.ledsUsageFromBom) / (double)lot.ledsUsageFromBom, 2);
-                        tagTable[lot.smtLine].Rows.Add(lot.lotId, lot.model, dateEntry.Key.ToString("dd-MM-yyyy"), lot.smtLine, lot.ledsUsed, waste);
-                    }
-                }
-            }
-
-
-
-            grid.Rows.Add("Montaż LED");
-            grid.Rows.Add("Odpad LED");
-
-            foreach (var line in ledsPerLine)
-            {
-                double totalLedUsed = line.Value.Select(o => o.ledsUsed).Sum();
-                double totalLedBom = line.Value.Select(o => o.ledsUsageFromBom).Sum();
+                double totalLedUsed = lineEntry.Value.Select(o => o.ledsUsed).Sum();
+                double totalLedBom = lineEntry.Value.Select(o => o.ledsUsageFromBom).Sum();
                 double waste = Math.Round((totalLedUsed - totalLedBom) / totalLedBom * 100, 2);
+                double wastePcs = (totalLedUsed - totalLedBom);
 
-                grid.Rows[0].Cells[line.Key].Value = totalLedUsed;
-                grid.Rows[1].Cells[line.Key].Value = waste + "%";
+                DataTable tagTable = template.Clone();
+                foreach (var order in lineEntry.Value)
+                {
+                    tagTable.Rows.Add(order.lotId, order.model, order.smtDate.ToString("HH:mm:ss dd-MMM-yyyy"), order.smtLine, order.ledsUsed, waste);
+                }
+
+                grid.Rows.Add(lineEntry.Key, totalLedUsed, wastePcs, waste);
+                foreach (DataGridViewCell c in grid.Rows[grid.Rows.Count-1].Cells)
+                {
+                    c.Tag = tagTable;
+                }
             }
 
-            //autoSizeGridColumns(grid);
+            dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCells);
             grid.ResumeLayout();
         }
 
@@ -368,6 +355,7 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                         newItem.manufacturedModules = manufacturedModules;
                         newItem.smtLine = smtLine;
                         newItem.model = model;
+                        newItem.smtDate = smtRecord.smtEndDate;
                         var bomPerUsed = (double)newItem.ledsUsageFromBom / (double)newItem.ledsUsed;
                         if (bomPerUsed < 0.8 || bomPerUsed > 1.2) continue;
                         result[dateEntry.Key][shiftEntry.Key].Add(newItem);
