@@ -80,10 +80,10 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea14 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend14 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea15 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea16 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
@@ -279,20 +279,23 @@
             this.panel11 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.tabPage20 = new System.Windows.Forms.TabPage();
-            this.dataGridViewSmtLedWasteTotalPerLine = new System.Windows.Forms.DataGridView();
-            this.panel33 = new System.Windows.Forms.Panel();
-            this.label14 = new System.Windows.Forms.Label();
-            this.comboBoxSmtLedWasteLine = new System.Windows.Forms.ComboBox();
-            this.panel32 = new System.Windows.Forms.Panel();
-            this.label15 = new System.Windows.Forms.Label();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.panel30 = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
-            this.dataGridViewSmtWasteTotal = new System.Windows.Forms.DataGridView();
-            this.dataGridViewSmtLedWasteByModel = new System.Windows.Forms.DataGridView();
             this.dataGridViewSmtLedDropped = new System.Windows.Forms.DataGridView();
+            this.dataGridViewSmtLedWasteTotalPerLine = new System.Windows.Forms.DataGridView();
             this.panel34 = new System.Windows.Forms.Panel();
             this.comboBoxSmtLedWasteModels = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.panel33 = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.comboBoxSmtLedWasteLine = new System.Windows.Forms.ComboBox();
+            this.dataGridViewSmtLedWasteByModel = new System.Windows.Forms.DataGridView();
+            this.dataGridViewSmtWasteTotal = new System.Windows.Forms.DataGridView();
+            this.panel32 = new System.Windows.Forms.Panel();
+            this.label15 = new System.Windows.Forms.Label();
             this.panel31 = new System.Windows.Forms.Panel();
             this.chartLedWasteChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panelSmtLedWasteCheckContainer = new System.Windows.Forms.Panel();
@@ -404,9 +407,16 @@
             this.timerTestLoadDone = new System.Windows.Forms.Timer(this.components);
             this.timerBoxLoadDone = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.chartEfficiency)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -515,14 +525,26 @@
             this.panel12.SuspendLayout();
             this.panel11.SuspendLayout();
             this.tabPage20.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteTotalPerLine)).BeginInit();
-            this.panel33.SuspendLayout();
-            this.panel32.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.panel30.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtWasteTotal)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteByModel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedDropped)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteTotalPerLine)).BeginInit();
             this.panel34.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            this.panel33.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteByModel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtWasteTotal)).BeginInit();
+            this.panel32.SuspendLayout();
             this.panel31.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartLedWasteChart)).BeginInit();
             this.panelSmtLedWasteCheckContainer.SuspendLayout();
@@ -566,18 +588,6 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrafik)).BeginInit();
             this.panel17.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBoxViOperatorsCapa
@@ -2220,6 +2230,7 @@
             // 
             // label24
             // 
+            this.label24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label24.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label24.Location = new System.Drawing.Point(1019, 0);
@@ -2231,6 +2242,7 @@
             // 
             // label23
             // 
+            this.label23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label23.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label23.Location = new System.Drawing.Point(765, 0);
@@ -2242,6 +2254,7 @@
             // 
             // label22
             // 
+            this.label22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label22.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label22.Location = new System.Drawing.Point(511, 0);
@@ -2253,6 +2266,7 @@
             // 
             // label21
             // 
+            this.label21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label21.Location = new System.Drawing.Point(257, 0);
@@ -2268,6 +2282,9 @@
             this.dataGridViewSummaryKitting.AllowUserToDeleteRows = false;
             this.dataGridViewSummaryKitting.AllowUserToResizeRows = false;
             this.dataGridViewSummaryKitting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSummaryKitting.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column8,
+            this.Column9});
             this.dataGridViewSummaryKitting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSummaryKitting.Location = new System.Drawing.Point(3, 33);
             this.dataGridViewSummaryKitting.Name = "dataGridViewSummaryKitting";
@@ -2281,6 +2298,9 @@
             this.dataGridViewSummarySmt.AllowUserToDeleteRows = false;
             this.dataGridViewSummarySmt.AllowUserToResizeRows = false;
             this.dataGridViewSummarySmt.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSummarySmt.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column10,
+            this.Column11});
             this.dataGridViewSummarySmt.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSummarySmt.Location = new System.Drawing.Point(257, 33);
             this.dataGridViewSummarySmt.Name = "dataGridViewSummarySmt";
@@ -2294,6 +2314,9 @@
             this.dataGridViewSummaryVi.AllowUserToDeleteRows = false;
             this.dataGridViewSummaryVi.AllowUserToResizeRows = false;
             this.dataGridViewSummaryVi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSummaryVi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column15,
+            this.Column16});
             this.dataGridViewSummaryVi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSummaryVi.Location = new System.Drawing.Point(511, 33);
             this.dataGridViewSummaryVi.Name = "dataGridViewSummaryVi";
@@ -2309,6 +2332,9 @@
             this.dataGridViewSummaryTest.AllowUserToDeleteRows = false;
             this.dataGridViewSummaryTest.AllowUserToResizeRows = false;
             this.dataGridViewSummaryTest.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSummaryTest.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column17,
+            this.Column18});
             this.dataGridViewSummaryTest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSummaryTest.Location = new System.Drawing.Point(765, 33);
             this.dataGridViewSummaryTest.Name = "dataGridViewSummaryTest";
@@ -2323,6 +2349,9 @@
             this.dataGridViewSummaryBox.AllowUserToDeleteRows = false;
             this.dataGridViewSummaryBox.AllowUserToResizeRows = false;
             this.dataGridViewSummaryBox.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSummaryBox.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column19,
+            this.Column20});
             this.dataGridViewSummaryBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSummaryBox.Location = new System.Drawing.Point(1019, 33);
             this.dataGridViewSummaryBox.Name = "dataGridViewSummaryBox";
@@ -2332,6 +2361,7 @@
             // 
             // label20
             // 
+            this.label20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label20.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label20.Location = new System.Drawing.Point(3, 0);
@@ -2343,9 +2373,11 @@
             // 
             // panel36
             // 
+            this.panel36.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.panel36.Controls.Add(this.textBox3);
             this.panel36.Controls.Add(this.label19);
             this.panel36.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel36.ForeColor = System.Drawing.Color.White;
             this.panel36.Location = new System.Drawing.Point(3, 3);
             this.panel36.Name = "panel36";
             this.panel36.Size = new System.Drawing.Size(1270, 35);
@@ -2357,6 +2389,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(200, 20);
             this.textBox3.TabIndex = 1;
+            this.textBox3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox3_KeyDown_1);
             // 
             // label19
             // 
@@ -2885,6 +2918,85 @@
             this.tabPage20.Text = "Odpad LED";
             this.tabPage20.UseVisualStyleBackColor = true;
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
+            this.splitContainer1.Size = new System.Drawing.Size(1256, 228);
+            this.splitContainer1.SplitterDistance = 692;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.panel30);
+            this.splitContainer2.Panel1.Controls.Add(this.dataGridViewSmtLedDropped);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.dataGridViewSmtLedWasteTotalPerLine);
+            this.splitContainer2.Panel2.Controls.Add(this.panel34);
+            this.splitContainer2.Size = new System.Drawing.Size(692, 228);
+            this.splitContainer2.SplitterDistance = 407;
+            this.splitContainer2.TabIndex = 4;
+            // 
+            // panel30
+            // 
+            this.panel30.Controls.Add(this.label13);
+            this.panel30.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel30.Location = new System.Drawing.Point(0, 0);
+            this.panel30.Name = "panel30";
+            this.panel30.Size = new System.Drawing.Size(407, 24);
+            this.panel30.TabIndex = 3;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(9, 6);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(136, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Dzienny odpad po linii SMT";
+            // 
+            // dataGridViewSmtLedDropped
+            // 
+            this.dataGridViewSmtLedDropped.AllowUserToAddRows = false;
+            this.dataGridViewSmtLedDropped.AllowUserToDeleteRows = false;
+            this.dataGridViewSmtLedDropped.AllowUserToResizeColumns = false;
+            this.dataGridViewSmtLedDropped.AllowUserToResizeRows = false;
+            this.dataGridViewSmtLedDropped.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewSmtLedDropped.DefaultCellStyle = dataGridViewCellStyle9;
+            this.dataGridViewSmtLedDropped.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewSmtLedDropped.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewSmtLedDropped.Name = "dataGridViewSmtLedDropped";
+            this.dataGridViewSmtLedDropped.ReadOnly = true;
+            this.dataGridViewSmtLedDropped.RowHeadersVisible = false;
+            this.dataGridViewSmtLedDropped.Size = new System.Drawing.Size(407, 228);
+            this.dataGridViewSmtLedDropped.TabIndex = 0;
+            this.dataGridViewSmtLedDropped.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedDropped_CellDoubleClick);
+            // 
             // dataGridViewSmtLedWasteTotalPerLine
             // 
             this.dataGridViewSmtLedWasteTotalPerLine.AllowUserToAddRows = false;
@@ -2907,6 +3019,54 @@
             this.dataGridViewSmtLedWasteTotalPerLine.Size = new System.Drawing.Size(281, 204);
             this.dataGridViewSmtLedWasteTotalPerLine.TabIndex = 6;
             this.dataGridViewSmtLedWasteTotalPerLine.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedWasteTotalPerLine_CellDoubleClick);
+            // 
+            // panel34
+            // 
+            this.panel34.Controls.Add(this.comboBoxSmtLedWasteModels);
+            this.panel34.Controls.Add(this.label16);
+            this.panel34.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel34.Location = new System.Drawing.Point(0, 0);
+            this.panel34.Name = "panel34";
+            this.panel34.Size = new System.Drawing.Size(281, 24);
+            this.panel34.TabIndex = 7;
+            // 
+            // comboBoxSmtLedWasteModels
+            // 
+            this.comboBoxSmtLedWasteModels.FormattingEnabled = true;
+            this.comboBoxSmtLedWasteModels.Location = new System.Drawing.Point(166, 2);
+            this.comboBoxSmtLedWasteModels.Name = "comboBoxSmtLedWasteModels";
+            this.comboBoxSmtLedWasteModels.Size = new System.Drawing.Size(96, 21);
+            this.comboBoxSmtLedWasteModels.TabIndex = 1;
+            this.comboBoxSmtLedWasteModels.SelectedIndexChanged += new System.EventHandler(this.comboBoxSmtLedWasteLines_SelectedIndexChanged);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(4, 6);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(164, 13);
+            this.label16.TabIndex = 0;
+            this.label16.Text = "Łączny odpad po linii dla modelu:";
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Margin = new System.Windows.Forms.Padding(0);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.panel33);
+            this.splitContainer3.Panel1.Controls.Add(this.dataGridViewSmtLedWasteByModel);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.dataGridViewSmtWasteTotal);
+            this.splitContainer3.Panel2.Controls.Add(this.panel32);
+            this.splitContainer3.Size = new System.Drawing.Size(560, 228);
+            this.splitContainer3.SplitterDistance = 261;
+            this.splitContainer3.TabIndex = 4;
             // 
             // panel33
             // 
@@ -2936,64 +3096,6 @@
             this.comboBoxSmtLedWasteLine.TabIndex = 0;
             this.comboBoxSmtLedWasteLine.SelectedIndexChanged += new System.EventHandler(this.comboBoxSmtLedWasteLine_SelectedIndexChanged);
             // 
-            // panel32
-            // 
-            this.panel32.Controls.Add(this.label15);
-            this.panel32.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel32.Location = new System.Drawing.Point(0, 0);
-            this.panel32.Name = "panel32";
-            this.panel32.Size = new System.Drawing.Size(295, 24);
-            this.panel32.TabIndex = 4;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(13, 6);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(75, 13);
-            this.label15.TabIndex = 2;
-            this.label15.Text = "Łączny odpad";
-            // 
-            // panel30
-            // 
-            this.panel30.Controls.Add(this.label13);
-            this.panel30.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel30.Location = new System.Drawing.Point(0, 0);
-            this.panel30.Name = "panel30";
-            this.panel30.Size = new System.Drawing.Size(407, 24);
-            this.panel30.TabIndex = 3;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(9, 6);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(136, 13);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Dzienny odpad po linii SMT";
-            // 
-            // dataGridViewSmtWasteTotal
-            // 
-            this.dataGridViewSmtWasteTotal.AllowUserToAddRows = false;
-            this.dataGridViewSmtWasteTotal.AllowUserToDeleteRows = false;
-            this.dataGridViewSmtWasteTotal.AllowUserToResizeColumns = false;
-            this.dataGridViewSmtWasteTotal.AllowUserToResizeRows = false;
-            this.dataGridViewSmtWasteTotal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewSmtWasteTotal.DefaultCellStyle = dataGridViewCellStyle12;
-            this.dataGridViewSmtWasteTotal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewSmtWasteTotal.Location = new System.Drawing.Point(0, 24);
-            this.dataGridViewSmtWasteTotal.Name = "dataGridViewSmtWasteTotal";
-            this.dataGridViewSmtWasteTotal.RowHeadersVisible = false;
-            this.dataGridViewSmtWasteTotal.Size = new System.Drawing.Size(295, 204);
-            this.dataGridViewSmtWasteTotal.TabIndex = 2;
-            // 
             // dataGridViewSmtLedWasteByModel
             // 
             this.dataGridViewSmtLedWasteByModel.AllowUserToAddRows = false;
@@ -3017,57 +3119,45 @@
             this.dataGridViewSmtLedWasteByModel.TabIndex = 1;
             this.dataGridViewSmtLedWasteByModel.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedWasteByModel_CellDoubleClick);
             // 
-            // dataGridViewSmtLedDropped
+            // dataGridViewSmtWasteTotal
             // 
-            this.dataGridViewSmtLedDropped.AllowUserToAddRows = false;
-            this.dataGridViewSmtLedDropped.AllowUserToDeleteRows = false;
-            this.dataGridViewSmtLedDropped.AllowUserToResizeColumns = false;
-            this.dataGridViewSmtLedDropped.AllowUserToResizeRows = false;
-            this.dataGridViewSmtLedDropped.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewSmtLedDropped.DefaultCellStyle = dataGridViewCellStyle9;
-            this.dataGridViewSmtLedDropped.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewSmtLedDropped.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewSmtLedDropped.Name = "dataGridViewSmtLedDropped";
-            this.dataGridViewSmtLedDropped.ReadOnly = true;
-            this.dataGridViewSmtLedDropped.RowHeadersVisible = false;
-            this.dataGridViewSmtLedDropped.Size = new System.Drawing.Size(407, 228);
-            this.dataGridViewSmtLedDropped.TabIndex = 0;
-            this.dataGridViewSmtLedDropped.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedDropped_CellDoubleClick);
+            this.dataGridViewSmtWasteTotal.AllowUserToAddRows = false;
+            this.dataGridViewSmtWasteTotal.AllowUserToDeleteRows = false;
+            this.dataGridViewSmtWasteTotal.AllowUserToResizeColumns = false;
+            this.dataGridViewSmtWasteTotal.AllowUserToResizeRows = false;
+            this.dataGridViewSmtWasteTotal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewSmtWasteTotal.DefaultCellStyle = dataGridViewCellStyle12;
+            this.dataGridViewSmtWasteTotal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewSmtWasteTotal.Location = new System.Drawing.Point(0, 24);
+            this.dataGridViewSmtWasteTotal.Name = "dataGridViewSmtWasteTotal";
+            this.dataGridViewSmtWasteTotal.RowHeadersVisible = false;
+            this.dataGridViewSmtWasteTotal.Size = new System.Drawing.Size(295, 204);
+            this.dataGridViewSmtWasteTotal.TabIndex = 2;
             // 
-            // panel34
+            // panel32
             // 
-            this.panel34.Controls.Add(this.comboBoxSmtLedWasteModels);
-            this.panel34.Controls.Add(this.label16);
-            this.panel34.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel34.Location = new System.Drawing.Point(0, 0);
-            this.panel34.Name = "panel34";
-            this.panel34.Size = new System.Drawing.Size(281, 24);
-            this.panel34.TabIndex = 7;
+            this.panel32.Controls.Add(this.label15);
+            this.panel32.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel32.Location = new System.Drawing.Point(0, 0);
+            this.panel32.Name = "panel32";
+            this.panel32.Size = new System.Drawing.Size(295, 24);
+            this.panel32.TabIndex = 4;
             // 
-            // comboBoxSmtLedWasteModels
+            // label15
             // 
-            this.comboBoxSmtLedWasteModels.FormattingEnabled = true;
-            this.comboBoxSmtLedWasteModels.Location = new System.Drawing.Point(166, 2);
-            this.comboBoxSmtLedWasteModels.Name = "comboBoxSmtLedWasteModels";
-            this.comboBoxSmtLedWasteModels.Size = new System.Drawing.Size(96, 21);
-            this.comboBoxSmtLedWasteModels.TabIndex = 1;
-            this.comboBoxSmtLedWasteModels.SelectedIndexChanged += new System.EventHandler(this.comboBoxSmtLedWasteLines_SelectedIndexChanged);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(4, 6);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(164, 13);
-            this.label16.TabIndex = 0;
-            this.label16.Text = "Łączny odpad po linii dla modelu:";
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(13, 6);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(75, 13);
+            this.label15.TabIndex = 2;
+            this.label15.Text = "Łączny odpad";
             // 
             // panel31
             // 
@@ -4291,62 +4381,65 @@
             // 
             this.timerBoxLoadDone.Tick += new System.EventHandler(this.timerBoxLoadDone_Tick);
             // 
-            // splitContainer1
+            // Column10
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer1.Name = "splitContainer1";
+            this.Column10.HeaderText = "Pole";
+            this.Column10.Name = "Column10";
+            this.Column10.ReadOnly = true;
             // 
-            // splitContainer1.Panel1
+            // Column11
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            this.Column11.HeaderText = "Wartość";
+            this.Column11.Name = "Column11";
+            this.Column11.ReadOnly = true;
             // 
-            // splitContainer1.Panel2
+            // Column8
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(1256, 228);
-            this.splitContainer1.SplitterDistance = 692;
-            this.splitContainer1.TabIndex = 3;
+            this.Column8.HeaderText = "Pole";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
             // 
-            // splitContainer2
+            // Column9
             // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(0);
-            this.splitContainer2.Name = "splitContainer2";
+            this.Column9.HeaderText = "Wartość";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
             // 
-            // splitContainer2.Panel1
+            // Column15
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.panel30);
-            this.splitContainer2.Panel1.Controls.Add(this.dataGridViewSmtLedDropped);
+            this.Column15.HeaderText = "Pole";
+            this.Column15.Name = "Column15";
+            this.Column15.ReadOnly = true;
             // 
-            // splitContainer2.Panel2
+            // Column16
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.dataGridViewSmtLedWasteTotalPerLine);
-            this.splitContainer2.Panel2.Controls.Add(this.panel34);
-            this.splitContainer2.Size = new System.Drawing.Size(692, 228);
-            this.splitContainer2.SplitterDistance = 407;
-            this.splitContainer2.TabIndex = 4;
+            this.Column16.HeaderText = "Wartość";
+            this.Column16.Name = "Column16";
+            this.Column16.ReadOnly = true;
             // 
-            // splitContainer3
+            // Column17
             // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Margin = new System.Windows.Forms.Padding(0);
-            this.splitContainer3.Name = "splitContainer3";
+            this.Column17.HeaderText = "Pole";
+            this.Column17.Name = "Column17";
+            this.Column17.ReadOnly = true;
             // 
-            // splitContainer3.Panel1
+            // Column18
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.panel33);
-            this.splitContainer3.Panel1.Controls.Add(this.dataGridViewSmtLedWasteByModel);
+            this.Column18.HeaderText = "Wartość";
+            this.Column18.Name = "Column18";
+            this.Column18.ReadOnly = true;
             // 
-            // splitContainer3.Panel2
+            // Column19
             // 
-            this.splitContainer3.Panel2.Controls.Add(this.dataGridViewSmtWasteTotal);
-            this.splitContainer3.Panel2.Controls.Add(this.panel32);
-            this.splitContainer3.Size = new System.Drawing.Size(560, 228);
-            this.splitContainer3.SplitterDistance = 261;
-            this.splitContainer3.TabIndex = 4;
+            this.Column19.HeaderText = "Pole";
+            this.Column19.Name = "Column19";
+            this.Column19.ReadOnly = true;
+            // 
+            // Column20
+            // 
+            this.Column20.HeaderText = "Wartość";
+            this.Column20.Name = "Column20";
+            this.Column20.ReadOnly = true;
             // 
             // Form1
             // 
@@ -4490,18 +4583,30 @@
             this.panel11.ResumeLayout(false);
             this.panel11.PerformLayout();
             this.tabPage20.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteTotalPerLine)).EndInit();
-            this.panel33.ResumeLayout(false);
-            this.panel33.PerformLayout();
-            this.panel32.ResumeLayout(false);
-            this.panel32.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.panel30.ResumeLayout(false);
             this.panel30.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtWasteTotal)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteByModel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedDropped)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteTotalPerLine)).EndInit();
             this.panel34.ResumeLayout(false);
             this.panel34.PerformLayout();
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            this.panel33.ResumeLayout(false);
+            this.panel33.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteByModel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtWasteTotal)).EndInit();
+            this.panel32.ResumeLayout(false);
+            this.panel32.PerformLayout();
             this.panel31.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartLedWasteChart)).EndInit();
             this.panelSmtLedWasteCheckContainer.ResumeLayout(false);
@@ -4556,18 +4661,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrafik)).EndInit();
             this.panel17.ResumeLayout(false);
             this.panel17.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -4892,6 +4985,16 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
     }
 }
 

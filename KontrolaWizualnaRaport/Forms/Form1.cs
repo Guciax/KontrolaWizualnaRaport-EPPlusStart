@@ -138,6 +138,7 @@ namespace KontrolaWizualnaRaport
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkedListBoxViWasteReasonsSmtLines = checkedListBoxViWasteReasonsSmtLines;
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dataGridViewNgScrapReasons = dataGridViewNgScrapReasons;
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduOd = dateTimePickerPrzyczynyOdpaduOd;
+            dateTimePickerPrzyczynyOdpaduOd.Value = DateTime.Now.AddDays(-30);
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduDo = dateTimePickerPrzyczynyOdpaduDo;
 
             SharedComponents.Boxing.cbLg = cbLg;
@@ -1145,28 +1146,12 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridViewSummaryTest_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            foreach (DataGridViewRow row in dataGridViewSummaryTest.Rows)
-            {
-                if ((row.Cells[0].Value.ToString().ToUpper().StartsWith("NG") || row.Cells[0].Value.ToString().ToUpper().StartsWith("SCRAP")) & row.Cells[1].Value.ToString() != "0")
-                {
-                    row.Cells[1].Style.BackColor = Color.Red;
-                    row.Cells[1].Style.ForeColor = Color.White;
-                }
-            }
-            Debug.WriteLine("test bind compl");
+            
         }
 
         private void dataGridViewSummaryVi_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            foreach (DataGridViewRow row in dataGridViewSummaryVi.Rows)
-            {
-                if ((row.Cells[0].Value.ToString().ToUpper().StartsWith("NG") || row.Cells[0].Value.ToString().ToUpper().StartsWith("SCRAP")) & row.Cells[1].Value.ToString() != "0")
-                {
-                    row.Cells[1].Style.BackColor = Color.Red;
-                    row.Cells[1].Style.ForeColor = Color.White;
-                }
-            }
-            Debug.WriteLine("vi bind compl");
+            
         }
 
         private void dateTimePickerViOperatorEfiiciencyStart_ValueChanged(object sender, EventArgs e)
@@ -1580,6 +1565,19 @@ namespace KontrolaWizualnaRaport
         private void dtpGrafikEnd_ValueChanged(object sender, EventArgs e)
         {
             ShowData.FilloutGrid();
+        }
+
+        private void textBox3_KeyDown_1(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+            {
+                LotSummary.FillOutOrderInfo(textBox3.Text,
+                                            dataGridViewSummaryKitting,
+                                            dataGridViewSummarySmt,
+                                            dataGridViewSummaryVi,
+                                            dataGridViewSummaryTest,
+                                            dataGridViewSummaryBox);
+            }
         }
     }
 }

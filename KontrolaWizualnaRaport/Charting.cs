@@ -251,7 +251,6 @@ namespace KontrolaWizualnaRaport
             public Dictionary<string, Tuple<int, int>> scrapToolTip { get; set; }
         }
 
-        
         public static void DrawWasteLevel()
         {
             if (DataContainer.VisualInspection.wasteReasonsByLineThenDateKey == null) return;
@@ -419,8 +418,8 @@ namespace KontrolaWizualnaRaport
                         DataPoint ngPoint = new DataPoint
                         {
                             MarkerStyle = MarkerStyle.Circle,
-                            MarkerSize = 10,
-                            MarkerBorderColor = ControlPaint.Dark(ngSeries.Color, (float).2),
+                            MarkerSize = 12,
+                            MarkerBorderColor = Color.Red,//ControlPaint.Dark(ngSeries.Color, (float).2),
                             MarkerBorderWidth = 2
                         };
                         
@@ -435,8 +434,8 @@ namespace KontrolaWizualnaRaport
                         DataPoint scrapPoint = new DataPoint
                         {
                             MarkerStyle = MarkerStyle.Triangle,
-                            MarkerSize = 10,
-                            MarkerBorderColor = ControlPaint.Dark(scrapSeries.Color, (float).2),
+                            MarkerSize = 12,
+                            MarkerBorderColor = Color.Black,//ControlPaint.Dark(scrapSeries.Color, (float).2),
                             MarkerBorderWidth = 2
                         };
                         double scrCount = (double) dateEntry.Value.Select(o => o.visualInspection.scrapCount).Sum();
@@ -490,8 +489,7 @@ namespace KontrolaWizualnaRaport
                 
             }
         }
-
-
+        
         private static string[] MakeToolTip(List<MST.MES.OrderStructureByOrderNo.OneOrderData> value)
         {
             string[] result = new string[] { "", "" };
@@ -516,52 +514,54 @@ namespace KontrolaWizualnaRaport
             var selectedLines = SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkedListBoxViWasteReasonsSmtLines.selectedLines;
 
             filteredOrders.Add("Total", new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
-            foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
-            {
-                foreach (var dateEntry in lineEntry.Value)
+            if (DataContainer.VisualInspection.wasteReasonsByLineThenDateKey != null)
+            { 
+                foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
                 {
-                    foreach (var orderEntry in dateEntry.Value)
+                    foreach (var dateEntry in lineEntry.Value)
                     {
-                        if (!SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkBoxViReasonsLg.Checked)
+                        foreach (var orderEntry in dateEntry.Value)
                         {
-                            if (orderEntry.kitting.odredGroup == "LG") continue;
-                        }
-                        if (!SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkBoxViReasonsMst.Checked)
-                        {
-                            if (orderEntry.kitting.odredGroup == "MST") continue;
-                        }
-                        if (!orderEntry.smt.smtOrders.Select(o => o.smtLine).Intersect(selectedLines).Any()) continue;
-                        if (SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduDo.Value
-                                .Date < orderEntry.kitting.endDate) {
-                            continue;}
-                        if (SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduOd.Value
-                                .Date > orderEntry.kitting.endDate)
-                        {
-                            continue;
-                        }
+                            if (!SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkBoxViReasonsLg.Checked)
+                            {
+                                if (orderEntry.kitting.odredGroup == "LG") continue;
+                            }
+                            if (!SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkBoxViReasonsMst.Checked)
+                            {
+                                if (orderEntry.kitting.odredGroup == "MST") continue;
+                            }
+                            if (!orderEntry.smt.smtOrders.Select(o => o.smtLine).Intersect(selectedLines).Any()) continue;
+                            if (SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduDo.Value
+                                    .Date < orderEntry.kitting.endDate) {
+                                continue; }
+                            if (SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduOd.Value
+                                    .Date > orderEntry.kitting.endDate)
+                            {
+                                continue;
+                            }
 
-                        if (!filteredOrders.ContainsKey(lineEntry.Key))
-                        {
-                            filteredOrders.Add(lineEntry.Key, new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
-                        }
-                        if (!filteredOrders[lineEntry.Key].ContainsKey(dateEntry.Key))
-                        {
-                            filteredOrders[lineEntry.Key].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
-                        }
+                            if (!filteredOrders.ContainsKey(lineEntry.Key))
+                            {
+                                filteredOrders.Add(lineEntry.Key, new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
+                            }
+                            if (!filteredOrders[lineEntry.Key].ContainsKey(dateEntry.Key))
+                            {
+                                filteredOrders[lineEntry.Key].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                            }
 
-                        if (!filteredOrders["Total"].ContainsKey(dateEntry.Key))
-                        {
-                            filteredOrders["Total"].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
-                        }
+                            if (!filteredOrders["Total"].ContainsKey(dateEntry.Key))
+                            {
+                                filteredOrders["Total"].Add(dateEntry.Key, new List<MST.MES.OrderStructureByOrderNo.OneOrderData>());
+                            }
 
-                        filteredOrders[lineEntry.Key][dateEntry.Key].Add(orderEntry);
-                        filteredOrders["Total"][dateEntry.Key].Add(orderEntry);
+                            filteredOrders[lineEntry.Key][dateEntry.Key].Add(orderEntry);
+                            filteredOrders["Total"][dateEntry.Key].Add(orderEntry);
+                        }
                     }
                 }
-            }
-
+        }
             var ngOrders = filteredOrders.SelectMany(o => o.Value).SelectMany(o => o.Value).Where(o => o.visualInspection.ngCount > 0 || o.visualInspection.scrapCount > 0);
-            
+
             Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>> ngPerReason = new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>();
             Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>> scrapPerReason = new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>();
             List<string> controlListNgOrdersAdded = new List<string>();
@@ -592,7 +592,7 @@ namespace KontrolaWizualnaRaport
                 }
 
             }
-
+        
             ngPerReason = ngPerReason.OrderByDescending(q => q.Value.Select(o => o.visualInspection.allReasons[q.Key]).Sum()).ToDictionary(k => k.Key, v => v.Value);
             scrapPerReason = scrapPerReason.OrderByDescending(q => q.Value.Select(o => o.visualInspection.allReasons[q.Key]).Sum()).ToDictionary(k => k.Key, v => v.Value);
             //////////////////////
