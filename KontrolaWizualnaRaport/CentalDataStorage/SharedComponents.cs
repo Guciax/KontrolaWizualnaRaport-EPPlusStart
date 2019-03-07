@@ -34,6 +34,12 @@ namespace KontrolaWizualnaRaport
             {
                 public static CustomDataGridView dataGridViewSmtProduction;
                 public static RadioButton rbModelsCount;
+                public static Chart chartSmtProductionReport;
+
+
+
+
+
             }
 
             public class changeoversTab
@@ -78,6 +84,10 @@ namespace KontrolaWizualnaRaport
 
         public class VisualInspection
         {
+            public class latestOrders
+            {
+                public static DataGridView dataGridViewLatestLots;
+            }
             public class OstatnieLotyTab
             {
                 public static DataGridView gridLatestLots;

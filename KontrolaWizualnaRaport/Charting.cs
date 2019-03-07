@@ -319,8 +319,8 @@ namespace KontrolaWizualnaRaport
             productionLevel.ChartType = SeriesChartType.Column;
             productionLevel.Name = "Poziom produkcji [szt.]";
             productionLevel.YAxisType = AxisType.Secondary;
-            productionLevel.Color = System.Drawing.Color.AliceBlue;
-            productionLevel.BorderColor = System.Drawing.Color.Silver;
+            productionLevel.Color = System.Drawing.Color.FromArgb(50, 243, 156, 18);
+            productionLevel.BorderColor = System.Drawing.Color.FromArgb(255, 243, 156, 18);
 
             chart.Series.Clear();
             chart.ChartAreas.Clear();
@@ -374,12 +374,12 @@ namespace KontrolaWizualnaRaport
                     productionLevel.Points.AddXY(dateEntry.Key, manufactured);
 
                     grid.Rows.Add(dateEntry.Key,
-                        filteredOrders["Total"][dateEntry.Key].Select(o => o.smt.totalManufacturedQty).Sum(),
-                        ngCount,
-                        Math.Round(ngCount / manufactured * 100, 2) + "%",
-                        scrCount,
-                        Math.Round(scrCount / manufactured * 100, 2) + "%"
-                    );
+                                filteredOrders["Total"][dateEntry.Key].Select(o => o.smt.totalManufacturedQty).Sum(),
+                                ngCount,
+                                Math.Round(ngCount / manufactured * 100, 2) + "%",
+                                scrCount,
+                                Math.Round(scrCount / manufactured * 100, 2) + "%"
+                                );
 
 
                     foreach (DataGridViewCell cell in grid.Rows[grid.Rows.Count - 1].Cells) {
@@ -486,7 +486,6 @@ namespace KontrolaWizualnaRaport
 
                 chart.Legends.Clear();
 
-                
             }
         }
         

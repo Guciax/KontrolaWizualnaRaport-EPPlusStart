@@ -102,6 +102,7 @@ namespace KontrolaWizualnaRaport
             SharedComponents.Smt.ModelAnalysis.comboBoxSmtModels = comboBoxSmtModels;
             SharedComponents.Smt.productionReportTab.dataGridViewSmtProduction = dataGridViewSmtProduction;
             SharedComponents.Smt.productionReportTab.rbModelsCount = rbModelsCount;
+            SharedComponents.Smt.productionReportTab.chartSmtProductionReport = chartSmtProductionReport;
             SharedComponents.Smt.smtStartDate = dateTimePickerSmtStart;
             SharedComponents.Smt.smtStartDate.Value = DateTime.Now.AddDays(-30);
             SharedComponents.Smt.smtEndDate = dateTimePickerSmtEnd;
@@ -140,6 +141,7 @@ namespace KontrolaWizualnaRaport
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduOd = dateTimePickerPrzyczynyOdpaduOd;
             dateTimePickerPrzyczynyOdpaduOd.Value = DateTime.Now.AddDays(-30);
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduDo = dateTimePickerPrzyczynyOdpaduDo;
+            SharedComponents.VisualInspection.latestOrders.dataGridViewLatestLots = dataGridViewLatestLots;
 
             SharedComponents.Boxing.cbLg = cbLg;
             SharedComponents.Boxing.cbMst = cbMst;
@@ -815,7 +817,7 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridViewBoxing_SelectionChanged(object sender, EventArgs e)
         {
-            dgvTools.SumOfSelectedCells(dataGridViewBoxing, labelBoxing);
+            
         }
 
         
@@ -860,12 +862,7 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridViewBoxingLedQty_SelectionChanged(object sender, EventArgs e)
         {
-            dgvTools.SumOfSelectedCells(dataGridViewBoxingLedQty, labelBoxingLedQty); 
-        }
 
-        private void chartPrzyczynyOdpaduNg_DoubleClick(object sender, EventArgs e)
-        {
-            
         }
 
         private void chartReasonPareto_MouseMove(object sender, MouseEventArgs e)
@@ -1035,10 +1032,7 @@ namespace KontrolaWizualnaRaport
 
         private void labelBoxing_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                CopyLabelTagToClipboard(labelBoxing);
-            }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -1483,6 +1477,7 @@ namespace KontrolaWizualnaRaport
         private void cbSmtMst_CheckedChanged(object sender, EventArgs e)
         {
             SMTOperations.ReloadProductionReportsGrid();
+            SmtCharts.DrawChartSmtProductionReport();
         }
 
         private void checkBoxViLevelMst_CheckedChanged(object sender, EventArgs e)

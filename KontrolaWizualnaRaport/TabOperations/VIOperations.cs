@@ -122,6 +122,7 @@ namespace KontrolaWizualnaRaport
 
             DataContainer.VisualInspection.wasteReasonsByLineThenDateKey = grouppedByLineThenDate;
             Charting.DrawWasteLevel();
+            FillOutGridLatestLots();
         }
 
 
@@ -204,7 +205,12 @@ namespace KontrolaWizualnaRaport
             var path = Path.Combine(@"P:\Kontrola_Wzrokowa", date, lot);
 
             DirectoryInfo dirNfo = new DirectoryInfo(path);
-            if (!dirNfo.Exists) return new List<FileInfo>();
+            if (!dirNfo.Exists) {
+                Network.ConnectPDrive();
+                if (!dirNfo.Exists) {
+                    return new List<FileInfo>();
+                }
+            }
             var files = dirNfo.GetFiles();
 
             foreach (var file in files)
@@ -218,33 +224,54 @@ namespace KontrolaWizualnaRaport
             return result;
         }
 
-        public static void FillOutGridLatestLots(DataGridView grid, List<WasteDataStructure> inspectionData)
+        public static void FillOutGridLatestLots()
         {
+            DataGridView grid = SharedComponents.VisualInspection.latestOrders.dataGridViewLatestLots;
             if (!System.IO.Directory.Exists(@"P:\"))
             {
                 Network.ConnectPDrive();
             }
             grid.Columns.Clear();
-            grid.Columns.Add("Data", "Data");
+            grid.Columns.Add("DataP", "Początek zlecenia");
+            grid.Columns.Add("DataK", "Koniec zlecenia");
+            grid.Columns.Add("Model", "Model ID");
             grid.Columns.Add("Model", "Model");
-            grid.Columns.Add("Lot", "Lot");
+            grid.Columns.Add("Lot", "Nr zlecenia");
             grid.Columns.Add("Operator", "Operator");
-            grid.Columns.Add("Linia", "Linia");
-            grid.Columns.Add("IloscOK", "IloscOK");
+            grid.Columns.Add("Linia", "Linia SMT");
+            grid.Columns.Add("Linia", "Data SMT");
+            grid.Columns.Add("Ilosc", "Ilosc SMT");
+            grid.Columns.Add("z", "Rejestracja NG");
             grid.Columns.Add("NG", "NG");
             grid.Columns.Add("Scrap", "Scrap");
             DataGridViewImageButtonSaveColumn columnImage = new DataGridViewImageButtonSaveColumn();
 
             columnImage.Name = "Images";
             columnImage.HeaderText = "";
-            grid.Columns.Add(columnImage);
-            //grid.Columns.Add("Zdjecia", "Zdjecia");
-            foreach (var inspectionRecord in inspectionData.Skip(inspectionData.Count-40).Reverse())
+            grid.Columns.Insert(0,columnImage);
+            var orderedOrders = DataContainer.sqlDataByOrder.Where(o=>o.Value.smt.ledsUsed>0).
+                                                             Where(o=>o.Value.visualInspection.ngScrapList.Count>0).
+                                                             OrderByDescending(o => o.Value.visualInspection.ngScrapList.Select(i=>i.ngRegistrationDate).OrderByDescending(d=>d).First()).
+                                                             Take(30);
+            grid.SuspendLayout();
+            foreach (var orderEntry in orderedOrders)
             {
-                var fileImgList = TryGetFileInfoOfImagesForLot(inspectionRecord.NumerZlecenia, inspectionRecord.RealDateTime.ToString("dd-MM-yyyy"));
-                grid.Rows.Add(inspectionRecord.RealDateTime, inspectionRecord.Model, inspectionRecord.NumerZlecenia, inspectionRecord.Oper, inspectionRecord.SmtLine, inspectionRecord.GoodQty, inspectionRecord.AllNg, inspectionRecord.AllScrap);
+                var fileImgList = TryGetFileInfoOfImagesForLot(orderEntry.Value.kitting.orderNo, orderEntry.Value.kitting.kittingDate.ToString("dd-MM-yyyy"));
+                grid.Rows.Add(null,
+                              orderEntry.Value.kitting.kittingDate,
+                              orderEntry.Value.kitting.endDate,
+                              orderEntry.Value.kitting.modelId_12NCFormat,
+                              orderEntry.Value.kitting.ModelName,
+                              orderEntry.Value.kitting.orderNo,
+                              string.Join(", ",orderEntry.Value.visualInspection.ngScrapList.Select(i=>i.viOperator).Where(o=>o!="")),
+                              string.Join(", ", orderEntry.Value.smt.smtLinesInvolved),
+                              orderEntry.Value.smt.earliestStart +" - "+ orderEntry.Value.smt.latestEnd,
+                              orderEntry.Value.smt.totalManufacturedQty,
+                              string.Join(", ",orderEntry.Value.visualInspection.ngScrapList.Select(i=>i.ngRegistrationDate)),
+                              orderEntry.Value.visualInspection.ngCount,
+                              orderEntry.Value.visualInspection.scrapCount);
 
-                if (fileImgList.Count>0)
+                if (fileImgList.Count > 0)
                 {
                     ((DataGridViewImageButtonSaveCell)(grid.Rows[grid.Rows.GetLastRow(DataGridViewElementStates.None)].Cells["Images"])).Enabled = true;
                     ((DataGridViewImageButtonSaveCell)(grid.Rows[grid.Rows.GetLastRow(DataGridViewElementStates.None)].Cells["Images"])).ButtonState = PushButtonState.Normal;
@@ -255,7 +282,16 @@ namespace KontrolaWizualnaRaport
                 }
             }
 
-            dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCells);
+            foreach (DataGridViewColumn column in grid.Columns)
+            {
+                if (column.Name == "z")
+                {
+                    continue;
+                }
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            }
+            grid.Columns["z"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            grid.ResumeLayout();
         }
     }
 }

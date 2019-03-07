@@ -81,6 +81,7 @@
     <Compile Include="TabOperations\Grafik\ShowData.cs" />
     <Compile Include="TabOperations\Grafik\WorkerShiftStructure.cs" />
     <Compile Include="TabOperations\SMT tabs\LedWasteTab.cs" />
+    <Compile Include="TabOperations\SMT tabs\SmtCharts.cs" />
     <Compile Include="TabOperations\ViDataLoader.cs" />
     <Compile Include="dataStructure.cs" />
     <Compile Include="DateTimeParser.cs" />
@@ -197,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ico_w2w_icon.ico" />
+    <None Include="Resources\wasteChartLegend.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MST.MES\MST.MES\MST.MES.csproj">

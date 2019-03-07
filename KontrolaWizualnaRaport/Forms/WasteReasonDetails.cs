@@ -38,7 +38,6 @@ namespace KontrolaWizualnaRaport
             sourceTable.Columns.Add("LiniaSMT");
             //sourceTable.Columns.Add("Zdjecia");
 
-
             sourceTable.Columns["Dobrych"].DataType = typeof(Int32);
 
             Dictionary<string, Int32> qtyPerModel = new Dictionary<string, int>();
@@ -56,7 +55,7 @@ namespace KontrolaWizualnaRaport
                 qtyPerLine[line] += qty;
                 qtyPerModel[model] += qty;
 
-                var imageList = VIOperations.TryGetFileInfoOfImagesForLot(lot.kitting.orderNo, lot.visualInspection.ngScrapList.First().ngRegistrationDate.ToString("dd-MM-yyyy"));
+                var imageList = VIOperations.TryGetFileInfoOfImagesForLot(lot.kitting.orderNo, lot.kitting.kittingDate.ToString("dd-MM-yyyy"));
                 if (imageList.Count > 0) 
                 {
                     if (!imagesPerLot.ContainsKey(lot.kitting.orderNo))

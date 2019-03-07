@@ -44,6 +44,7 @@ namespace KontrolaWizualnaRaport
             ReloadProductionReportsGrid();
             LedWasteTabOperations.RefreshOrReloadWasteData();
             FillOutStencilTable(SharedComponents.Smt.StencilsTab.dataGridViewSmtStencilUsage, DataContainer.mesModels);
+            SmtCharts.DrawChartSmtProductionReport();
         }
 
         public struct LotLedWaste

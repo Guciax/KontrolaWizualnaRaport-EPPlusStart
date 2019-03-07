@@ -16,9 +16,17 @@ namespace KontrolaWizualnaRaport
         [STAThread]
         static void Main()
         {
-            Application.ThreadException += ApplicationThreadException;
+            bool release = true;
+#if DEBUG
+            release = false;
+#endif
+            if (release)
+            {
+                Application.ThreadException += ApplicationThreadException;
 
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            }
+            
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
