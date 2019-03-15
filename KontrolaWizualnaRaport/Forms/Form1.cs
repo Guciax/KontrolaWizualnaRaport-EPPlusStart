@@ -1,5 +1,6 @@
 ﻿using KontrolaWizualnaRaport.CentalDataStorage;
 using KontrolaWizualnaRaport.Forms;
+using KontrolaWizualnaRaport.TabOperations;
 using KontrolaWizualnaRaport.TabOperations.Grafik;
 using KontrolaWizualnaRaport.TabOperations.SMT_tabs;
 using MST.MES;
@@ -632,7 +633,6 @@ namespace KontrolaWizualnaRaport
                 PrintDialog printdlg = new PrintDialog();
                 PrintPreviewDialog printPrvDlg = new PrintPreviewDialog();
 
-
                 printPrvDlg.Document = pd;
                 printPrvDlg.ShowDialog(); 
 
@@ -642,7 +642,6 @@ namespace KontrolaWizualnaRaport
                 {
                     pd.Print();
                 }
-
             }
         }
 
@@ -652,18 +651,19 @@ namespace KontrolaWizualnaRaport
             Single leftMargin = e.MarginBounds.Left;
             Single topMargin = e.MarginBounds.Top;
             Image img = Form1.chartToBitmap(chart);
-            int textYPos = 20;
+            int textYPos = 10;
             int w = e.PageBounds.Width;
             int h = e.PageBounds.Height;
-            string title = chart.Tag.ToString();
+            string title = "Produkcja Elektroniki LED"+Environment.NewLine+chart.Tag.ToString();
 
             using (Font printFont = new Font("Arial", 20.0f))
             {
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 e.Graphics.DrawImage(img, new Point(5, 55));
                 e.Graphics.DrawRectangle(new Pen(Color.Black, 2), new Rectangle(5, 5, 70, 70));
                 e.Graphics.DrawRectangle(new Pen(Color.Black, 2), new Rectangle(5, 5, w-100, 70));
                 e.Graphics.DrawRectangle(new Pen(Color.Black, 2), new Rectangle(5, 5, w-10, 70));
-                e.Graphics.DrawString("MST", printFont, Brushes.Black, 6, textYPos, new StringFormat());
+                e.Graphics.DrawString("MST", printFont, Brushes.Black, 6, textYPos+10, new StringFormat());
                 e.Graphics.DrawString(title, printFont, Brushes.Black, 100, textYPos, new StringFormat());
             }
 
@@ -817,7 +817,7 @@ namespace KontrolaWizualnaRaport
 
         private void dataGridViewBoxing_SelectionChanged(object sender, EventArgs e)
         {
-            
+            dgvTools.SumOfSelectedCells(dataGridViewBoxing, labelBoxingSelectionSum);
         }
 
         
@@ -1573,6 +1573,21 @@ namespace KontrolaWizualnaRaport
                                             dataGridViewSummaryTest,
                                             dataGridViewSummaryBox);
             }
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            //var orders = textBoxOrdersForStatus.Text.Replace("\r", "").Split('\n');
+            OrdersStatus.ShowStatusOfOrders(dataGridViewOrdersStatus);
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DataContainer.sqlDataByProcess.Boxing = MST.MES.SqlDataReaderMethods.Boxing.GetMstBoxingForTimePeriod(dateTimePickerStart.Value, dateTimePickerEnd.Value);
+            MST.MES.SqlDataReaderMethods.Boxing.AddLgBoxesToExisting(DataContainer.sqlDataByProcess, dateTimePickerStart.Value, dateTimePickerEnd.Value);
+            DataMerger.MergeData();
+            BoxingOperations.FillOutBoxingLedQty();
         }
     }
 }

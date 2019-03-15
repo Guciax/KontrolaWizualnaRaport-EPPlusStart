@@ -35,6 +35,7 @@ namespace KontrolaWizualnaRaport
             grid.Columns.Clear();
             Color rowColor = Color.White;
 
+            grid.Columns.Add("Mies", "Mies");
             grid.Columns.Add("Tydz", "Tydz");
             grid.Columns.Add("Data", "Data");
             grid.Columns.Add("Zmiana", "Zmiana");
@@ -124,7 +125,8 @@ namespace KontrolaWizualnaRaport
                             tagTablePerType["Wszystkie"].Rows.Add(orderEntry.Value.OrderBy(p => p.boxingDate).First().boxingDate, orderEntry.Value.OrderByDescending(p => p.boxingDate).First().boxingDate, orderEntry.Value.First().kittingInfo.modelId_12NCFormat, orderEntry.Value.First().kittingInfo.ModelName, orderEntry.Key, DataContainer.sqlDataByOrder[orderEntry.Key].smt.totalManufacturedQty, orderEntry.Value.Count);
                         }
 
-                        grid.Rows.Add(dateTools.WeekNumber(dayEntry.Key),
+                        grid.Rows.Add(dayEntry.Key.ToString("MMM").ToUpper(),
+                                    dateTools.WeekNumber(dayEntry.Key),
                                     dayEntry.Key.ToShortDateString(),
                                     shiftEntry.Key,
                                     qtyPerType["Wszystkie"].ToString("#,0", nfi),
@@ -146,7 +148,7 @@ namespace KontrolaWizualnaRaport
                     grid.FirstDisplayedScrollingRowIndex = grid.RowCount - 1;
                 }
 
-                dgvTools.MakeAlternatingRowsColors(grid, 1);
+                dgvTools.MakeAlternatingRowsColors(grid, 2);
                 grid.ResumeLayout();
             }
         }

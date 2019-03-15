@@ -22,9 +22,9 @@ namespace KontrolaWizualnaRaport
 #endif
             if (release)
             {
-                Application.ThreadException += ApplicationThreadException;
+                //Application.ThreadException += ApplicationThreadException;
 
-                AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+                //AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             }
             
 

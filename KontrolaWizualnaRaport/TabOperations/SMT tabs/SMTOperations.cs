@@ -105,21 +105,15 @@ namespace KontrolaWizualnaRaport
                 col.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
 
-            System.Drawing.Color rowColor = System.Drawing.Color.LightBlue;
+            System.Drawing.Color rowColor = System.Drawing.Color.White;
 
 
             grid.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             foreach (var dayEntry in sourceDic)
             {
-                if (rowColor == System.Drawing.Color.LightBlue)
-                {
-                    rowColor = System.Drawing.Color.White;
-                }
-                else
-                {
-                    rowColor = System.Drawing.Color.LightBlue;
-                }
+                rowColor = dgvTools.SwitchowColor(rowColor);
+
                 var week = dateTools.WeekNumber(dayEntry.Key);
 
                 foreach (var shiftEntry in dayEntry.Value)
@@ -167,7 +161,7 @@ namespace KontrolaWizualnaRaport
                         tagTablesPerLine.Add(smtLine, tagTableTemplate.Clone());
                     }
 
-                    foreach (var smtRecord in shiftEntry.Value) {
+                    foreach (var smtRecord in filteredList) {
                         tagTablesPerLine[smtRecord.smtLine].Rows.Add(smtRecord.smtStartDate, smtRecord.smtEndDate,
                             smtRecord.smtLine, smtRecord.operatorSmt, smtRecord.orderInfo.orderNo,
                             smtRecord.orderInfo.modelId, smtRecord.manufacturedQty, 0, smtRecord.stencilId);

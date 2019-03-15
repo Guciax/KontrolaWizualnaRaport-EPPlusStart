@@ -80,6 +80,8 @@
     <Compile Include="TabOperations\Grafik\shiftStructure.cs" />
     <Compile Include="TabOperations\Grafik\ShowData.cs" />
     <Compile Include="TabOperations\Grafik\WorkerShiftStructure.cs" />
+    <Compile Include="TabOperations\RunningMstOrders\ImageProgressBar.cs" />
+    <Compile Include="TabOperations\RunningMstOrders\OrdersStatus.cs" />
     <Compile Include="TabOperations\SMT tabs\LedWasteTab.cs" />
     <Compile Include="TabOperations\SMT tabs\SmtCharts.cs" />
     <Compile Include="TabOperations\ViDataLoader.cs" />

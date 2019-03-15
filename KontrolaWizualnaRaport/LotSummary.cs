@@ -103,43 +103,52 @@ namespace KontrolaWizualnaRaport
         private static void FillOutSmtGrid(OrderStructureByOrderNo.SMT smtData, DataGridView smtGrid, OrderStructureByOrderNo.Kitting kittingData)
         {
             smtGrid.Rows.Clear();
-            smtGrid.Rows.Add("Łączna ilość:", smtData.totalManufacturedQty);
-            smtGrid.Rows.Add("Zużycie LED", smtData.ledsUsed);
-            double usageByBom = kittingData.modelSpec.ledCountPerModel * smtData.totalManufacturedQty;
-            string ledWaste = Math.Round(((double)smtData.ledsUsed - usageByBom) / usageByBom * 100, 2)+"%";
-            smtGrid.Rows.Add("Odpad LED", ledWaste);
-
-            smtGrid.Rows.Add();
-            smtGrid.Rows.Add("Dane z linii");
-            foreach (var lineEntry in smtData.smtOrders)
+            if (smtData.modelId != "")
             {
-                smtGrid.Rows.Add("Linia:", lineEntry.smtLine);
-                smtGrid.Rows.Add("Start:", lineEntry.smtStartDate);
-                smtGrid.Rows.Add("Koniec:", lineEntry.smtEndDate);
-                smtGrid.Rows.Add("Ilość:", lineEntry.manufacturedQty);
-                smtGrid.Rows.Add("Operator:", lineEntry.operatorSmt);
-                smtGrid.Rows.Add("Stencil:", lineEntry.stencilId);
+                smtGrid.Rows.Add("Łączna ilość:", smtData.totalManufacturedQty);
+                smtGrid.Rows.Add("Zużycie LED", smtData.ledsUsed);
+                double usageByBom = kittingData.modelSpec.ledCountPerModel * smtData.totalManufacturedQty;
+                string ledWaste = Math.Round(((double)smtData.ledsUsed - usageByBom) / usageByBom * 100, 2) + "%";
+                smtGrid.Rows.Add("Odpad LED", ledWaste);
+
                 smtGrid.Rows.Add();
+                smtGrid.Rows.Add("Dane z linii");
+                foreach (var lineEntry in smtData.smtOrders)
+                {
+                    smtGrid.Rows.Add("Linia:", lineEntry.smtLine);
+                    smtGrid.Rows.Add("Start:", lineEntry.smtStartDate);
+                    smtGrid.Rows.Add("Koniec:", lineEntry.smtEndDate);
+                    smtGrid.Rows.Add("Czas trwania:", $"{Math.Round((lineEntry.smtEndDate-lineEntry.smtStartDate).TotalHours,1)}h");
+                    smtGrid.Rows.Add("Ilość:", lineEntry.manufacturedQty);
+                    smtGrid.Rows.Add("Operator:", lineEntry.operatorSmt);
+                    smtGrid.Rows.Add("Stencil:", lineEntry.stencilId);
+                    smtGrid.Rows.Add();
+                }
+                dgvTools.ColumnsAutoSize(smtGrid, DataGridViewAutoSizeColumnMode.AllCells);
             }
-            dgvTools.ColumnsAutoSize(smtGrid, DataGridViewAutoSizeColumnMode.AllCells);
+            
         }
 
         private static void FillOutKittingGrid(OrderStructureByOrderNo.Kitting kittingData, DataGridView kittingGrid)
         {
             kittingGrid.Rows.Clear();
-            kittingGrid.Rows.Add("Model ID:", kittingData.modelId_12NCFormat);
-            kittingGrid.Rows.Add("Model nazwa:", kittingData.ModelName);
-            kittingGrid.Rows.Add("Data utworzenia:", kittingData.kittingDate);
-            kittingGrid.Rows.Add("Data zakończenia:", kittingData.endDate);
-            kittingGrid.Rows.Add("Ilość zamówienia:", kittingData.orderedQty);
-            kittingGrid.Rows.Add("Nr. planu:", kittingData.productionPlanId);
-            kittingGrid.Rows.Add();
-            kittingGrid.Rows.Add("Specyfikacja");
-            kittingGrid.Rows.Add("PCB / MB:", kittingData.modelSpec.pcbCountPerMB);
-            kittingGrid.Rows.Add("LED:", kittingData.modelSpec.ledCountPerModel);
-            kittingGrid.Rows.Add("CONN:", kittingData.modelSpec.connectorCountPerModel);
-            kittingGrid.Rows.Add("RES:", kittingData.modelSpec.resistorCountPerModel);
-            dgvTools.ColumnsAutoSize(kittingGrid, DataGridViewAutoSizeColumnMode.AllCells);
+            if (kittingData.ModelName != null)
+            {
+                kittingGrid.Rows.Add("Model ID:", kittingData.modelId_12NCFormat);
+                kittingGrid.Rows.Add("Model nazwa:", kittingData.ModelName);
+                kittingGrid.Rows.Add("Data utworzenia:", kittingData.kittingDate);
+                kittingGrid.Rows.Add("Data zakończenia:", kittingData.endDate);
+                kittingGrid.Rows.Add("Ilość zamówienia:", kittingData.orderedQty);
+                kittingGrid.Rows.Add("Nr. planu:", kittingData.productionPlanId);
+                kittingGrid.Rows.Add();
+                kittingGrid.Rows.Add("Specyfikacja");
+                kittingGrid.Rows.Add("PCB / MB:", kittingData.modelSpec.pcbCountPerMB);
+                kittingGrid.Rows.Add("LED:", kittingData.modelSpec.ledCountPerModel);
+                kittingGrid.Rows.Add("CONN:", kittingData.modelSpec.connectorCountPerModel);
+                kittingGrid.Rows.Add("RES:", kittingData.modelSpec.resistorCountPerModel);
+                dgvTools.ColumnsAutoSize(kittingGrid, DataGridViewAutoSizeColumnMode.AllCells);
+            }
+            
         }
     }
 }

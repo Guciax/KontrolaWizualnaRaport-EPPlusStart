@@ -73,7 +73,6 @@ namespace KontrolaWizualnaRaport
                 DataPoint ptB = new DataPoint();
                 ptB.SetValueXY(date, valueB);
                 lineSeriesB.Points.Add(ptB);
-
             }
 
             chart.Series.Add(lineSeriesA);

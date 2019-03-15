@@ -26,10 +26,9 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
             Series barSeries = new Series
             {
                 ChartType = SeriesChartType.Column,
-                BorderWidth = 3,
+                BorderWidth = 1,
                 BorderColor = Color.FromArgb(255, 39, 174, 96),
                 Color = Color.FromArgb(150, 39, 174, 96)
-
             };
 
             foreach (var dayEntry in sourceDic)

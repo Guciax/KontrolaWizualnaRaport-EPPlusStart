@@ -11,6 +11,11 @@ namespace KontrolaWizualnaRaport
 {
     class dgvTools
     {
+        public static Color SwitchowColor(Color rowColor)
+        {
+            if (rowColor == Color.White) return Color.LightSteelBlue;
+            return Color.White;
+        }
 
         public static void MakeAlternatingRowsColors(DataGridView grid, int colIndex)
         {
@@ -151,28 +156,9 @@ namespace KontrolaWizualnaRaport
             for (int r = startCell.RowIndex; r >= 0; r--)
             {
                 if (grid.Rows[r].Cells[startCell.ColumnIndex].Value.ToString() != startCellValue) break;
-                foreach (DataGridViewCell cell in grid.Rows[r].Cells)
+                foreach (var colName in colNameWithTags)
                 {
-                    if (cell.Tag == null) continue;
-                    if (!colNameWithTags.Contains(cell.OwningColumn.Name)) continue;
-                    DataTable cellTable = (DataTable)cell.Tag;
-                    if (result==null) {
-                        result = cellTable.Clone();
-                    }
-
-                    foreach (DataRow row in cellTable.Rows)
-                    {
-                        result.Rows.Add(row.ItemArray);
-                    }
-                }
-            }
-            if (startCell.RowIndex == grid.Rows.Count - 1) return result;
-
-            for(int r = startCell.RowIndex + 1;r<grid.Rows.Count; r++)
-            {
-                if (grid.Rows[r].Cells[startCell.ColumnIndex].Value.ToString() != startCellValue) break;
-                foreach (DataGridViewCell cell in grid.Rows[r].Cells)
-                {
+                    DataGridViewCell cell = grid.Rows[r].Cells[colName];
                     if (cell.Tag == null) continue;
                     DataTable cellTable = (DataTable)cell.Tag;
                     if (result == null)
@@ -185,6 +171,56 @@ namespace KontrolaWizualnaRaport
                         result.Rows.Add(row.ItemArray);
                     }
                 }
+                //foreach (DataGridViewCell cell in grid.Rows[r].Cells)
+                //{
+                //    if (cell.Tag == null) continue;
+                //    if (!colNameWithTags.Contains(cell.OwningColumn.Name)) continue;
+                //    DataTable cellTable = (DataTable)cell.Tag;
+                //    if (result==null) {
+                //        result = cellTable.Clone();
+                //    }
+
+                //    foreach (DataRow row in cellTable.Rows)
+                //    {
+                //        result.Rows.Add(row.ItemArray);
+                //    }
+                //}
+            }
+            if (startCell.RowIndex == grid.Rows.Count - 1) return result;
+
+            for(int r = startCell.RowIndex + 1;r<grid.Rows.Count; r++)
+            {
+                if (grid.Rows[r].Cells[startCell.ColumnIndex].Value.ToString() != startCellValue) break;
+                foreach (var colName in colNameWithTags)
+                {
+                    DataGridViewCell cell = grid.Rows[r].Cells[colName];
+                    if (cell.Tag == null) continue;
+                    DataTable cellTable = (DataTable)cell.Tag;
+                    if (result == null)
+                    {
+                        result = cellTable.Clone();
+                    }
+
+                    foreach (DataRow row in cellTable.Rows)
+                    {
+                        result.Rows.Add(row.ItemArray);
+                    }
+                }
+                //foreach (DataGridViewCell cell in grid.Rows[r].Cells)
+                //{
+                //    if (cell.Tag == null) continue;
+                //    if (!colNameWithTags.Contains(cell.OwningColumn.Name)) continue;
+                //    DataTable cellTable = (DataTable)cell.Tag;
+                //    if (result == null)
+                //    {
+                //        result = cellTable.Clone();
+                //    }
+
+                //    foreach (DataRow row in cellTable.Rows)
+                //    {
+                //        result.Rows.Add(row.ItemArray);
+                //    }
+                //}
             }
 
             return result;
