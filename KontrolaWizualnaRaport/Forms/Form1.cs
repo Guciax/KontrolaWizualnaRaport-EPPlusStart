@@ -119,6 +119,8 @@ namespace KontrolaWizualnaRaport
             SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxSmt8);
             SharedComponents.Smt.LedWasteTab.smtLinesCheckBoxesList.Add(checkBoxTotal);
             SharedComponents.Smt.StencilsTab.dataGridViewSmtStencilUsage = dataGridViewSmtStencilUsage;
+            SharedComponents.Smt.changeoversTab.dataGridViewChangeOvers = dataGridViewChangeOvers;
+            SharedComponents.Smt.SmtEfficiencyTab.dataGridViewSmtEfficiency = dataGridViewSmtEfficiency;
 
             SharedComponents.VisualInspection.PoziomOdpaduTab.chartWasteLevel = chartWasteLevel;
             SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelLg = checkBoxViLevelLg;
@@ -144,6 +146,7 @@ namespace KontrolaWizualnaRaport
             SharedComponents.VisualInspection.PrzyczynyOdpaduTab.dateTimePickerPrzyczynyOdpaduDo = dateTimePickerPrzyczynyOdpaduDo;
             SharedComponents.VisualInspection.latestOrders.dataGridViewLatestLots = dataGridViewLatestLots;
 
+
             SharedComponents.Boxing.cbLg = cbLg;
             SharedComponents.Boxing.cbMst = cbMst;
             SharedComponents.Boxing.datetimePickerStart = dateTimePickerStart;
@@ -162,9 +165,9 @@ namespace KontrolaWizualnaRaport
             dtpGrafikStart.Value = DateTime.Now.AddDays(-90);
 
             DataContainer.mesModels = MST.MES.SqlDataReaderMethods.MesModels.allModels();
-            DataContainer.sqlDataByProcess.Kitting = MST.MES.SqlDataReaderMethods.Kitting.GetOrdersInfoByDataReader(90);
+            DataContainer.sqlDataByProcess.Kitting = MST.MES.SqlDataReaderMethods.Kitting.GetOrdersInfoByDataReader(900);
             Debug.WriteLine("kit");
-            DataContainer.sqlDataByProcess.Smt = MST.MES.SqlDataReaderMethods.SMT.GetOrdersDateToDate(dateTimePickerSmtStart.Value.Date, dateTimePickerTestEnd.Value.Date);
+            DataContainer.sqlDataByProcess.Smt = MST.MES.SqlDataReaderMethods.SMT.GetOrdersDateToDate(DateTime.Now.AddYears(-5), dateTimePickerTestEnd.Value.Date);
             Debug.WriteLine("smt");
             DataContainer.sqlDataByProcess.VisualInspection = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecordsForTimePerdiod(SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin.Value, SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelEnd.Value);
             Debug.WriteLine("vi");
@@ -175,8 +178,7 @@ namespace KontrolaWizualnaRaport
             MST.MES.SqlDataReaderMethods.Boxing.AddLgBoxesToExisting(DataContainer.sqlDataByProcess,dateTimePickerStart.Value, dateTimePickerEnd.Value);
             DataMerger.MergeData();
 
-
-
+            DataContainer.Smt.EfficiencyNormPerModel = SmtEfficiencyCalculation.EfficiencyOutputPerHourNormPerModel();
 
             //---------------OLD
 
@@ -185,7 +187,7 @@ namespace KontrolaWizualnaRaport
             //cBListViReasonList.Parent = tabPage6;
             //cBListViReasonAnalysesSmtLines.BringToFront();
             //cBListViReasonList.BringToFront();
-            
+
 
             //cBListViModelAnalysesSmtLines.Parent = tabPage7;
             //cBListViModelAnalysesSmtLines.BringToFront();
@@ -288,7 +290,8 @@ namespace KontrolaWizualnaRaport
 
         private void buttonSmtRefresh_Click(object sender, EventArgs e)
         {
-            DownloadSqlDataAndMerge();
+            //DownloadSqlDataAndMerge();
+            PrepareFreshSmtData();
         }
 
         
@@ -1588,6 +1591,37 @@ namespace KontrolaWizualnaRaport
             MST.MES.SqlDataReaderMethods.Boxing.AddLgBoxesToExisting(DataContainer.sqlDataByProcess, dateTimePickerStart.Value, dateTimePickerEnd.Value);
             DataMerger.MergeData();
             BoxingOperations.FillOutBoxingLedQty();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var smt = MST.MES.SqlDataReaderMethods.SMT.GetOrdersByDataReader(600);
+            DataGridView grid = dataGridViewSmtModelStats;
+
+            grid.Columns.Clear();
+            grid.Columns.Add("Model", "Model");
+            grid.Columns.Add("orders", "Ilość zleceń");
+            grid.Columns.Add("Fastest", "wydajnosc_max");
+            grid.Columns.Add("Slowest", "wydajnosc_min");
+            grid.Columns.Add("Mean", "wydajnosc_śred");
+
+            var smtRecordsGrouppedByModel = smt.SelectMany(o => o.Value.smtOrders).GroupBy(rec => rec.orderInfo.ModelFamily(OrderStructureByOrderNo.ModelFamilyType.SameConnAndCCT)).ToDictionary(model => model.Key, rec => rec.ToList());
+            foreach (var modelEntry in smtRecordsGrouppedByModel)
+            {
+                var ordersCount = modelEntry.Value.Select(o => o.orderInfo.orderNo).Distinct().Count();
+                var array = modelEntry.Value.Where(rec=>(rec.smtEndDate-rec.smtStartDate).TotalMinutes>10).Select(rec => Math.Round((rec.manufacturedQty) / (rec.smtEndDate - rec.smtStartDate).TotalHours,1)).OrderBy(o=>o).ToList();
+                double fast = 0;
+                double slow = 0;
+                double mean = 0;
+
+                if (array.Count() > 0) {
+                    fast = array.Max();
+                    slow = array.Min();
+                    mean = array[(int)Math.Truncate(array.Count() * 0.75)];
+                }
+                
+                grid.Rows.Add(modelEntry.Key, ordersCount, fast, slow, mean);
+            }
         }
     }
 }

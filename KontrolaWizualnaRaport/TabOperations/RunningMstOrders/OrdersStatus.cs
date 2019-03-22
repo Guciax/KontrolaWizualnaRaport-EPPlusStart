@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace KontrolaWizualnaRaport.TabOperations
     {
         public static void ShowStatusOfOrders(CustomDataGridView grid)
         {
-            var kittingData = MST.MES.SqlDataReaderMethods.Kitting.GetKittingDataForNotFinishedOrderes(MST.MES.SqlDataReaderMethods.Kitting.clientGroup.MST, 20);
+            var kittingData = MST.MES.SqlDataReaderMethods.Kitting.GetKittingDataForClientGroup(MST.MES.SqlDataReaderMethods.Kitting.clientGroup.MST, 20);
             string[] orders = kittingData.Select(o => o.Key).ToArray();
             var smtData = MST.MES.SqlDataReaderMethods.SMT.GetOrders(orders);
             var viData = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecordsForOrders(orders);
@@ -43,24 +44,31 @@ namespace KontrolaWizualnaRaport.TabOperations
             //grid.Columns.Add("SMT", "Ilość SMT");
             grid.Columns.Add("NG", "NG");
             grid.Columns.Add("SCR", "SCR");
-            
-
-            
-            
-
+            int firstFinishedRow = 0;
             foreach (var order in orders)
             {
-                
                 if (order.Trim() == "") continue;
-                grid.Rows.Add(order);
-                int lastRow = grid.Rows.Count - 1;
+                int currentRow = 0;
 
+                if (kittingData[order].endDate > kittingData[order].kittingDate)
+                {
+                    grid.Rows.Insert(firstFinishedRow,order);
+                    currentRow = firstFinishedRow;
+                    dgvTools.SetRowColor(grid.Rows[currentRow], Color.LightGray, Color.Black);
+                }
+                else
+                {
+                    grid.Rows.Insert(0,order);
+                    currentRow = 0;
+                    firstFinishedRow++;
+                }
+                
                 if (kittingData.ContainsKey(order))
                 {
-                    grid.Rows[lastRow].Cells["NC12"].Value = kittingData[order].modelId_12NCFormat;
-                    grid.Rows[lastRow].Cells["Nazwa"].Value = kittingData[order].ModelName;
-                    grid.Rows[lastRow].Cells["Poczatek"].Value = kittingData[order].kittingDate.ToString();
-                    grid.Rows[lastRow].Cells["Ilosc"].Value = kittingData[order].orderedQty.ToString();
+                    grid.Rows[currentRow].Cells["NC12"].Value = kittingData[order].modelId_12NCFormat;
+                    grid.Rows[currentRow].Cells["Nazwa"].Value = kittingData[order].ModelName;
+                    grid.Rows[currentRow].Cells["Poczatek"].Value = kittingData[order].kittingDate.ToString();
+                    grid.Rows[currentRow].Cells["Ilosc"].Value = kittingData[order].orderedQty.ToString();
                 }
 
                 float smtProgress = 0;
@@ -70,12 +78,12 @@ namespace KontrolaWizualnaRaport.TabOperations
                     smtCount = smtData[order].totalManufacturedQty;
                     smtProgress = (float)smtCount / (float)kittingData[order].orderedQty;
                 }
-                ImageProgressBar.CreateProgressbar(smtProgress, smtCount, grid.Rows[lastRow].Cells["SMT"] as DataGridViewImageCell);
+                ImageProgressBar.CreateProgressbar(smtProgress, smtCount, grid.Rows[currentRow].Cells["SMT"] as DataGridViewImageCell);
 
                 if (viData.ContainsKey(order))
                 {
-                    grid.Rows[lastRow].Cells["NG"].Value = viData[order].ngCount.ToString();
-                    grid.Rows[lastRow].Cells["SCR"].Value = viData[order].scrapCount.ToString();
+                    grid.Rows[currentRow].Cells["NG"].Value = viData[order].ngCount.ToString();
+                    grid.Rows[currentRow].Cells["SCR"].Value = viData[order].scrapCount.ToString();
                 }
 
                 float boxingProgress = 0;
@@ -84,10 +92,12 @@ namespace KontrolaWizualnaRaport.TabOperations
                 {
                     //grid.Rows[lastRow].Cells["Spakowane"].Value = boxingData[order].Count.ToString();
                     boxedCount = boxingData[order].Count();
-                    grid.Rows[lastRow].Cells["Ilosckartonow"].Value = boxingData[order].Select(o=>o.boxId).Distinct().Count().ToString();
+                    grid.Rows[currentRow].Cells["Ilosckartonow"].Value = boxingData[order].Select(o=>o.boxId).Distinct().Count().ToString();
                     boxingProgress = (float)boxedCount / (float)kittingData[order].orderedQty;
                 }
-                ImageProgressBar.CreateProgressbar(boxingProgress, boxedCount, grid.Rows[lastRow].Cells["Spakowane"] as DataGridViewImageCell);
+                ImageProgressBar.CreateProgressbar(boxingProgress, boxedCount, grid.Rows[currentRow].Cells["Spakowane"] as DataGridViewImageCell);
+                
+                
             }
 
             foreach (DataGridViewColumn column in grid.Columns)

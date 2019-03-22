@@ -45,6 +45,8 @@ namespace KontrolaWizualnaRaport
             LedWasteTabOperations.RefreshOrReloadWasteData();
             FillOutStencilTable(SharedComponents.Smt.StencilsTab.dataGridViewSmtStencilUsage, DataContainer.mesModels);
             SmtCharts.DrawChartSmtProductionReport();
+            ChangeOversOperations.FillOutGridChangeOvers();
+            SmtEfficiencyReport.FillOutEfficiencyGrid();
         }
 
         public struct LotLedWaste
@@ -59,8 +61,10 @@ namespace KontrolaWizualnaRaport
         {
             SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> result = new SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>>();
 
-            //var dictByDate = DataContainer.sqlDataByProcess.Smt.SelectMany(o => o.Value.smtOrders).GroupBy(x => dateTools.whatDayShiftIsit(x.smtEndDate).fixedDate.Date).ToDictionary(x => x.Key, x => x.ToList());
-            var dictByDate = DataContainer.sqlDataByProcess.Smt.SelectMany(rec=>rec.Value.smtOrders).GroupBy(o => o.smtEndDate.Date).ToDictionary(k => k.Key, v => v.ToList());// Many(o => o.Value.smtOrders).GroupBy(x => dateTools.whatDayShiftIsit(x.smtEndDate).fixedDate.Date).ToDictionary(x => x.Key, x => x.ToList());
+            var dictByDate = DataContainer.sqlDataByProcess.Smt.SelectMany(rec=>rec.Value.smtOrders).
+                                                                Where(order=>order.smtEndDate.Date >= SharedComponents.Smt.smtStartDate.Value & order.smtEndDate.Date <= SharedComponents.Smt.smtEndDate.Value).
+                                                                GroupBy(o => o.smtEndDate.Date).
+                                                                ToDictionary(k => k.Key, v => v.ToList());
 
             foreach (var dayEntry in dictByDate)
             {
@@ -88,7 +92,7 @@ namespace KontrolaWizualnaRaport
             tagTableTemplate.Columns.Add("NG");
             tagTableTemplate.Columns.Add("Stencil");
              
-            grid.Rows.Clear();
+
             grid.Columns.Clear();
             grid.Columns.Add("Mies", "Mies");
             grid.Columns.Add("Tydz", "Tydz");
@@ -106,12 +110,12 @@ namespace KontrolaWizualnaRaport
             }
 
             System.Drawing.Color rowColor = System.Drawing.Color.White;
-
-
             grid.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             foreach (var dayEntry in sourceDic)
             {
+                if (dayEntry.Key < SharedComponents.Smt.smtStartDate.Value) continue;
+                if (dayEntry.Key > SharedComponents.Smt.smtEndDate.Value) continue;
                 rowColor = dgvTools.SwitchowColor(rowColor);
 
                 var week = dateTools.WeekNumber(dayEntry.Key);

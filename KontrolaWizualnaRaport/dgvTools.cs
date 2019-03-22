@@ -143,6 +143,19 @@ namespace KontrolaWizualnaRaport
             return cellsList.ToArray();
         }
 
+        public static void SetRowColor(DataGridViewRow row, Color backColor, Color? foreColor = null)
+        {
+            foreach (DataGridViewCell cell in row.Cells)
+            {
+                cell.Style.BackColor = backColor;
+                if (!foreColor.HasValue)
+                {
+                    foreColor = Color.Black;
+                }
+                cell.Style.ForeColor = (Color)foreColor;
+            }
+        }
+
         public static DataTable AgregateCellsTables(DataGridView grid, DataGridViewCell startCell, string[] colNameWithTags)
         {
             DataTable result = null;

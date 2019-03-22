@@ -82,8 +82,11 @@
     <Compile Include="TabOperations\Grafik\WorkerShiftStructure.cs" />
     <Compile Include="TabOperations\RunningMstOrders\ImageProgressBar.cs" />
     <Compile Include="TabOperations\RunningMstOrders\OrdersStatus.cs" />
+    <Compile Include="TabOperations\SMT tabs\ChangeOversOperations.cs" />
     <Compile Include="TabOperations\SMT tabs\LedWasteTab.cs" />
     <Compile Include="TabOperations\SMT tabs\SmtCharts.cs" />
+    <Compile Include="TabOperations\SMT tabs\SmtEfficiencyCalculation.cs" />
+    <Compile Include="TabOperations\SMT tabs\SmtEfficiencyReport.cs" />
     <Compile Include="TabOperations\ViDataLoader.cs" />
     <Compile Include="dataStructure.cs" />
     <Compile Include="DateTimeParser.cs" />

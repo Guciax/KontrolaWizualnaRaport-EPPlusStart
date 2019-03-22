@@ -36,10 +36,11 @@ namespace KontrolaWizualnaRaport
                 public static RadioButton rbModelsCount;
                 public static Chart chartSmtProductionReport;
 
+            }
 
-
-
-
+            public class ChangeoverTab
+            {
+                public static DataGridView dataGridViewChangeOvers;
             }
 
             public class changeoversTab
@@ -56,6 +57,11 @@ namespace KontrolaWizualnaRaport
             {
                 public static RadioButton radioButtonSmtShowAllModels;
                 public static ComboBox comboBoxSmtModels;
+            }
+
+            public class SmtEfficiencyTab
+            {
+                public static DataGridView dataGridViewSmtEfficiency;
             }
 
 
