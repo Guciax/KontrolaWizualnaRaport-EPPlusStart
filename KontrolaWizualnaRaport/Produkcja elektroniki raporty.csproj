@@ -70,6 +70,12 @@
     <Compile Include="Forms\ShowImagesForm.Designer.cs">
       <DependentUpon>ShowImagesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TestChartTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TestChartTable.Designer.cs">
+      <DependentUpon>TestChartTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImageToByteArray.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="TabOperations\BoxingOperations.cs" />
@@ -83,10 +89,12 @@
     <Compile Include="TabOperations\RunningMstOrders\ImageProgressBar.cs" />
     <Compile Include="TabOperations\RunningMstOrders\OrdersStatus.cs" />
     <Compile Include="TabOperations\SMT tabs\ChangeOversOperations.cs" />
+    <Compile Include="TabOperations\SMT tabs\EfficientyTableAndChart.cs" />
     <Compile Include="TabOperations\SMT tabs\LedWasteTab.cs" />
     <Compile Include="TabOperations\SMT tabs\SmtCharts.cs" />
     <Compile Include="TabOperations\SMT tabs\SmtEfficiencyCalculation.cs" />
     <Compile Include="TabOperations\SMT tabs\SmtEfficiencyReport.cs" />
+    <Compile Include="TabOperations\Test\TestStatisticsCharts.cs" />
     <Compile Include="TabOperations\ViDataLoader.cs" />
     <Compile Include="dataStructure.cs" />
     <Compile Include="DateTimeParser.cs" />
@@ -136,7 +144,7 @@
       <DependentUpon>ShowDetailsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="SQLoperations.cs" />
-    <Compile Include="TabOperations\TestOperations.cs" />
+    <Compile Include="TabOperations\Test\TestOperations.cs" />
     <Compile Include="TabOperations\VIOperations.cs" />
     <Compile Include="wastePerReasonStructure.cs" />
     <Compile Include="Forms\WasteReasonDetails.cs">
@@ -156,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ShowImagesForm.resx">
       <DependentUpon>ShowImagesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TestChartTable.resx">
+      <DependentUpon>TestChartTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -26,6 +26,7 @@ namespace KontrolaWizualnaRaport
         {
             public static SortedDictionary<DateTime, SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>> sortedTableByDayAndShift;
             public static Dictionary<string, double> EfficiencyNormPerModel;
+            public static Dictionary<string, SortedDictionary<double, int>> EfficiencyHistogramPerModel;
         }
 
         public static Dictionary<DateTime, DayStructure> peopleOnShifts = new Dictionary<DateTime, DayStructure>();

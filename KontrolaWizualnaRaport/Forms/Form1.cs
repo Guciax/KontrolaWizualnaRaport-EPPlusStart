@@ -3,6 +3,7 @@ using KontrolaWizualnaRaport.Forms;
 using KontrolaWizualnaRaport.TabOperations;
 using KontrolaWizualnaRaport.TabOperations.Grafik;
 using KontrolaWizualnaRaport.TabOperations.SMT_tabs;
+using KontrolaWizualnaRaport.TabOperations.Test;
 using MST.MES;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static KontrolaWizualnaRaport.CustomChecedListBoxStuff;
 using static KontrolaWizualnaRaport.SMTOperations;
+using static KontrolaWizualnaRaport.TabOperations.Test.TestStatisticsCharts;
 
 namespace KontrolaWizualnaRaport
 {
@@ -121,8 +123,11 @@ namespace KontrolaWizualnaRaport
             SharedComponents.Smt.StencilsTab.dataGridViewSmtStencilUsage = dataGridViewSmtStencilUsage;
             SharedComponents.Smt.changeoversTab.dataGridViewChangeOvers = dataGridViewChangeOvers;
             SharedComponents.Smt.SmtEfficiencyTab.dataGridViewSmtEfficiency = dataGridViewSmtEfficiency;
+            SharedComponents.Smt.ModelAnalysis.dataGridViewSmtModelStats = dataGridViewSmtModelStats;
+            SharedComponents.Smt.ModelAnalysis.chartSmtModelAnalysis = chartSmtModelAnalysis;
 
-            SharedComponents.VisualInspection.PoziomOdpaduTab.chartWasteLevel = chartWasteLevel;
+
+        SharedComponents.VisualInspection.PoziomOdpaduTab.chartWasteLevel = chartWasteLevel;
             SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelLg = checkBoxViLevelLg;
             SharedComponents.VisualInspection.PoziomOdpaduTab.checkBoxViLevelMst = checkBoxViLevelMst;
             SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines = checkedListBoxViWasteLevelSmtLines;
@@ -164,6 +169,16 @@ namespace KontrolaWizualnaRaport
             SharedComponents.Grafik.grid = dataGridViewGrafik;
             dtpGrafikStart.Value = DateTime.Now.AddDays(-90);
 
+            SharedComponents.Test.Charts.cbTestStatisticsModel = cbTestStatisticsModel;
+            SharedComponents.Test.Charts.cbTestStatisticsParam1 = cbTestStatisticsParam1;
+            SharedComponents.Test.Charts.cbTestStatisticsParam2 = cbTestStatisticsParam2;
+            SharedComponents.Test.Charts.chartTestStatistics = chartTestStatistics;
+            SharedComponents.Test.Charts.cbTestStatisticsTester = cbTestStatisticsTester;
+            SharedComponents.Test.Charts.chkBoxTestStatisticsOK = chkBoxTestStatisticsOK;
+            SharedComponents.Test.Charts.chkBoxTestStatisticsNG = chkBoxTestStatisticsNG;
+            SharedComponents.Test.dateTimePickerTestStart = dateTimePickerTestStart;
+            SharedComponents.Test.dateTimePickerTestEnd = dateTimePickerTestEnd;
+
             DataContainer.mesModels = MST.MES.SqlDataReaderMethods.MesModels.allModels();
             DataContainer.sqlDataByProcess.Kitting = MST.MES.SqlDataReaderMethods.Kitting.GetOrdersInfoByDataReader(900);
             Debug.WriteLine("kit");
@@ -171,15 +186,14 @@ namespace KontrolaWizualnaRaport
             Debug.WriteLine("smt");
             DataContainer.sqlDataByProcess.VisualInspection = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecordsForTimePerdiod(SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin.Value, SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelEnd.Value);
             Debug.WriteLine("vi");
-            //sqlDataByProcess.Test = MST.MES.SqlDataReaderMethods.LedTest.GetTestRecords(10, testerIdToName);
+            DataContainer.sqlDataByProcess.Test = MST.MES.SqlDataReaderMethods.LedTest.GetTestRecords(30, MST.MES.SqlDataReaderMethods.LedTest.TesterIdToName());
             Debug.WriteLine("test");
             //sqlDataByProcess.Rework = MST.MES.SqlDataReaderMethods.LedRework.GetReworkList(90);
             DataContainer.sqlDataByProcess.Boxing = MST.MES.SqlDataReaderMethods.Boxing.GetMstBoxingForTimePeriod(dateTimePickerStart.Value, dateTimePickerEnd.Value);
             MST.MES.SqlDataReaderMethods.Boxing.AddLgBoxesToExisting(DataContainer.sqlDataByProcess,dateTimePickerStart.Value, dateTimePickerEnd.Value);
             DataMerger.MergeData();
 
-            DataContainer.Smt.EfficiencyNormPerModel = SmtEfficiencyCalculation.EfficiencyOutputPerHourNormPerModel();
-
+            
             //---------------OLD
 
             //dateTimePickerViOperatorEfiiciencyStart.Value = DateTime.Now.AddDays(-7);
@@ -235,25 +249,26 @@ namespace KontrolaWizualnaRaport
                     }
                 case "TEST":
                     {
-                        if (dataGridViewTestProdReport.Rows.Count == 0)
-                        {
-                            loadDone = false;
-                            PictureBox loadPB = new PictureBox();
-                            Image loadImg = KontrolaWizualnaRaport.Properties.Resources.load;
+                        //if (dataGridViewTestProdReport.Rows.Count == 0)
+                        //{
+                        //    loadDone = false;
+                        //    PictureBox loadPB = new PictureBox();
+                        //    Image loadImg = KontrolaWizualnaRaport.Properties.Resources.load;
 
-                            loadPB.Size = loadImg.Size;
-                            loadPB.Parent = dataGridViewTestProdReport;
-                            loadPB.Location = new Point(0,0);
-                            loadPB.Image = loadImg;
-                            timerTestLoadDone.Enabled = true;
-                            dataGridViewTestProdReport.Tag = loadPB;
-                            new Thread(() => 
-                            {
-                                Thread.CurrentThread.IsBackground = true;
-                                testData = SQLoperations.GetTestMeasurements(60);
-                                loadDone = true;
-                            }).Start();
-                        }
+                        //    loadPB.Size = loadImg.Size;
+                        //    loadPB.Parent = dataGridViewTestProdReport;
+                        //    loadPB.Location = new Point(0,0);
+                        //    loadPB.Image = loadImg;
+                        //    timerTestLoadDone.Enabled = true;
+                        //    dataGridViewTestProdReport.Tag = loadPB;
+                        //    new Thread(() => 
+                        //    {
+                        //        Thread.CurrentThread.IsBackground = true;
+                        //        testData = SQLoperations.GetTestMeasurements(60);
+                        //        loadDone = true;
+                        //    }).Start();
+                        //}
+                        TestStatisticsCharts.PrepareComponents();
                         break;
                     }
                 case "KONTROLA WZROKOWA":
@@ -711,22 +726,18 @@ namespace KontrolaWizualnaRaport
 
         private void comboBoxSmtModels_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ShowSmtStatistics();
+            if (comboBoxSmtModels.Text.Trim() != "")
+            {
+                EfficientyTableAndChart.Show(comboBoxSmtModels.Text);
+            }
+            
         }
 
         private void radioButtonSmtPerHour_CheckedChanged(object sender, EventArgs e)
         {
-            ShowSmtStatistics();
+            
         }
 
-        private void ShowSmtStatistics()
-        {
-            if (comboBoxSmtModels.Text != "")
-            {
-                dataGridViewSmtModelStats.DataSource = SMTOperations.MakeTableForModelEfficiency2(smtModelLineQuantity, comboBoxSmtModels.Text, radioButtonSmtPerHour.Checked);
-                Charting.DrawSmtEfficiencyHistogramForModel(chartSmt, smtModelLineQuantity[comboBoxSmtModels.Text], radioButtonSmtPerHour.Checked);
-            }
-        }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -839,8 +850,7 @@ namespace KontrolaWizualnaRaport
 
         private void radioButtonSmtShowAllModels_CheckedChanged(object sender, EventArgs e)
         {
-            comboBoxSmtModels.Items.Clear();
-            comboBoxSmtModels.Items.AddRange(smtModelLineQuantity.Select(m => m.Key).OrderBy(m => m).ToArray());
+            
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
@@ -1622,6 +1632,103 @@ namespace KontrolaWizualnaRaport
                 
                 grid.Rows.Add(modelEntry.Key, ordersCount, fast, slow, mean);
             }
+        }
+
+        private void cbTestStatisticsParam1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TestStatisticsCharts.DrawTestStatisticsChart();
+        }
+
+        private void cbTestStatisticsParam2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TestStatisticsCharts.DrawTestStatisticsChart();
+        }
+
+        private void cbTestStatisticsModel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TestStatisticsCharts.LoadTestParametersBasedOnModel(cbTestStatisticsModel.Text);
+            TestStatisticsCharts.DrawTestStatisticsChart();
+        }
+
+        private void cbTestStatisticsTester_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TestStatisticsCharts.LoadTestParametersBasedOnTester(cbTestStatisticsModel.Text, cbTestStatisticsTester.Text);
+            TestStatisticsCharts.DrawTestStatisticsChart();
+        }
+
+        private void chkBoxTestStatisticsOK_CheckedChanged(object sender, EventArgs e)
+        {
+            TestStatisticsCharts.DrawTestStatisticsChart();
+        }
+
+        private void chkBoxTestStatisticsNG_CheckedChanged(object sender, EventArgs e)
+        {
+            
+            TestStatisticsCharts.DrawTestStatisticsChart();
+        }
+
+        private void btTestStatsTable1_Click(object sender, EventArgs e)
+        {
+            var table = GetChartPointsTable("param1Series");
+            TestChartTable tableForm = new TestChartTable(table);tableForm.Show();
+        }
+
+        private DataTable GetChartPointsTable(string seriesName)
+        {
+            Series ser = chartTestStatistics.Series[seriesName];
+            DataTable result = new DataTable();
+            result.Columns.Add("Data");
+            result.Columns.Add(ser.LegendText);
+            foreach (var pt in ser.Points)
+            {
+                result.Rows.Add(pt.AxisLabel, pt.YValues[0]);
+            }
+            return result;
+        }
+
+        private void btTestStatsTable2_Click(object sender, EventArgs e)
+        {
+            var table = GetChartPointsTable("param2Series");
+            TestChartTable tableForm = new TestChartTable(table); tableForm.Show();
+        }
+        Point? prevPosition = null;
+        ToolTip tooltip = new ToolTip();
+        private void chartTestStatistics_MouseMove(object sender, MouseEventArgs e)
+        {
+            //var pos = e.Location;
+            //if (prevPosition.HasValue && pos == prevPosition.Value)
+            //    return;
+            //tooltip.RemoveAll();
+            //prevPosition = pos;
+            //var results = chartTestStatistics.HitTest(pos.X, pos.Y, false,
+            //                                ChartElementType.DataPoint);
+            //foreach (var result in results)
+            //{
+            //    if (result.ChartElementType == ChartElementType.DataPoint)
+            //    {
+            //        var prop = result.Object as DataPoint;
+            //        if (prop != null)
+            //        {
+            //            var pointXPixel = result.ChartArea.AxisX.ValueToPixelPosition(prop.XValue);
+            //            var pointYPixel = result.ChartArea.AxisY.ValueToPixelPosition(prop.YValues[0]);
+
+            //            // check if the cursor is really close to the point (2 pixels around the point)
+            //            if (Math.Abs(pos.X - pointXPixel) < 10 &&
+            //                Math.Abs(pos.Y - pointYPixel) < 10)
+            //            {
+            //                tooltip.Show("X=" + prop.XValue + ", Y=" + prop.YValues[0], this.chartTestStatistics,
+            //                                pos.X, pos.Y - 15);
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
+        private void buttonTestLoadData_Click(object sender, EventArgs e)
+        {
+            DataContainer.sqlDataByProcess.Test = MST.MES.SqlDataReaderMethods.LedTest.GetTestRecordsForTimePeriod( MST.MES.SqlDataReaderMethods.LedTest.TesterIdToName(), dateTimePickerTestStart.Value, dateTimePickerTestEnd.Value);
+            DataMerger.MergeData();
+            TestStatisticsCharts.PrepareComponents();
         }
     }
 }

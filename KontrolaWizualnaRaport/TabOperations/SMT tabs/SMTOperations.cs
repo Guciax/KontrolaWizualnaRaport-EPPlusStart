@@ -28,6 +28,8 @@ namespace KontrolaWizualnaRaport
         public static void PrepareFreshSmtData()
         {
             DataContainer.Smt.sortedTableByDayAndShift = SMTOperations.sortListByDayAndShift();
+            DataContainer.Smt.EfficiencyNormPerModel = SmtEfficiencyCalculation.EfficiencyOutputPerHourNormPerModel();
+            DataContainer.Smt.EfficiencyHistogramPerModel = SmtEfficiencyCalculation.EfficiencyHistogramPerModel(OrderStructureByOrderNo.ModelFamilyType.SameConnAndCCT);
             FillOutSmtComponents();
             LedWasteTabOperations.ledWasteDictionary = new SortedDictionary<DateTime, SortedDictionary<int, List<LedWasteTabOperations.LotLedWasteStruc>>>();
             ReLoadSmtTab();
@@ -36,7 +38,7 @@ namespace KontrolaWizualnaRaport
         private static void FillOutSmtComponents()
         {
             SharedComponents.Smt.ModelAnalysis.comboBoxSmtModels.Items.Clear();
-            SharedComponents.Smt.ModelAnalysis.comboBoxSmtModels.Items.AddRange(GlobalParameters.allLinesByHand);
+            SharedComponents.Smt.ModelAnalysis.comboBoxSmtModels.Items.AddRange(DataContainer.Smt.EfficiencyHistogramPerModel.Select(model => model.Key).OrderBy(m=>m).ToArray());
         }
 
         public static void ReLoadSmtTab()

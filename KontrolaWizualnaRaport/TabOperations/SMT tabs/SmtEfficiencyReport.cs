@@ -86,7 +86,6 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                             effcientyPerShift.Add(SmtEfficiencyCalculation.CalculateEfficiencyForOrders(familyEntry.Value));
                             foreach (var record in familyEntry.Value)
                             {
-
                                 tagTablePerLine[lineEntry.Key].Rows.Add(record.orderInfo.orderNo,
                                                                         record.orderInfo.modelId,
                                                                         record.manufacturedQty,
@@ -98,7 +97,6 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                         }
 
                         efficiencyByLine[lineEntry.Key] = effcientyPerShift.Average();
-
                     }
 
                     grid.Rows.Add(dayEntry.Key.ToString("MMM").ToUpper(),

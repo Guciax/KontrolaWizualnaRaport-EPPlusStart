@@ -57,6 +57,8 @@ namespace KontrolaWizualnaRaport
             {
                 public static RadioButton radioButtonSmtShowAllModels;
                 public static ComboBox comboBoxSmtModels;
+                public static DataGridView dataGridViewSmtModelStats;
+                public static Chart chartSmtModelAnalysis;
             }
 
             public class SmtEfficiencyTab
@@ -154,6 +156,22 @@ namespace KontrolaWizualnaRaport
             public static RadioButton weekly;
             public static RadioButton monthly;
             public static CustomDataGridView grid;
+        }
+
+        public class Test
+        {
+            public static DateTimePicker dateTimePickerTestStart;
+            public static DateTimePicker dateTimePickerTestEnd;
+            public class Charts
+            {
+                public static ComboBox cbTestStatisticsModel;
+                public static ComboBox cbTestStatisticsParam1;
+                public static ComboBox cbTestStatisticsParam2;
+                public static ComboBox cbTestStatisticsTester;
+                public static Chart chartTestStatistics;
+                public static CheckBox chkBoxTestStatisticsOK;
+                public static CheckBox chkBoxTestStatisticsNG;
+            }
         }
     }
 }

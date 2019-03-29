@@ -44,6 +44,51 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
         }
 
 
+        public static Dictionary<string, SortedDictionary<double, int>> EfficiencyHistogramPerModel(OrderStructureByOrderNo.ModelFamilyType familyOption)
+        {
+            Dictionary<string, SortedDictionary<double, int>> result = new Dictionary<string, SortedDictionary<double, int>>();
+            MST.MES.OrderStructureByOrderNo.SmtRecords previousOrder = null;
+
+            Dictionary<string, List<double>> outputPerModel = new Dictionary<string, List<double>>();
+            foreach (var dayEntry in DataContainer.Smt.sortedTableByDayAndShift)
+            {
+                foreach (var shiftEntry in dayEntry.Value)
+                {
+                    foreach (var order in shiftEntry.Value.OrderBy(o=>o.smtEndDate))
+                    {
+                        if (previousOrder == null)
+                        {
+                            previousOrder = order;
+                            continue;
+                        }
+                        if ((order.smtEndDate - previousOrder.smtEndDate).TotalMinutes > 60)
+                        {
+                            previousOrder = order;
+                            continue;
+                        }
+
+                        string model = $"{order.orderInfo.ModelFamily(familyOption)} [{order.orderInfo.ledLeftovers.reelsPerRankCount.ToString()}]";
+                        double duration = (order.smtEndDate - previousOrder.smtEndDate).TotalHours;
+                        if (duration < 0.15 || duration > 1 ) continue;
+                        double outPutPerHour = order.manufacturedQty / duration;
+                        if (!outputPerModel.ContainsKey(model)) {
+                            outputPerModel.Add(model, new List<double>());
+                        }
+
+                        outputPerModel[model].Add(outPutPerHour);
+                    }
+                }
+            }
+
+            foreach (var modelEntry in outputPerModel)
+            {
+                result.Add(modelEntry.Key, MakeSteppedHistogram(modelEntry.Value.ToArray(), 15));
+            }
+
+            return result;
+        }
+
+
         public static Dictionary<string, double> EfficiencyOutputPerHourNormPerModel()
         {
             Dictionary<string, double> result = new Dictionary<string, double>();
@@ -66,10 +111,31 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
 
 
                 result.Add(modelEntry.Key, mean);
-                Debug.WriteLine($"{modelEntry.Key};{mean * 8}");
+                //Debug.WriteLine($"{modelEntry.Key};{mean * 8}");
             }
 
             return result;
+        }
+
+        public static SortedDictionary<double, int> MakeSteppedHistogram(double[] inputValues, int numberOfSteps)
+        {
+            SortedDictionary<double, int> histogram = new SortedDictionary<double, int>();
+            if (inputValues.Length == 0) return new SortedDictionary<double, int>();
+            if (inputValues.Length == 1) return new SortedDictionary<double, int>() { { inputValues[0], 1 } };
+
+            double step = (inputValues.Max() - inputValues.Min()) / numberOfSteps;
+            for (int i = 1; i < 16; i++)
+            {
+                histogram.Add(i * step, 0);
+            }
+
+            double[] stepsArray = histogram.Select(k => k.Key).ToArray();
+            foreach (var val in inputValues)
+            {
+                var nearest = stepsArray.OrderBy(x => Math.Abs(x - val)).First();
+                histogram[nearest]++;
+            }
+            return histogram;
         }
 
         private static double GetMostFrequentValue(double[] valArray)
