@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="ImageToByteArray.cs" />
     <Compile Include="Network.cs" />
+    <Compile Include="SplashScreen.cs" />
     <Compile Include="TabOperations\BoxingOperations.cs" />
     <Compile Include="TabOperations\ChangeOverTools.cs" />
     <Compile Include="Charting.cs" />
@@ -91,11 +92,13 @@
     <Compile Include="TabOperations\SMT tabs\ChangeOversOperations.cs" />
     <Compile Include="TabOperations\SMT tabs\EfficientyTableAndChart.cs" />
     <Compile Include="TabOperations\SMT tabs\LedWasteTab.cs" />
+    <Compile Include="TabOperations\SMT tabs\ProductionNorms.cs" />
     <Compile Include="TabOperations\SMT tabs\SmtCharts.cs" />
     <Compile Include="TabOperations\SMT tabs\SmtEfficiencyCalculation.cs" />
     <Compile Include="TabOperations\SMT tabs\SmtEfficiencyReport.cs" />
     <Compile Include="TabOperations\Test\TestStatisticsCharts.cs" />
-    <Compile Include="TabOperations\ViDataLoader.cs" />
+    <Compile Include="TabOperations\ViTab\ViAnalyses.cs" />
+    <Compile Include="TabOperations\ViTab\ViDataLoader.cs" />
     <Compile Include="dataStructure.cs" />
     <Compile Include="DateTimeParser.cs" />
     <Compile Include="dateTools.cs" />
@@ -145,7 +148,7 @@
     </Compile>
     <Compile Include="SQLoperations.cs" />
     <Compile Include="TabOperations\Test\TestOperations.cs" />
-    <Compile Include="TabOperations\VIOperations.cs" />
+    <Compile Include="TabOperations\ViTab\VIOperations.cs" />
     <Compile Include="wastePerReasonStructure.cs" />
     <Compile Include="Forms\WasteReasonDetails.cs">
       <SubType>Form</SubType>
@@ -214,6 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ico_w2w_icon.ico" />
+    <EmbeddedResource Include="Resources\splashScreenLoader.gif" />
     <None Include="Resources\wasteChartLegend.bmp" />
   </ItemGroup>
   <ItemGroup>

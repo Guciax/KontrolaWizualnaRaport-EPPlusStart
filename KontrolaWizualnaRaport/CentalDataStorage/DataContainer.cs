@@ -19,7 +19,7 @@ namespace KontrolaWizualnaRaport
         public class VisualInspection
         {
             public static Dictionary<string, MST.MES.OrderStructureByOrderNo.OneOrderData> finishedOrders;
-            public static Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>> wasteReasonsByLineThenDateKey;
+            public static Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>> ngByLineThenDateKey;
         }
 
         public class Smt
@@ -30,5 +30,10 @@ namespace KontrolaWizualnaRaport
         }
 
         public static Dictionary<DateTime, DayStructure> peopleOnShifts = new Dictionary<DateTime, DayStructure>();
+        public class DevTools
+        {
+            public static List<MST.MES.Data_structures.DevToolsModelStructure> devToolsDb = new List<MST.MES.Data_structures.DevToolsModelStructure>();
+        }
+        
     }
 }

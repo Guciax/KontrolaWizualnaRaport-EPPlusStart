@@ -1,4 +1,5 @@
 ﻿using CrashReporterDotNET;
+using KontrolaWizualnaRaport.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace KontrolaWizualnaRaport
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)

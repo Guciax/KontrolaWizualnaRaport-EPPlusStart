@@ -252,11 +252,11 @@ namespace KontrolaWizualnaRaport
 
         public static void DrawWasteLevel()
         {
-            if (DataContainer.VisualInspection.wasteReasonsByLineThenDateKey == null) return;
+            if (DataContainer.VisualInspection.ngByLineThenDateKey == null) return;
             var filteredOrders = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
             var selectedLines = SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines;
 
-            foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
+            foreach (var lineEntry in DataContainer.VisualInspection.ngByLineThenDateKey)
             {
                 foreach (var dateEntry in lineEntry.Value)
                 {
@@ -512,9 +512,9 @@ namespace KontrolaWizualnaRaport
             var selectedLines = SharedComponents.VisualInspection.PrzyczynyOdpaduTab.checkedListBoxViWasteReasonsSmtLines.selectedLines;
 
             filteredOrders.Add("Total", new Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>());
-            if (DataContainer.VisualInspection.wasteReasonsByLineThenDateKey != null)
+            if (DataContainer.VisualInspection.ngByLineThenDateKey != null)
             { 
-                foreach (var lineEntry in DataContainer.VisualInspection.wasteReasonsByLineThenDateKey)
+                foreach (var lineEntry in DataContainer.VisualInspection.ngByLineThenDateKey)
                 {
                     foreach (var dateEntry in lineEntry.Value)
                     {

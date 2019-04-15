@@ -76,5 +76,7 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                 chart.ChartAreas[0].AxisY.Interval = (chart.ChartAreas[0].AxisY.Maximum - chart.ChartAreas[0].AxisY.Minimum) / 10;
             }
         }
+
+
     }
 }

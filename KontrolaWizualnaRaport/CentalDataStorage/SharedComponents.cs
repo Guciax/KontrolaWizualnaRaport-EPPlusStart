@@ -127,6 +127,21 @@ namespace KontrolaWizualnaRaport
                 public static CheckBox checkBoxEnableZoom;
             }
 
+            public class AnalizaPoPrzyczynie
+            {
+                public static Chart chartReasonLevel;
+                public static Chart chartReasonsParetoPercentage;
+                public static Chart chartReasonPareto;
+                public static CheckedListBox cBListViReasonList;
+            }
+
+            public class AnalizaPoModelu
+            {
+                public static Chart chartModelLevel;
+                public static Chart chartModelReasonsScrap;
+                public static Chart chartModelReasonsNg;
+            }
+
             public class Rework
             {
                 public static DataGridView dataGridViewReworkDailyReport;
@@ -171,6 +186,11 @@ namespace KontrolaWizualnaRaport
                 public static Chart chartTestStatistics;
                 public static CheckBox chkBoxTestStatisticsOK;
                 public static CheckBox chkBoxTestStatisticsNG;
+            }
+
+            public class DailyReport
+            {
+                public static DataGridView dataGridViewTestProdReport;
             }
         }
     }

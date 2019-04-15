@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -314,6 +315,11 @@ namespace KontrolaWizualnaRaport.TabOperations.Test
             }
 
             se.Points.Clear();
+            DataTable tagTable = new DataTable();
+            tagTable.Columns.Add("serial");
+            tagTable.Columns.Add("testDate");
+            tagTable.Columns.Add("orderNo");
+            tagTable.Columns.Add("pomiar");
 
             foreach (var testRecord in filtredByOrder)
             {
@@ -327,7 +333,11 @@ namespace KontrolaWizualnaRaport.TabOperations.Test
                 pt.SetValueXY(testDate.ToString("dd-MM HH:mm"), fieldValue);
 
                 se.Points.Add(pt);
+
+                tagTable.Rows.Add(testRecord.serialNo, testRecord.testTime, testRecord.orderNo, fieldValue);
             }
+
+            se.Tag = tagTable;
 
             if (chart.Series[0].Points.Count > 0)
             {

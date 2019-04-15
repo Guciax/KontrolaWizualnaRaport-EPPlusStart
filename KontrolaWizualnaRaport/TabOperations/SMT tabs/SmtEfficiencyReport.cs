@@ -83,7 +83,17 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                         List<double> effcientyPerShift = new List<double>();
                         foreach (var familyEntry in grouppedByModelFamily)
                         {
-                            effcientyPerShift.Add(SmtEfficiencyCalculation.CalculateEfficiencyForOrders(familyEntry.Value));
+                            var duration = (familyEntry.Value.Select(rec => rec.smtEndDate).Max()-familyEntry.Value.Select(rec => rec.smtStartDate).Min()).TotalHours;
+                            var totalProduction = familyEntry.Value.Select(rec => rec.manufacturedQty).Sum();
+                            float modelChangeOverTime = (float)0.5;
+                            var numberOfLots = familyEntry.Value.Count;
+
+                            var norm = SmtEfficiencyCalculation.NewWay.CalculateModelNormPerHour(familyEntry.Value.First().orderInfo.modelId, familyEntry.Value.First().smtLine);
+
+
+
+                            effcientyPerShift.Add(totalProduction / duration / norm.outputPerHour);
+                            //effcientyPerShift.Add(SmtEfficiencyCalculation.CalculateEfficiencyForOrders(familyEntry.Value));
                             foreach (var record in familyEntry.Value)
                             {
                                 tagTablePerLine[lineEntry.Key].Rows.Add(record.orderInfo.orderNo,

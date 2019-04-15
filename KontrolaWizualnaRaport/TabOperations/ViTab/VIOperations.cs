@@ -23,51 +23,28 @@ namespace KontrolaWizualnaRaport
         public static DataTable masterVITable = new DataTable();
         public static Dictionary<string, string> lotToSmtLine = new Dictionary<string, string>();
 
-        public static void ReLoadViTab(
-            ref Dictionary<string, string> lotModelDictionary,
-            ref List<WasteDataStructure> inspectionData,
-            ref List<excelOperations.order12NC> mstOrders,
-            ComboBox comboBoxViOperatorsCapa,
-            ComboBox comboBoxModel,
-            ComboBox comboBoxViModelAnalFamily,
-            ComboBox comboBoxViModelAnalModel,
-
-            CheckedListBox checkedListBoxViWasteLevelSmtLines,
-            CheckedListBox checkedListBoxViReasons,
-            CheckedListBox cBListViReasonAnalysesSmtLines,
-            CheckedListBox cBListViModelAnalysesSmtLines,
-            CheckedListBox cBListViReasonList,
-
-            DateTimePicker dateTimePickerPrzyczynyOdpaduOd,
-            DateTimePicker dateTimePickerWasteLevelBegin,
-            DataGridView dataGridViewDuplikaty,
-            DataGridView dataGridViewPomylkiIlosc,
-            DataGridView dataGridViewPowyzej50,
-            DataGridView dataGridViewBledyNrZlec,
-            DataGridView dataGridViewMstOrders,
-            DataGridView dataGridViewViOperatorsTotal,
-            DataGridView gridLatestLots,
-            DateTimePicker dateTimePickerViOperatorEfiiciencyStart,
-            DateTimePicker dateTimePickerViOperatorEfiiciencyEnd,
-            NumericUpDown numericUpDownMoreThan50Scrap,
-            NumericUpDown numericUpDownMoreThan50Ng,
-            Dictionary<string, string> lotToOrderedQty,
-
-            //rework
-            DataGridView dataGridViewReworkDailyReport,
-            DataGridView dataGridViewReworkByOperator,
-            DataGridView dataGridViewServiceVsNg,
-            Chart chartServiceVsNg,
-            bool chartDaily
-            )
+        private static void PrepareViTabComponents()
         {
-            DataContainer.VisualInspection.finishedOrders = DataContainer.sqlDataByOrder.Where(o => o.Value.smt.ledsUsed > 0).ToDictionary(x=>x.Key, v=>v.Value);
-
+            DataContainer.VisualInspection.finishedOrders = DataContainer.sqlDataByOrder.Where(o => o.Value.smt.ledsUsed > 0)
+                                                                                        .OrderBy(o => o.Value.kitting.endDate)
+                                                                                        .ToDictionary(k => k.Key, v => v.Value);
         }
 
         public static void RefreshViWasteLevelTab()
         {
-            DataContainer.VisualInspection.finishedOrders = DataContainer.sqlDataByOrder.Where(o => o.Value.smt.ledsUsed > 0).OrderBy(o=>o.Value.kitting.endDate).ToDictionary(k => k.Key, v => v.Value);
+            PrepareViTabComponents();
+            
+            var wasteReasons = DataContainer.VisualInspection.finishedOrders.SelectMany(o => o.Value.visualInspection.allReasons)
+                                                                            .Select(r => r.Key)
+                                                                            .Distinct()
+                                                                            .Select(r=>r.Replace("ng","")
+                                                                            .Replace("scrap",""))
+                                                                            .Distinct();
+            foreach (var reason in wasteReasons)
+            {
+                SharedComponents.VisualInspection.AnalizaPoPrzyczynie.cBListViReasonList.Items.Add(reason);
+            }
+            
 
             // group by date Key
             var grouppedByLineThenDate = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
@@ -120,7 +97,7 @@ namespace KontrolaWizualnaRaport
             var ord = grouppedByLineThenDate.SelectMany(l => l.Value).SelectMany(d => d.Value)
                 .Select(o => o.kitting.orderNo).Distinct().ToList();
 
-            DataContainer.VisualInspection.wasteReasonsByLineThenDateKey = grouppedByLineThenDate;
+            DataContainer.VisualInspection.ngByLineThenDateKey = grouppedByLineThenDate;
             Charting.DrawWasteLevel();
             FillOutGridLatestLots();
         }
@@ -249,7 +226,7 @@ namespace KontrolaWizualnaRaport
             columnImage.Name = "Images";
             columnImage.HeaderText = "";
             grid.Columns.Insert(0,columnImage);
-            var orderedOrders = DataContainer.sqlDataByOrder.Where(o=>o.Value.smt.ledsUsed>0).
+            var orderedOrders = DataContainer.sqlDataByOrder.//Where(o=>o.Value.smt.ledsUsed>0).
                                                              Where(o=>o.Value.visualInspection.ngScrapList.Count>0).
                                                              OrderByDescending(o => o.Value.visualInspection.ngScrapList.Select(i=>i.ngRegistrationDate).OrderByDescending(d=>d).First()).
                                                              Take(30);

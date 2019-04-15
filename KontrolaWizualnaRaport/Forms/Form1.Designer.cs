@@ -84,10 +84,10 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea15 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend15 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea16 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea17 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
@@ -96,6 +96,13 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea18 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend17 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series18 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             this.comboBoxViOperatorsCapa = new System.Windows.Forms.ComboBox();
             this.chartEfficiency = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -291,9 +298,29 @@
             this.tabPage18 = new System.Windows.Forms.TabPage();
             this.dataGridViewSmtEfficiency = new System.Windows.Forms.DataGridView();
             this.panel49 = new System.Windows.Forms.Panel();
+            this.tabPage23 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel51 = new System.Windows.Forms.Panel();
+            this.dgvSmtNorms = new System.Windows.Forms.DataGridView();
+            this.Column24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cBSmtNorms = new System.Windows.Forms.ComboBox();
+            this.lbSmtEfficiencyModelsList = new System.Windows.Forms.ListBox();
+            this.panel52 = new System.Windows.Forms.Panel();
+            this.dgvSmtEfficiencyOpertor = new System.Windows.Forms.DataGridView();
+            this.panel53 = new System.Windows.Forms.Panel();
+            this.label45 = new System.Windows.Forms.Label();
+            this.label44 = new System.Windows.Forms.Label();
+            this.cbSmtEfficiencyOperatorsList = new System.Windows.Forms.ComboBox();
+            this.label43 = new System.Windows.Forms.Label();
+            this.dtpSmtEfficiencyEnd = new System.Windows.Forms.DateTimePicker();
+            this.dtpSmtEfficiencyStart = new System.Windows.Forms.DateTimePicker();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridViewSmtModelStats = new System.Windows.Forms.DataGridView();
+            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chartSmtModelAnalysis = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel19 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
@@ -447,9 +474,15 @@
             this.timerTestLoadDone = new System.Windows.Forms.Timer(this.components);
             this.timerBoxLoadDone = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bckWorkerStartLoadUp = new System.ComponentModel.BackgroundWorker();
+            this.Column26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column30 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.chartEfficiency)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -556,6 +589,13 @@
             this.panel18.SuspendLayout();
             this.tabPage18.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtEfficiency)).BeginInit();
+            this.tabPage23.SuspendLayout();
+            this.tableLayoutPanel19.SuspendLayout();
+            this.panel51.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSmtNorms)).BeginInit();
+            this.panel52.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSmtEfficiencyOpertor)).BeginInit();
+            this.panel53.SuspendLayout();
             this.tabPage11.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtModelStats)).BeginInit();
@@ -655,7 +695,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartEfficiency.Series.Add(series1);
-            this.chartEfficiency.Size = new System.Drawing.Size(900, 548);
+            this.chartEfficiency.Size = new System.Drawing.Size(1019, 548);
             this.chartEfficiency.TabIndex = 2;
             this.chartEfficiency.Text = "chart1";
             this.chartEfficiency.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chartEfficiency_MouseDown);
@@ -678,7 +718,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1270, 586);
+            this.tabControl1.Size = new System.Drawing.Size(1389, 586);
             this.tabControl1.TabIndex = 4;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -688,7 +728,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage5.Size = new System.Drawing.Size(1381, 560);
             this.tabPage5.TabIndex = 12;
             this.tabPage5.Text = "Ostatnie LOTy";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -704,7 +744,7 @@
             this.dataGridViewLatestLots.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewLatestLots.Name = "dataGridViewLatestLots";
             this.dataGridViewLatestLots.RowHeadersVisible = false;
-            this.dataGridViewLatestLots.Size = new System.Drawing.Size(1256, 554);
+            this.dataGridViewLatestLots.Size = new System.Drawing.Size(1375, 554);
             this.dataGridViewLatestLots.TabIndex = 0;
             this.dataGridViewLatestLots.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewLatestLots_CellClick);
             // 
@@ -714,7 +754,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage1.Size = new System.Drawing.Size(1381, 560);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Wydajność";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -731,7 +771,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1256, 554);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1375, 554);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // panel1
@@ -810,7 +850,7 @@
             this.tabPagePrzyczynyOdpadu.Location = new System.Drawing.Point(4, 22);
             this.tabPagePrzyczynyOdpadu.Name = "tabPagePrzyczynyOdpadu";
             this.tabPagePrzyczynyOdpadu.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePrzyczynyOdpadu.Size = new System.Drawing.Size(1262, 560);
+            this.tabPagePrzyczynyOdpadu.Size = new System.Drawing.Size(1381, 560);
             this.tabPagePrzyczynyOdpadu.TabIndex = 1;
             this.tabPagePrzyczynyOdpadu.Text = "Przczyny odpadu";
             this.tabPagePrzyczynyOdpadu.UseVisualStyleBackColor = true;
@@ -822,7 +862,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(289, 34);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(970, 523);
+            this.panel4.Size = new System.Drawing.Size(1089, 523);
             this.panel4.TabIndex = 5;
             // 
             // tableLayoutPanel18
@@ -838,7 +878,7 @@
             this.tableLayoutPanel18.RowCount = 2;
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(970, 523);
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(1089, 523);
             this.tableLayoutPanel18.TabIndex = 4;
             // 
             // chartPrzyczynyOdpaduNg
@@ -856,7 +896,7 @@
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.chartPrzyczynyOdpaduNg.Series.Add(series2);
-            this.chartPrzyczynyOdpaduNg.Size = new System.Drawing.Size(968, 259);
+            this.chartPrzyczynyOdpaduNg.Size = new System.Drawing.Size(1087, 259);
             this.chartPrzyczynyOdpaduNg.TabIndex = 3;
             this.chartPrzyczynyOdpaduNg.Text = "chart3";
             this.chartPrzyczynyOdpaduNg.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.chartPrzyczynyOdpaduNg_MouseDoubleClick);
@@ -890,7 +930,7 @@
             series3.Legend = "Legend1";
             series3.Name = "Series1";
             this.chartPrzyczynyOdpaduScrap.Series.Add(series3);
-            this.chartPrzyczynyOdpaduScrap.Size = new System.Drawing.Size(968, 260);
+            this.chartPrzyczynyOdpaduScrap.Size = new System.Drawing.Size(1087, 260);
             this.chartPrzyczynyOdpaduScrap.TabIndex = 0;
             this.chartPrzyczynyOdpaduScrap.Text = "chart2";
             this.chartPrzyczynyOdpaduScrap.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.chartPrzyczynyOdpaduScrap_MouseDoubleClick);
@@ -955,7 +995,7 @@
             this.panel2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1256, 31);
+            this.panel2.Size = new System.Drawing.Size(1375, 31);
             this.panel2.TabIndex = 2;
             // 
             // checkBoxViReasonsLg
@@ -1017,7 +1057,7 @@
             this.tabPagePoziomOdpadu.Controls.Add(this.panel5);
             this.tabPagePoziomOdpadu.Location = new System.Drawing.Point(4, 22);
             this.tabPagePoziomOdpadu.Name = "tabPagePoziomOdpadu";
-            this.tabPagePoziomOdpadu.Size = new System.Drawing.Size(1262, 560);
+            this.tabPagePoziomOdpadu.Size = new System.Drawing.Size(1381, 560);
             this.tabPagePoziomOdpadu.TabIndex = 2;
             this.tabPagePoziomOdpadu.Text = "Poziom odpadu";
             this.tabPagePoziomOdpadu.UseVisualStyleBackColor = true;
@@ -1036,7 +1076,7 @@
             series4.Legend = "Legend1";
             series4.Name = "Series1";
             this.chartWasteLevel.Series.Add(series4);
-            this.chartWasteLevel.Size = new System.Drawing.Size(1026, 521);
+            this.chartWasteLevel.Size = new System.Drawing.Size(1145, 521);
             this.chartWasteLevel.TabIndex = 6;
             this.chartWasteLevel.Text = "chartWasteLevel";
             this.chartWasteLevel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chartWasteLevel_MouseDown);
@@ -1149,7 +1189,7 @@
             this.panel43.Controls.Add(this.checkBoxEnableZoom);
             this.panel43.Controls.Add(this.vScrollBarZoomChart);
             this.panel43.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel43.Location = new System.Drawing.Point(1247, 39);
+            this.panel43.Location = new System.Drawing.Point(1366, 39);
             this.panel43.Name = "panel43";
             this.panel43.Size = new System.Drawing.Size(15, 521);
             this.panel43.TabIndex = 8;
@@ -1189,7 +1229,7 @@
             this.panel5.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1262, 39);
+            this.panel5.Size = new System.Drawing.Size(1381, 39);
             this.panel5.TabIndex = 3;
             // 
             // groupBox3
@@ -1344,7 +1384,7 @@
             this.tabPage4.Controls.Add(this.tableLayoutPanel2);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage4.Size = new System.Drawing.Size(1381, 560);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Filtry";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1370,16 +1410,16 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1262, 560);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1381, 560);
             this.tableLayoutPanel2.TabIndex = 7;
             // 
             // label2
             // 
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.Location = new System.Drawing.Point(951, 0);
+            this.label2.Location = new System.Drawing.Point(1041, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(308, 50);
+            this.label2.Size = new System.Drawing.Size(337, 50);
             this.label2.TabIndex = 1;
             this.label2.Text = "Niezgodne Ilości";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1388,9 +1428,9 @@
             // 
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label6.Location = new System.Drawing.Point(691, 0);
+            this.label6.Location = new System.Drawing.Point(757, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(254, 50);
+            this.label6.Size = new System.Drawing.Size(278, 50);
             this.label6.TabIndex = 4;
             this.label6.Text = "Błędny numer zlecenia";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1400,10 +1440,10 @@
             this.dataGridViewPomylkiIlosc.AllowUserToAddRows = false;
             this.dataGridViewPomylkiIlosc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPomylkiIlosc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewPomylkiIlosc.Location = new System.Drawing.Point(951, 53);
+            this.dataGridViewPomylkiIlosc.Location = new System.Drawing.Point(1041, 53);
             this.dataGridViewPomylkiIlosc.Name = "dataGridViewPomylkiIlosc";
             this.dataGridViewPomylkiIlosc.RowHeadersVisible = false;
-            this.dataGridViewPomylkiIlosc.Size = new System.Drawing.Size(308, 504);
+            this.dataGridViewPomylkiIlosc.Size = new System.Drawing.Size(337, 504);
             this.dataGridViewPomylkiIlosc.TabIndex = 3;
             // 
             // dataGridViewBledyNrZlec
@@ -1411,10 +1451,10 @@
             this.dataGridViewBledyNrZlec.AllowUserToAddRows = false;
             this.dataGridViewBledyNrZlec.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewBledyNrZlec.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewBledyNrZlec.Location = new System.Drawing.Point(691, 53);
+            this.dataGridViewBledyNrZlec.Location = new System.Drawing.Point(757, 53);
             this.dataGridViewBledyNrZlec.Name = "dataGridViewBledyNrZlec";
             this.dataGridViewBledyNrZlec.RowHeadersVisible = false;
-            this.dataGridViewBledyNrZlec.Size = new System.Drawing.Size(254, 504);
+            this.dataGridViewBledyNrZlec.Size = new System.Drawing.Size(278, 504);
             this.dataGridViewBledyNrZlec.TabIndex = 4;
             // 
             // dataGridViewPowyzej50
@@ -1422,10 +1462,10 @@
             this.dataGridViewPowyzej50.AllowUserToAddRows = false;
             this.dataGridViewPowyzej50.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPowyzej50.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewPowyzej50.Location = new System.Drawing.Point(347, 53);
+            this.dataGridViewPowyzej50.Location = new System.Drawing.Point(380, 53);
             this.dataGridViewPowyzej50.Name = "dataGridViewPowyzej50";
             this.dataGridViewPowyzej50.RowHeadersVisible = false;
-            this.dataGridViewPowyzej50.Size = new System.Drawing.Size(338, 504);
+            this.dataGridViewPowyzej50.Size = new System.Drawing.Size(371, 504);
             this.dataGridViewPowyzej50.TabIndex = 5;
             // 
             // dataGridViewDuplikaty
@@ -1436,7 +1476,7 @@
             this.dataGridViewDuplikaty.Location = new System.Drawing.Point(3, 53);
             this.dataGridViewDuplikaty.Name = "dataGridViewDuplikaty";
             this.dataGridViewDuplikaty.RowHeadersVisible = false;
-            this.dataGridViewDuplikaty.Size = new System.Drawing.Size(338, 504);
+            this.dataGridViewDuplikaty.Size = new System.Drawing.Size(371, 504);
             this.dataGridViewDuplikaty.TabIndex = 2;
             // 
             // label1
@@ -1445,7 +1485,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(338, 50);
+            this.label1.Size = new System.Drawing.Size(371, 50);
             this.label1.TabIndex = 0;
             this.label1.Text = "Duplikaty";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1458,9 +1498,9 @@
             this.panel14.Controls.Add(this.label3);
             this.panel14.Controls.Add(this.numericUpDownMoreThan50Ng);
             this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel14.Location = new System.Drawing.Point(347, 3);
+            this.panel14.Location = new System.Drawing.Point(380, 3);
             this.panel14.Name = "panel14";
-            this.panel14.Size = new System.Drawing.Size(338, 44);
+            this.panel14.Size = new System.Drawing.Size(371, 44);
             this.panel14.TabIndex = 3;
             // 
             // label5
@@ -1525,7 +1565,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage6.Size = new System.Drawing.Size(1381, 560);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Analiza po przyczynie";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -1545,7 +1585,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(1256, 554);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1375, 554);
             this.tableLayoutPanel7.TabIndex = 6;
             // 
             // panel8
@@ -1558,7 +1598,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(3, 3);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(1250, 24);
+            this.panel8.Size = new System.Drawing.Size(1369, 24);
             this.panel8.TabIndex = 0;
             // 
             // cBListViReasonList
@@ -1616,7 +1656,7 @@
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 256F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(1250, 256);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(1369, 256);
             this.tableLayoutPanel8.TabIndex = 1;
             // 
             // chartReasonsParetoPercentage
@@ -1626,13 +1666,13 @@
             this.chartReasonsParetoPercentage.Dock = System.Windows.Forms.DockStyle.Fill;
             legend5.Name = "Legend1";
             this.chartReasonsParetoPercentage.Legends.Add(legend5);
-            this.chartReasonsParetoPercentage.Location = new System.Drawing.Point(628, 3);
+            this.chartReasonsParetoPercentage.Location = new System.Drawing.Point(687, 3);
             this.chartReasonsParetoPercentage.Name = "chartReasonsParetoPercentage";
             series5.ChartArea = "ChartArea1";
             series5.Legend = "Legend1";
             series5.Name = "Series1";
             this.chartReasonsParetoPercentage.Series.Add(series5);
-            this.chartReasonsParetoPercentage.Size = new System.Drawing.Size(619, 250);
+            this.chartReasonsParetoPercentage.Size = new System.Drawing.Size(679, 250);
             this.chartReasonsParetoPercentage.TabIndex = 5;
             this.chartReasonsParetoPercentage.Text = "chart3";
             this.chartReasonsParetoPercentage.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chartReasonsParetoPercentage_MouseMove);
@@ -1650,7 +1690,7 @@
             series6.Legend = "Legend1";
             series6.Name = "Series1";
             this.chartReasonPareto.Series.Add(series6);
-            this.chartReasonPareto.Size = new System.Drawing.Size(619, 250);
+            this.chartReasonPareto.Size = new System.Drawing.Size(678, 250);
             this.chartReasonPareto.TabIndex = 4;
             this.chartReasonPareto.Text = "chart3";
             this.chartReasonPareto.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chartReasonPareto_MouseMove);
@@ -1668,7 +1708,7 @@
             series7.Legend = "Legend1";
             series7.Name = "Series1";
             this.chartReasonLevel.Series.Add(series7);
-            this.chartReasonLevel.Size = new System.Drawing.Size(1250, 256);
+            this.chartReasonLevel.Size = new System.Drawing.Size(1369, 256);
             this.chartReasonLevel.TabIndex = 3;
             this.chartReasonLevel.Text = "chart2";
             // 
@@ -1679,7 +1719,7 @@
             this.tabPage7.Controls.Add(this.panel9);
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage7.Size = new System.Drawing.Size(1381, 560);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "Analiza po modelu";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -1691,7 +1731,7 @@
             this.panel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel13.Location = new System.Drawing.Point(0, 331);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(1262, 229);
+            this.panel13.Size = new System.Drawing.Size(1381, 229);
             this.panel13.TabIndex = 3;
             // 
             // chartModelReasonsScrap
@@ -1707,7 +1747,7 @@
             series8.Legend = "Legend1";
             series8.Name = "Series1";
             this.chartModelReasonsScrap.Series.Add(series8);
-            this.chartModelReasonsScrap.Size = new System.Drawing.Size(700, 229);
+            this.chartModelReasonsScrap.Size = new System.Drawing.Size(819, 229);
             this.chartModelReasonsScrap.TabIndex = 3;
             this.chartModelReasonsScrap.Text = "chart3";
             this.chartModelReasonsScrap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chartModelReasonsScrap_MouseMove);
@@ -1743,7 +1783,7 @@
             series10.Legend = "Legend1";
             series10.Name = "Series1";
             this.chartModelLevel.Series.Add(series10);
-            this.chartModelLevel.Size = new System.Drawing.Size(1262, 300);
+            this.chartModelLevel.Size = new System.Drawing.Size(1381, 300);
             this.chartModelLevel.TabIndex = 1;
             this.chartModelLevel.Text = "chart2";
             // 
@@ -1756,7 +1796,7 @@
             this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel9.Location = new System.Drawing.Point(0, 0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(1262, 31);
+            this.panel9.Size = new System.Drawing.Size(1381, 31);
             this.panel9.TabIndex = 0;
             // 
             // cBListViModelAnalysesSmtLines
@@ -1795,7 +1835,7 @@
             this.tabPage12.Location = new System.Drawing.Point(4, 22);
             this.tabPage12.Name = "tabPage12";
             this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage12.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage12.Size = new System.Drawing.Size(1381, 560);
             this.tabPage12.TabIndex = 7;
             this.tabPage12.Text = "Po operatorze";
             this.tabPage12.UseVisualStyleBackColor = true;
@@ -1814,7 +1854,7 @@
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1256, 554);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1375, 554);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // dataGridViewViOperatorsTotal
@@ -1907,7 +1947,7 @@
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(571, 502);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(623, 502);
             this.tableLayoutPanel13.TabIndex = 6;
             // 
             // dataGridViewViOperatorDetails
@@ -1920,7 +1960,7 @@
             this.dataGridViewViOperatorDetails.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewViOperatorDetails.Location = new System.Drawing.Point(3, 254);
             this.dataGridViewViOperatorDetails.Name = "dataGridViewViOperatorDetails";
-            this.dataGridViewViOperatorDetails.Size = new System.Drawing.Size(565, 245);
+            this.dataGridViewViOperatorDetails.Size = new System.Drawing.Size(617, 245);
             this.dataGridViewViOperatorDetails.TabIndex = 6;
             this.dataGridViewViOperatorDetails.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridViewViOperatorDetails_DataBindingComplete);
             // 
@@ -1938,7 +1978,7 @@
             this.tableLayoutPanel15.RowCount = 1;
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 251F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(571, 251);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(623, 251);
             this.tableLayoutPanel15.TabIndex = 7;
             // 
             // chartNgTypesForOneOperator
@@ -1948,13 +1988,13 @@
             this.chartNgTypesForOneOperator.Dock = System.Windows.Forms.DockStyle.Fill;
             legend11.Name = "Legend1";
             this.chartNgTypesForOneOperator.Legends.Add(legend11);
-            this.chartNgTypesForOneOperator.Location = new System.Drawing.Point(288, 3);
+            this.chartNgTypesForOneOperator.Location = new System.Drawing.Point(314, 3);
             this.chartNgTypesForOneOperator.Name = "chartNgTypesForOneOperator";
             series11.ChartArea = "ChartArea1";
             series11.Legend = "Legend1";
             series11.Name = "Series1";
             this.chartNgTypesForOneOperator.Series.Add(series11);
-            this.chartNgTypesForOneOperator.Size = new System.Drawing.Size(280, 245);
+            this.chartNgTypesForOneOperator.Size = new System.Drawing.Size(306, 245);
             this.chartNgTypesForOneOperator.TabIndex = 8;
             this.chartNgTypesForOneOperator.Text = "chart1";
             // 
@@ -1971,7 +2011,7 @@
             series12.Legend = "Legend1";
             series12.Name = "Series1";
             this.chartNgRateForOneOperator.Series.Add(series12);
-            this.chartNgRateForOneOperator.Size = new System.Drawing.Size(279, 245);
+            this.chartNgRateForOneOperator.Size = new System.Drawing.Size(305, 245);
             this.chartNgRateForOneOperator.TabIndex = 7;
             this.chartNgRateForOneOperator.Text = "chart1";
             // 
@@ -1982,7 +2022,7 @@
             this.tabPage22.Location = new System.Drawing.Point(4, 22);
             this.tabPage22.Name = "tabPage22";
             this.tabPage22.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage22.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage22.Size = new System.Drawing.Size(1381, 560);
             this.tabPage22.TabIndex = 8;
             this.tabPage22.Text = "Zlecenia MST";
             this.tabPage22.UseVisualStyleBackColor = true;
@@ -1995,7 +2035,7 @@
             this.dataGridViewMstOrders.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewMstOrders.Location = new System.Drawing.Point(3, 38);
             this.dataGridViewMstOrders.Name = "dataGridViewMstOrders";
-            this.dataGridViewMstOrders.Size = new System.Drawing.Size(1256, 519);
+            this.dataGridViewMstOrders.Size = new System.Drawing.Size(1375, 519);
             this.dataGridViewMstOrders.TabIndex = 1;
             this.dataGridViewMstOrders.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridViewMstOrders_DataBindingComplete);
             // 
@@ -2004,7 +2044,7 @@
             this.panel38.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel38.Location = new System.Drawing.Point(3, 3);
             this.panel38.Name = "panel38";
-            this.panel38.Size = new System.Drawing.Size(1256, 35);
+            this.panel38.Size = new System.Drawing.Size(1375, 35);
             this.panel38.TabIndex = 0;
             // 
             // tabPage29
@@ -2013,7 +2053,7 @@
             this.tabPage29.Controls.Add(this.panel15);
             this.tabPage29.Location = new System.Drawing.Point(4, 22);
             this.tabPage29.Name = "tabPage29";
-            this.tabPage29.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage29.Size = new System.Drawing.Size(1381, 560);
             this.tabPage29.TabIndex = 9;
             this.tabPage29.Text = "SerwisLED raport wykonania";
             this.tabPage29.UseVisualStyleBackColor = true;
@@ -2030,7 +2070,7 @@
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 528F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(1262, 528);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(1381, 528);
             this.tableLayoutPanel10.TabIndex = 1;
             // 
             // dataGridViewReworkDailyReport
@@ -2051,7 +2091,7 @@
             this.dataGridViewReworkDailyReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewReworkDailyReport.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewReworkDailyReport.Name = "dataGridViewReworkDailyReport";
-            this.dataGridViewReworkDailyReport.Size = new System.Drawing.Size(625, 522);
+            this.dataGridViewReworkDailyReport.Size = new System.Drawing.Size(684, 522);
             this.dataGridViewReworkDailyReport.TabIndex = 0;
             this.dataGridViewReworkDailyReport.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReworkDailyReport_CellDoubleClick_1);
             this.dataGridViewReworkDailyReport.SelectionChanged += new System.EventHandler(this.dataGridViewReworkDailyReport_SelectionChanged_1);
@@ -2062,7 +2102,7 @@
             this.panel15.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel15.Location = new System.Drawing.Point(0, 528);
             this.panel15.Name = "panel15";
-            this.panel15.Size = new System.Drawing.Size(1262, 32);
+            this.panel15.Size = new System.Drawing.Size(1381, 32);
             this.panel15.TabIndex = 2;
             // 
             // labelReworkProdReportSumOfSelected
@@ -2096,7 +2136,7 @@
             this.tabPage30.Controls.Add(this.dataGridViewReworkByOperator);
             this.tabPage30.Location = new System.Drawing.Point(4, 22);
             this.tabPage30.Name = "tabPage30";
-            this.tabPage30.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage30.Size = new System.Drawing.Size(1381, 560);
             this.tabPage30.TabIndex = 10;
             this.tabPage30.Text = "SerwisLED operatorzy";
             this.tabPage30.UseVisualStyleBackColor = true;
@@ -2119,7 +2159,7 @@
             this.dataGridViewReworkByOperator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewReworkByOperator.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewReworkByOperator.Name = "dataGridViewReworkByOperator";
-            this.dataGridViewReworkByOperator.Size = new System.Drawing.Size(1262, 560);
+            this.dataGridViewReworkByOperator.Size = new System.Drawing.Size(1381, 560);
             this.dataGridViewReworkByOperator.TabIndex = 2;
             // 
             // tabPage31
@@ -2127,7 +2167,7 @@
             this.tabPage31.Controls.Add(this.tableLayoutPanel16);
             this.tabPage31.Location = new System.Drawing.Point(4, 22);
             this.tabPage31.Name = "tabPage31";
-            this.tabPage31.Size = new System.Drawing.Size(1262, 560);
+            this.tabPage31.Size = new System.Drawing.Size(1381, 560);
             this.tabPage31.TabIndex = 11;
             this.tabPage31.Text = "SerwisLED vs. NG";
             this.tabPage31.UseVisualStyleBackColor = true;
@@ -2144,7 +2184,7 @@
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.RowCount = 1;
             this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(1262, 560);
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(1381, 560);
             this.tableLayoutPanel16.TabIndex = 0;
             // 
             // dgvServiceVsNg
@@ -2165,7 +2205,7 @@
             this.dgvServiceVsNg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvServiceVsNg.Location = new System.Drawing.Point(3, 3);
             this.dgvServiceVsNg.Name = "dgvServiceVsNg";
-            this.dgvServiceVsNg.Size = new System.Drawing.Size(246, 554);
+            this.dgvServiceVsNg.Size = new System.Drawing.Size(270, 554);
             this.dgvServiceVsNg.TabIndex = 3;
             // 
             // tableLayoutPanel17
@@ -2176,12 +2216,12 @@
             this.tableLayoutPanel17.Controls.Add(this.chartServiceVsNg, 0, 1);
             this.tableLayoutPanel17.Controls.Add(this.panel46, 0, 0);
             this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel17.Location = new System.Drawing.Point(255, 3);
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(279, 3);
             this.tableLayoutPanel17.Name = "tableLayoutPanel17";
             this.tableLayoutPanel17.RowCount = 2;
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel17.Size = new System.Drawing.Size(1004, 554);
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(1099, 554);
             this.tableLayoutPanel17.TabIndex = 4;
             // 
             // chartServiceVsNg
@@ -2197,7 +2237,7 @@
             series13.Legend = "Legend1";
             series13.Name = "Series1";
             this.chartServiceVsNg.Series.Add(series13);
-            this.chartServiceVsNg.Size = new System.Drawing.Size(998, 508);
+            this.chartServiceVsNg.Size = new System.Drawing.Size(1093, 508);
             this.chartServiceVsNg.TabIndex = 4;
             this.chartServiceVsNg.Text = "chart1";
             // 
@@ -2208,7 +2248,7 @@
             this.panel46.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel46.Location = new System.Drawing.Point(3, 3);
             this.panel46.Name = "panel46";
-            this.panel46.Size = new System.Drawing.Size(998, 34);
+            this.panel46.Size = new System.Drawing.Size(1093, 34);
             this.panel46.TabIndex = 5;
             // 
             // radioButton7
@@ -2250,7 +2290,7 @@
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1284, 621);
+            this.tabControl2.Size = new System.Drawing.Size(1403, 621);
             this.tabControl2.TabIndex = 5;
             this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
             // 
@@ -2261,7 +2301,7 @@
             this.tabPage14.Location = new System.Drawing.Point(4, 25);
             this.tabPage14.Name = "tabPage14";
             this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage14.Size = new System.Drawing.Size(1276, 592);
+            this.tabPage14.Size = new System.Drawing.Size(1395, 592);
             this.tabPage14.TabIndex = 3;
             this.tabPage14.Text = "JEDNO ZLECENIE";
             this.tabPage14.UseVisualStyleBackColor = true;
@@ -2290,7 +2330,7 @@
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(1270, 551);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1389, 551);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
             // label24
@@ -2298,9 +2338,9 @@
             this.label24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label24.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label24.Location = new System.Drawing.Point(1019, 0);
+            this.label24.Location = new System.Drawing.Point(1111, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(248, 30);
+            this.label24.Size = new System.Drawing.Size(275, 30);
             this.label24.TabIndex = 9;
             this.label24.Text = "PAKOWANIE";
             this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2310,9 +2350,9 @@
             this.label23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label23.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label23.Location = new System.Drawing.Point(765, 0);
+            this.label23.Location = new System.Drawing.Point(834, 0);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(248, 30);
+            this.label23.Size = new System.Drawing.Size(271, 30);
             this.label23.TabIndex = 8;
             this.label23.Text = "TEST";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2322,9 +2362,9 @@
             this.label22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label22.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label22.Location = new System.Drawing.Point(511, 0);
+            this.label22.Location = new System.Drawing.Point(557, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(248, 30);
+            this.label22.Size = new System.Drawing.Size(271, 30);
             this.label22.TabIndex = 7;
             this.label22.Text = "KONTROLA WZROKOWA";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2334,9 +2374,9 @@
             this.label21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label21.Location = new System.Drawing.Point(257, 0);
+            this.label21.Location = new System.Drawing.Point(280, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(248, 30);
+            this.label21.Size = new System.Drawing.Size(271, 30);
             this.label21.TabIndex = 6;
             this.label21.Text = "SMT";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2354,7 +2394,7 @@
             this.dataGridViewSummaryKitting.Location = new System.Drawing.Point(3, 33);
             this.dataGridViewSummaryKitting.Name = "dataGridViewSummaryKitting";
             this.dataGridViewSummaryKitting.RowHeadersVisible = false;
-            this.dataGridViewSummaryKitting.Size = new System.Drawing.Size(248, 515);
+            this.dataGridViewSummaryKitting.Size = new System.Drawing.Size(271, 515);
             this.dataGridViewSummaryKitting.TabIndex = 0;
             // 
             // Column8
@@ -2379,10 +2419,10 @@
             this.Column10,
             this.Column11});
             this.dataGridViewSummarySmt.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewSummarySmt.Location = new System.Drawing.Point(257, 33);
+            this.dataGridViewSummarySmt.Location = new System.Drawing.Point(280, 33);
             this.dataGridViewSummarySmt.Name = "dataGridViewSummarySmt";
             this.dataGridViewSummarySmt.RowHeadersVisible = false;
-            this.dataGridViewSummarySmt.Size = new System.Drawing.Size(248, 515);
+            this.dataGridViewSummarySmt.Size = new System.Drawing.Size(271, 515);
             this.dataGridViewSummarySmt.TabIndex = 1;
             // 
             // Column10
@@ -2407,10 +2447,10 @@
             this.Column15,
             this.Column16});
             this.dataGridViewSummaryVi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewSummaryVi.Location = new System.Drawing.Point(511, 33);
+            this.dataGridViewSummaryVi.Location = new System.Drawing.Point(557, 33);
             this.dataGridViewSummaryVi.Name = "dataGridViewSummaryVi";
             this.dataGridViewSummaryVi.RowHeadersVisible = false;
-            this.dataGridViewSummaryVi.Size = new System.Drawing.Size(248, 515);
+            this.dataGridViewSummaryVi.Size = new System.Drawing.Size(271, 515);
             this.dataGridViewSummaryVi.TabIndex = 2;
             this.dataGridViewSummaryVi.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewSummaryVi_CellMouseClick);
             this.dataGridViewSummaryVi.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewSummaryVi_RowsAdded);
@@ -2437,10 +2477,10 @@
             this.Column17,
             this.Column18});
             this.dataGridViewSummaryTest.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewSummaryTest.Location = new System.Drawing.Point(765, 33);
+            this.dataGridViewSummaryTest.Location = new System.Drawing.Point(834, 33);
             this.dataGridViewSummaryTest.Name = "dataGridViewSummaryTest";
             this.dataGridViewSummaryTest.RowHeadersVisible = false;
-            this.dataGridViewSummaryTest.Size = new System.Drawing.Size(248, 515);
+            this.dataGridViewSummaryTest.Size = new System.Drawing.Size(271, 515);
             this.dataGridViewSummaryTest.TabIndex = 3;
             this.dataGridViewSummaryTest.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewSummaryTest_RowsAdded);
             // 
@@ -2466,10 +2506,10 @@
             this.Column19,
             this.Column20});
             this.dataGridViewSummaryBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewSummaryBox.Location = new System.Drawing.Point(1019, 33);
+            this.dataGridViewSummaryBox.Location = new System.Drawing.Point(1111, 33);
             this.dataGridViewSummaryBox.Name = "dataGridViewSummaryBox";
             this.dataGridViewSummaryBox.RowHeadersVisible = false;
-            this.dataGridViewSummaryBox.Size = new System.Drawing.Size(248, 515);
+            this.dataGridViewSummaryBox.Size = new System.Drawing.Size(275, 515);
             this.dataGridViewSummaryBox.TabIndex = 4;
             // 
             // Column19
@@ -2491,7 +2531,7 @@
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label20.Location = new System.Drawing.Point(3, 0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(248, 30);
+            this.label20.Size = new System.Drawing.Size(271, 30);
             this.label20.TabIndex = 5;
             this.label20.Text = "KITTING";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2505,7 +2545,7 @@
             this.panel36.ForeColor = System.Drawing.Color.White;
             this.panel36.Location = new System.Drawing.Point(3, 3);
             this.panel36.Name = "panel36";
-            this.panel36.Size = new System.Drawing.Size(1270, 35);
+            this.panel36.Size = new System.Drawing.Size(1389, 35);
             this.panel36.TabIndex = 0;
             // 
             // textBox3
@@ -2532,7 +2572,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1276, 592);
+            this.tabPage3.Size = new System.Drawing.Size(1395, 592);
             this.tabPage3.TabIndex = 8;
             this.tabPage3.Text = "ZLECENIA MST";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -2557,7 +2597,7 @@
             this.dataGridViewOrdersStatus.Location = new System.Drawing.Point(3, 45);
             this.dataGridViewOrdersStatus.Name = "dataGridViewOrdersStatus";
             this.dataGridViewOrdersStatus.RowHeadersVisible = false;
-            this.dataGridViewOrdersStatus.Size = new System.Drawing.Size(1270, 544);
+            this.dataGridViewOrdersStatus.Size = new System.Drawing.Size(1389, 544);
             this.dataGridViewOrdersStatus.TabIndex = 1;
             // 
             // panel48
@@ -2567,7 +2607,7 @@
             this.panel48.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel48.Location = new System.Drawing.Point(3, 3);
             this.panel48.Name = "panel48";
-            this.panel48.Size = new System.Drawing.Size(1270, 42);
+            this.panel48.Size = new System.Drawing.Size(1389, 42);
             this.panel48.TabIndex = 0;
             // 
             // label38
@@ -2597,7 +2637,7 @@
             this.tabPage13.Location = new System.Drawing.Point(4, 25);
             this.tabPage13.Name = "tabPage13";
             this.tabPage13.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage13.Size = new System.Drawing.Size(1276, 592);
+            this.tabPage13.Size = new System.Drawing.Size(1395, 592);
             this.tabPage13.TabIndex = 2;
             this.tabPage13.Text = "KITTING";
             this.tabPage13.UseVisualStyleBackColor = true;
@@ -2620,7 +2660,7 @@
             this.tableLayoutPanel9.RowCount = 2;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(1270, 519);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1389, 519);
             this.tableLayoutPanel9.TabIndex = 2;
             // 
             // panel42
@@ -2628,9 +2668,9 @@
             this.panel42.Controls.Add(this.comboBoxKittingModels);
             this.panel42.Controls.Add(this.label8);
             this.panel42.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel42.Location = new System.Drawing.Point(849, 3);
+            this.panel42.Location = new System.Drawing.Point(929, 3);
             this.panel42.Name = "panel42";
-            this.panel42.Size = new System.Drawing.Size(418, 29);
+            this.panel42.Size = new System.Drawing.Size(457, 29);
             this.panel42.TabIndex = 5;
             // 
             // comboBoxKittingModels
@@ -2658,10 +2698,10 @@
             this.dataGridViewKittingReadyLots.AllowUserToResizeRows = false;
             this.dataGridViewKittingReadyLots.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewKittingReadyLots.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewKittingReadyLots.Location = new System.Drawing.Point(426, 38);
+            this.dataGridViewKittingReadyLots.Location = new System.Drawing.Point(466, 38);
             this.dataGridViewKittingReadyLots.Name = "dataGridViewKittingReadyLots";
             this.dataGridViewKittingReadyLots.ReadOnly = true;
-            this.dataGridViewKittingReadyLots.Size = new System.Drawing.Size(417, 478);
+            this.dataGridViewKittingReadyLots.Size = new System.Drawing.Size(457, 478);
             this.dataGridViewKittingReadyLots.TabIndex = 1;
             this.dataGridViewKittingReadyLots.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKittingReadyLots_CellDoubleClick);
             // 
@@ -2681,7 +2721,7 @@
             this.dataGridViewKitting.Name = "dataGridViewKitting";
             this.dataGridViewKitting.ReadOnly = true;
             this.dataGridViewKitting.RowHeadersVisible = false;
-            this.dataGridViewKitting.Size = new System.Drawing.Size(417, 478);
+            this.dataGridViewKitting.Size = new System.Drawing.Size(457, 478);
             this.dataGridViewKitting.TabIndex = 0;
             this.dataGridViewKitting.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKitting_CellDoubleClick);
             this.dataGridViewKitting.SelectionChanged += new System.EventHandler(this.dataGridViewKitting_SelectionChanged);
@@ -2720,9 +2760,9 @@
             // 
             this.panel7.Controls.Add(this.label29);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel7.Location = new System.Drawing.Point(426, 3);
+            this.panel7.Location = new System.Drawing.Point(466, 3);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(417, 29);
+            this.panel7.Size = new System.Drawing.Size(457, 29);
             this.panel7.TabIndex = 2;
             // 
             // label29
@@ -2740,7 +2780,7 @@
             this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel10.Location = new System.Drawing.Point(3, 3);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(417, 29);
+            this.panel10.Size = new System.Drawing.Size(457, 29);
             this.panel10.TabIndex = 3;
             // 
             // label28
@@ -2756,9 +2796,9 @@
             // 
             this.dataGridViewKittingHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewKittingHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewKittingHistory.Location = new System.Drawing.Point(849, 38);
+            this.dataGridViewKittingHistory.Location = new System.Drawing.Point(929, 38);
             this.dataGridViewKittingHistory.Name = "dataGridViewKittingHistory";
-            this.dataGridViewKittingHistory.Size = new System.Drawing.Size(418, 478);
+            this.dataGridViewKittingHistory.Size = new System.Drawing.Size(457, 478);
             this.dataGridViewKittingHistory.TabIndex = 4;
             // 
             // panel22
@@ -2767,7 +2807,7 @@
             this.panel22.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel22.Location = new System.Drawing.Point(3, 561);
             this.panel22.Name = "panel22";
-            this.panel22.Size = new System.Drawing.Size(1270, 28);
+            this.panel22.Size = new System.Drawing.Size(1389, 28);
             this.panel22.TabIndex = 1;
             // 
             // labelKittingSelectedSum
@@ -2788,7 +2828,7 @@
             this.panel23.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel23.Location = new System.Drawing.Point(3, 3);
             this.panel23.Name = "panel23";
-            this.panel23.Size = new System.Drawing.Size(1270, 39);
+            this.panel23.Size = new System.Drawing.Size(1389, 39);
             this.panel23.TabIndex = 3;
             // 
             // checkBoxKittingLg
@@ -2822,7 +2862,7 @@
             this.tabPage9.Location = new System.Drawing.Point(4, 25);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(1276, 592);
+            this.tabPage9.Size = new System.Drawing.Size(1395, 592);
             this.tabPage9.TabIndex = 1;
             this.tabPage9.Text = "SMT";
             this.tabPage9.UseVisualStyleBackColor = true;
@@ -2831,6 +2871,7 @@
             // 
             this.tabControl3.Controls.Add(this.tabPage10);
             this.tabControl3.Controls.Add(this.tabPage18);
+            this.tabControl3.Controls.Add(this.tabPage23);
             this.tabControl3.Controls.Add(this.tabPage11);
             this.tabControl3.Controls.Add(this.tabPage17);
             this.tabControl3.Controls.Add(this.tabPage20);
@@ -2841,7 +2882,7 @@
             this.tabControl3.Location = new System.Drawing.Point(3, 32);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(1270, 557);
+            this.tabControl3.Size = new System.Drawing.Size(1389, 557);
             this.tabControl3.TabIndex = 1;
             // 
             // tabPage10
@@ -2852,7 +2893,7 @@
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(1262, 531);
+            this.tabPage10.Size = new System.Drawing.Size(1381, 531);
             this.tabPage10.TabIndex = 0;
             this.tabPage10.Text = "Wykonanie";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -2864,7 +2905,7 @@
             this.panel28.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel28.Location = new System.Drawing.Point(548, 3);
             this.panel28.Name = "panel28";
-            this.panel28.Size = new System.Drawing.Size(711, 500);
+            this.panel28.Size = new System.Drawing.Size(830, 500);
             this.panel28.TabIndex = 2;
             // 
             // chartSmtProductionReport
@@ -2880,7 +2921,7 @@
             series14.Legend = "Legend1";
             series14.Name = "Series1";
             this.chartSmtProductionReport.Series.Add(series14);
-            this.chartSmtProductionReport.Size = new System.Drawing.Size(711, 465);
+            this.chartSmtProductionReport.Size = new System.Drawing.Size(830, 465);
             this.chartSmtProductionReport.TabIndex = 1;
             this.chartSmtProductionReport.Text = "chart1";
             // 
@@ -2890,7 +2931,7 @@
             this.panel29.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel29.Location = new System.Drawing.Point(0, 0);
             this.panel29.Name = "panel29";
-            this.panel29.Size = new System.Drawing.Size(711, 35);
+            this.panel29.Size = new System.Drawing.Size(830, 35);
             this.panel29.TabIndex = 0;
             // 
             // dataGridViewSmtProduction
@@ -2918,7 +2959,7 @@
             this.panel18.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel18.Location = new System.Drawing.Point(3, 503);
             this.panel18.Name = "panel18";
-            this.panel18.Size = new System.Drawing.Size(1256, 25);
+            this.panel18.Size = new System.Drawing.Size(1375, 25);
             this.panel18.TabIndex = 1;
             // 
             // label1SmtSelectedSum
@@ -2938,7 +2979,7 @@
             this.tabPage18.Controls.Add(this.panel49);
             this.tabPage18.Location = new System.Drawing.Point(4, 22);
             this.tabPage18.Name = "tabPage18";
-            this.tabPage18.Size = new System.Drawing.Size(1262, 531);
+            this.tabPage18.Size = new System.Drawing.Size(1381, 531);
             this.tabPage18.TabIndex = 7;
             this.tabPage18.Text = "Wydajność SMT";
             this.tabPage18.UseVisualStyleBackColor = true;
@@ -2953,7 +2994,7 @@
             this.dataGridViewSmtEfficiency.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSmtEfficiency.Location = new System.Drawing.Point(0, 47);
             this.dataGridViewSmtEfficiency.Name = "dataGridViewSmtEfficiency";
-            this.dataGridViewSmtEfficiency.Size = new System.Drawing.Size(1262, 484);
+            this.dataGridViewSmtEfficiency.Size = new System.Drawing.Size(1381, 484);
             this.dataGridViewSmtEfficiency.TabIndex = 1;
             // 
             // panel49
@@ -2961,8 +3002,203 @@
             this.panel49.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel49.Location = new System.Drawing.Point(0, 0);
             this.panel49.Name = "panel49";
-            this.panel49.Size = new System.Drawing.Size(1262, 47);
+            this.panel49.Size = new System.Drawing.Size(1381, 47);
             this.panel49.TabIndex = 0;
+            // 
+            // tabPage23
+            // 
+            this.tabPage23.Controls.Add(this.tableLayoutPanel19);
+            this.tabPage23.Location = new System.Drawing.Point(4, 22);
+            this.tabPage23.Name = "tabPage23";
+            this.tabPage23.Size = new System.Drawing.Size(1381, 531);
+            this.tabPage23.TabIndex = 8;
+            this.tabPage23.Text = "Normy";
+            this.tabPage23.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel19
+            // 
+            this.tableLayoutPanel19.ColumnCount = 2;
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 450F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel19.Controls.Add(this.panel51, 0, 0);
+            this.tableLayoutPanel19.Controls.Add(this.panel52, 1, 0);
+            this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel19.Name = "tableLayoutPanel19";
+            this.tableLayoutPanel19.RowCount = 1;
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(1381, 531);
+            this.tableLayoutPanel19.TabIndex = 1;
+            // 
+            // panel51
+            // 
+            this.panel51.Controls.Add(this.dgvSmtNorms);
+            this.panel51.Controls.Add(this.cBSmtNorms);
+            this.panel51.Controls.Add(this.lbSmtEfficiencyModelsList);
+            this.panel51.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel51.Location = new System.Drawing.Point(3, 3);
+            this.panel51.Name = "panel51";
+            this.panel51.Size = new System.Drawing.Size(444, 525);
+            this.panel51.TabIndex = 0;
+            // 
+            // dgvSmtNorms
+            // 
+            this.dgvSmtNorms.AllowUserToAddRows = false;
+            this.dgvSmtNorms.AllowUserToDeleteRows = false;
+            this.dgvSmtNorms.AllowUserToResizeColumns = false;
+            this.dgvSmtNorms.AllowUserToResizeRows = false;
+            this.dgvSmtNorms.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSmtNorms.ColumnHeadersVisible = false;
+            this.dgvSmtNorms.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column24,
+            this.Column25});
+            this.dgvSmtNorms.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSmtNorms.Location = new System.Drawing.Point(149, 21);
+            this.dgvSmtNorms.Name = "dgvSmtNorms";
+            this.dgvSmtNorms.ReadOnly = true;
+            this.dgvSmtNorms.RowHeadersVisible = false;
+            this.dgvSmtNorms.Size = new System.Drawing.Size(295, 504);
+            this.dgvSmtNorms.TabIndex = 2;
+            // 
+            // Column24
+            // 
+            this.Column24.HeaderText = "Column24";
+            this.Column24.Name = "Column24";
+            this.Column24.ReadOnly = true;
+            // 
+            // Column25
+            // 
+            this.Column25.HeaderText = "Column25";
+            this.Column25.Name = "Column25";
+            this.Column25.ReadOnly = true;
+            // 
+            // cBSmtNorms
+            // 
+            this.cBSmtNorms.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cBSmtNorms.FormattingEnabled = true;
+            this.cBSmtNorms.Items.AddRange(new object[] {
+            "SMT2",
+            "SMT3",
+            "SMT4",
+            "SMT5",
+            "SMT6",
+            "SMT7",
+            "SMT8"});
+            this.cBSmtNorms.Location = new System.Drawing.Point(149, 0);
+            this.cBSmtNorms.Name = "cBSmtNorms";
+            this.cBSmtNorms.Size = new System.Drawing.Size(295, 21);
+            this.cBSmtNorms.TabIndex = 1;
+            this.cBSmtNorms.SelectedIndexChanged += new System.EventHandler(this.cBSmtNorms_SelectedIndexChanged);
+            // 
+            // lbSmtEfficiencyModelsList
+            // 
+            this.lbSmtEfficiencyModelsList.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lbSmtEfficiencyModelsList.FormattingEnabled = true;
+            this.lbSmtEfficiencyModelsList.Location = new System.Drawing.Point(0, 0);
+            this.lbSmtEfficiencyModelsList.Name = "lbSmtEfficiencyModelsList";
+            this.lbSmtEfficiencyModelsList.Size = new System.Drawing.Size(149, 525);
+            this.lbSmtEfficiencyModelsList.TabIndex = 0;
+            this.lbSmtEfficiencyModelsList.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged_1);
+            // 
+            // panel52
+            // 
+            this.panel52.Controls.Add(this.dgvSmtEfficiencyOpertor);
+            this.panel52.Controls.Add(this.panel53);
+            this.panel52.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel52.Location = new System.Drawing.Point(453, 3);
+            this.panel52.Name = "panel52";
+            this.panel52.Size = new System.Drawing.Size(925, 525);
+            this.panel52.TabIndex = 1;
+            // 
+            // dgvSmtEfficiencyOpertor
+            // 
+            this.dgvSmtEfficiencyOpertor.AllowUserToAddRows = false;
+            this.dgvSmtEfficiencyOpertor.AllowUserToDeleteRows = false;
+            this.dgvSmtEfficiencyOpertor.AllowUserToResizeColumns = false;
+            this.dgvSmtEfficiencyOpertor.AllowUserToResizeRows = false;
+            this.dgvSmtEfficiencyOpertor.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSmtEfficiencyOpertor.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column26,
+            this.Column27,
+            this.Column28,
+            this.Column33,
+            this.Column29,
+            this.Column32,
+            this.Column31,
+            this.Column30});
+            this.dgvSmtEfficiencyOpertor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSmtEfficiencyOpertor.Location = new System.Drawing.Point(0, 32);
+            this.dgvSmtEfficiencyOpertor.Name = "dgvSmtEfficiencyOpertor";
+            this.dgvSmtEfficiencyOpertor.ReadOnly = true;
+            this.dgvSmtEfficiencyOpertor.RowHeadersVisible = false;
+            this.dgvSmtEfficiencyOpertor.Size = new System.Drawing.Size(925, 493);
+            this.dgvSmtEfficiencyOpertor.TabIndex = 4;
+            // 
+            // panel53
+            // 
+            this.panel53.Controls.Add(this.label45);
+            this.panel53.Controls.Add(this.label44);
+            this.panel53.Controls.Add(this.cbSmtEfficiencyOperatorsList);
+            this.panel53.Controls.Add(this.label43);
+            this.panel53.Controls.Add(this.dtpSmtEfficiencyEnd);
+            this.panel53.Controls.Add(this.dtpSmtEfficiencyStart);
+            this.panel53.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel53.Location = new System.Drawing.Point(0, 0);
+            this.panel53.Name = "panel53";
+            this.panel53.Size = new System.Drawing.Size(925, 32);
+            this.panel53.TabIndex = 5;
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(491, 10);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(24, 13);
+            this.label45.TabIndex = 5;
+            this.label45.Text = "Do:";
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(258, 10);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(24, 13);
+            this.label44.TabIndex = 4;
+            this.label44.Text = "Od:";
+            // 
+            // cbSmtEfficiencyOperatorsList
+            // 
+            this.cbSmtEfficiencyOperatorsList.FormattingEnabled = true;
+            this.cbSmtEfficiencyOperatorsList.Location = new System.Drawing.Point(61, 5);
+            this.cbSmtEfficiencyOperatorsList.Name = "cbSmtEfficiencyOperatorsList";
+            this.cbSmtEfficiencyOperatorsList.Size = new System.Drawing.Size(188, 21);
+            this.cbSmtEfficiencyOperatorsList.TabIndex = 1;
+            this.cbSmtEfficiencyOperatorsList.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(10, 10);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(51, 13);
+            this.label43.TabIndex = 0;
+            this.label43.Text = "Operator:";
+            // 
+            // dtpSmtEfficiencyEnd
+            // 
+            this.dtpSmtEfficiencyEnd.Location = new System.Drawing.Point(516, 6);
+            this.dtpSmtEfficiencyEnd.Name = "dtpSmtEfficiencyEnd";
+            this.dtpSmtEfficiencyEnd.Size = new System.Drawing.Size(200, 20);
+            this.dtpSmtEfficiencyEnd.TabIndex = 3;
+            this.dtpSmtEfficiencyEnd.ValueChanged += new System.EventHandler(this.dtpSmtEfficiencyEnd_ValueChanged);
+            // 
+            // dtpSmtEfficiencyStart
+            // 
+            this.dtpSmtEfficiencyStart.Location = new System.Drawing.Point(284, 6);
+            this.dtpSmtEfficiencyStart.Name = "dtpSmtEfficiencyStart";
+            this.dtpSmtEfficiencyStart.Size = new System.Drawing.Size(200, 20);
+            this.dtpSmtEfficiencyStart.TabIndex = 2;
+            this.dtpSmtEfficiencyStart.ValueChanged += new System.EventHandler(this.dtpSmtEfficiencyStart_ValueChanged);
             // 
             // tabPage11
             // 
@@ -2971,9 +3207,9 @@
             this.tabPage11.Location = new System.Drawing.Point(4, 22);
             this.tabPage11.Name = "tabPage11";
             this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage11.Size = new System.Drawing.Size(1262, 531);
+            this.tabPage11.Size = new System.Drawing.Size(1381, 531);
             this.tabPage11.TabIndex = 1;
-            this.tabPage11.Text = "Normy";
+            this.tabPage11.Text = "Wydajność histogram";
             this.tabPage11.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
@@ -2989,7 +3225,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1256, 497);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1375, 497);
             this.tableLayoutPanel1.TabIndex = 2;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -3008,8 +3244,23 @@
             this.dataGridViewSmtModelStats.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewSmtModelStats.Name = "dataGridViewSmtModelStats";
             this.dataGridViewSmtModelStats.RowHeadersVisible = false;
-            this.dataGridViewSmtModelStats.Size = new System.Drawing.Size(370, 471);
+            this.dataGridViewSmtModelStats.Size = new System.Drawing.Size(406, 471);
             this.dataGridViewSmtModelStats.TabIndex = 0;
+            // 
+            // Column21
+            // 
+            this.Column21.HeaderText = "Nazwa";
+            this.Column21.Name = "Column21";
+            // 
+            // Column22
+            // 
+            this.Column22.HeaderText = "Na godz.";
+            this.Column22.Name = "Column22";
+            // 
+            // Column23
+            // 
+            this.Column23.HeaderText = "Na zmianę";
+            this.Column23.Name = "Column23";
             // 
             // chartSmtModelAnalysis
             // 
@@ -3019,13 +3270,13 @@
             this.chartSmtModelAnalysis.Dock = System.Windows.Forms.DockStyle.Fill;
             legend15.Name = "Legend1";
             this.chartSmtModelAnalysis.Legends.Add(legend15);
-            this.chartSmtModelAnalysis.Location = new System.Drawing.Point(379, 3);
+            this.chartSmtModelAnalysis.Location = new System.Drawing.Point(415, 3);
             this.chartSmtModelAnalysis.Name = "chartSmtModelAnalysis";
             series15.ChartArea = "ChartArea1";
             series15.Legend = "Legend1";
             series15.Name = "Series1";
             this.chartSmtModelAnalysis.Series.Add(series15);
-            this.chartSmtModelAnalysis.Size = new System.Drawing.Size(874, 471);
+            this.chartSmtModelAnalysis.Size = new System.Drawing.Size(957, 471);
             this.chartSmtModelAnalysis.TabIndex = 1;
             this.chartSmtModelAnalysis.Text = "chart1";
             // 
@@ -3039,7 +3290,7 @@
             this.panel19.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel19.Location = new System.Drawing.Point(3, 3);
             this.panel19.Name = "panel19";
-            this.panel19.Size = new System.Drawing.Size(1256, 28);
+            this.panel19.Size = new System.Drawing.Size(1375, 28);
             this.panel19.TabIndex = 3;
             // 
             // button3
@@ -3131,7 +3382,7 @@
             this.tabPage17.Location = new System.Drawing.Point(4, 22);
             this.tabPage17.Name = "tabPage17";
             this.tabPage17.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage17.Size = new System.Drawing.Size(1262, 531);
+            this.tabPage17.Size = new System.Drawing.Size(1381, 531);
             this.tabPage17.TabIndex = 2;
             this.tabPage17.Text = "Przestawienia";
             this.tabPage17.UseVisualStyleBackColor = true;
@@ -3146,7 +3397,7 @@
             this.dataGridViewChangeOvers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewChangeOvers.Location = new System.Drawing.Point(3, 33);
             this.dataGridViewChangeOvers.Name = "dataGridViewChangeOvers";
-            this.dataGridViewChangeOvers.Size = new System.Drawing.Size(1256, 468);
+            this.dataGridViewChangeOvers.Size = new System.Drawing.Size(1375, 468);
             this.dataGridViewChangeOvers.TabIndex = 2;
             this.dataGridViewChangeOvers.SelectionChanged += new System.EventHandler(this.dataGridViewChangeOvers_SelectionChanged);
             // 
@@ -3156,7 +3407,7 @@
             this.panel12.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel12.Location = new System.Drawing.Point(3, 501);
             this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(1256, 27);
+            this.panel12.Size = new System.Drawing.Size(1375, 27);
             this.panel12.TabIndex = 1;
             // 
             // labelSumOfSelectedChangeOver
@@ -3175,7 +3426,7 @@
             this.panel11.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel11.Location = new System.Drawing.Point(3, 3);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(1256, 30);
+            this.panel11.Size = new System.Drawing.Size(1375, 30);
             this.panel11.TabIndex = 0;
             // 
             // label12
@@ -3194,7 +3445,7 @@
             this.tabPage20.Location = new System.Drawing.Point(4, 22);
             this.tabPage20.Name = "tabPage20";
             this.tabPage20.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage20.Size = new System.Drawing.Size(1262, 531);
+            this.tabPage20.Size = new System.Drawing.Size(1381, 531);
             this.tabPage20.TabIndex = 3;
             this.tabPage20.Text = "Odpad LED";
             this.tabPage20.UseVisualStyleBackColor = true;
@@ -3212,8 +3463,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(1256, 228);
-            this.splitContainer1.SplitterDistance = 692;
+            this.splitContainer1.Size = new System.Drawing.Size(1375, 228);
+            this.splitContainer1.SplitterDistance = 757;
             this.splitContainer1.TabIndex = 3;
             // 
             // splitContainer2
@@ -3232,8 +3483,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.dataGridViewSmtLedWasteTotalPerLine);
             this.splitContainer2.Panel2.Controls.Add(this.panel34);
-            this.splitContainer2.Size = new System.Drawing.Size(692, 228);
-            this.splitContainer2.SplitterDistance = 407;
+            this.splitContainer2.Size = new System.Drawing.Size(757, 228);
+            this.splitContainer2.SplitterDistance = 445;
             this.splitContainer2.TabIndex = 4;
             // 
             // panel30
@@ -3242,7 +3493,7 @@
             this.panel30.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel30.Location = new System.Drawing.Point(0, 0);
             this.panel30.Name = "panel30";
-            this.panel30.Size = new System.Drawing.Size(407, 24);
+            this.panel30.Size = new System.Drawing.Size(445, 24);
             this.panel30.TabIndex = 3;
             // 
             // label13
@@ -3261,20 +3512,20 @@
             this.dataGridViewSmtLedDropped.AllowUserToResizeColumns = false;
             this.dataGridViewSmtLedDropped.AllowUserToResizeRows = false;
             this.dataGridViewSmtLedDropped.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewSmtLedDropped.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewSmtLedDropped.DefaultCellStyle = dataGridViewCellStyle17;
             this.dataGridViewSmtLedDropped.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSmtLedDropped.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewSmtLedDropped.Name = "dataGridViewSmtLedDropped";
             this.dataGridViewSmtLedDropped.ReadOnly = true;
             this.dataGridViewSmtLedDropped.RowHeadersVisible = false;
-            this.dataGridViewSmtLedDropped.Size = new System.Drawing.Size(407, 228);
+            this.dataGridViewSmtLedDropped.Size = new System.Drawing.Size(445, 228);
             this.dataGridViewSmtLedDropped.TabIndex = 0;
             this.dataGridViewSmtLedDropped.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedDropped_CellDoubleClick);
             // 
@@ -3285,19 +3536,19 @@
             this.dataGridViewSmtLedWasteTotalPerLine.AllowUserToResizeColumns = false;
             this.dataGridViewSmtLedWasteTotalPerLine.AllowUserToResizeRows = false;
             this.dataGridViewSmtLedWasteTotalPerLine.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.SeaShell;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewSmtLedWasteTotalPerLine.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.SeaShell;
+            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewSmtLedWasteTotalPerLine.DefaultCellStyle = dataGridViewCellStyle18;
             this.dataGridViewSmtLedWasteTotalPerLine.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSmtLedWasteTotalPerLine.Location = new System.Drawing.Point(0, 24);
             this.dataGridViewSmtLedWasteTotalPerLine.Name = "dataGridViewSmtLedWasteTotalPerLine";
             this.dataGridViewSmtLedWasteTotalPerLine.RowHeadersVisible = false;
-            this.dataGridViewSmtLedWasteTotalPerLine.Size = new System.Drawing.Size(281, 204);
+            this.dataGridViewSmtLedWasteTotalPerLine.Size = new System.Drawing.Size(308, 204);
             this.dataGridViewSmtLedWasteTotalPerLine.TabIndex = 6;
             this.dataGridViewSmtLedWasteTotalPerLine.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedWasteTotalPerLine_CellDoubleClick);
             // 
@@ -3308,7 +3559,7 @@
             this.panel34.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel34.Location = new System.Drawing.Point(0, 0);
             this.panel34.Name = "panel34";
-            this.panel34.Size = new System.Drawing.Size(281, 24);
+            this.panel34.Size = new System.Drawing.Size(308, 24);
             this.panel34.TabIndex = 7;
             // 
             // comboBoxSmtLedWasteModels
@@ -3345,8 +3596,8 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.dataGridViewSmtWasteTotal);
             this.splitContainer3.Panel2.Controls.Add(this.panel32);
-            this.splitContainer3.Size = new System.Drawing.Size(560, 228);
-            this.splitContainer3.SplitterDistance = 261;
+            this.splitContainer3.Size = new System.Drawing.Size(614, 228);
+            this.splitContainer3.SplitterDistance = 286;
             this.splitContainer3.TabIndex = 4;
             // 
             // panel33
@@ -3356,7 +3607,7 @@
             this.panel33.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel33.Location = new System.Drawing.Point(0, 0);
             this.panel33.Name = "panel33";
-            this.panel33.Size = new System.Drawing.Size(261, 24);
+            this.panel33.Size = new System.Drawing.Size(286, 24);
             this.panel33.TabIndex = 5;
             // 
             // label14
@@ -3384,19 +3635,19 @@
             this.dataGridViewSmtLedWasteByModel.AllowUserToResizeColumns = false;
             this.dataGridViewSmtLedWasteByModel.AllowUserToResizeRows = false;
             this.dataGridViewSmtLedWasteByModel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.SeaShell;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewSmtLedWasteByModel.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.SeaShell;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewSmtLedWasteByModel.DefaultCellStyle = dataGridViewCellStyle19;
             this.dataGridViewSmtLedWasteByModel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSmtLedWasteByModel.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewSmtLedWasteByModel.Name = "dataGridViewSmtLedWasteByModel";
             this.dataGridViewSmtLedWasteByModel.RowHeadersVisible = false;
-            this.dataGridViewSmtLedWasteByModel.Size = new System.Drawing.Size(261, 228);
+            this.dataGridViewSmtLedWasteByModel.Size = new System.Drawing.Size(286, 228);
             this.dataGridViewSmtLedWasteByModel.TabIndex = 1;
             this.dataGridViewSmtLedWasteByModel.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedWasteByModel_CellDoubleClick);
             // 
@@ -3407,19 +3658,19 @@
             this.dataGridViewSmtWasteTotal.AllowUserToResizeColumns = false;
             this.dataGridViewSmtWasteTotal.AllowUserToResizeRows = false;
             this.dataGridViewSmtWasteTotal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewSmtWasteTotal.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewSmtWasteTotal.DefaultCellStyle = dataGridViewCellStyle20;
             this.dataGridViewSmtWasteTotal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSmtWasteTotal.Location = new System.Drawing.Point(0, 24);
             this.dataGridViewSmtWasteTotal.Name = "dataGridViewSmtWasteTotal";
             this.dataGridViewSmtWasteTotal.RowHeadersVisible = false;
-            this.dataGridViewSmtWasteTotal.Size = new System.Drawing.Size(295, 204);
+            this.dataGridViewSmtWasteTotal.Size = new System.Drawing.Size(324, 204);
             this.dataGridViewSmtWasteTotal.TabIndex = 2;
             // 
             // panel32
@@ -3428,7 +3679,7 @@
             this.panel32.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel32.Location = new System.Drawing.Point(0, 0);
             this.panel32.Name = "panel32";
-            this.panel32.Size = new System.Drawing.Size(295, 24);
+            this.panel32.Size = new System.Drawing.Size(324, 24);
             this.panel32.TabIndex = 4;
             // 
             // label15
@@ -3447,7 +3698,7 @@
             this.panel31.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel31.Location = new System.Drawing.Point(3, 231);
             this.panel31.Name = "panel31";
-            this.panel31.Size = new System.Drawing.Size(1256, 297);
+            this.panel31.Size = new System.Drawing.Size(1375, 297);
             this.panel31.TabIndex = 1;
             // 
             // chartLedWasteChart
@@ -3462,7 +3713,7 @@
             series16.ChartArea = "ChartArea1";
             series16.Name = "Series1";
             this.chartLedWasteChart.Series.Add(series16);
-            this.chartLedWasteChart.Size = new System.Drawing.Size(1171, 297);
+            this.chartLedWasteChart.Size = new System.Drawing.Size(1290, 297);
             this.chartLedWasteChart.TabIndex = 0;
             this.chartLedWasteChart.Text = "chart1";
             // 
@@ -3641,7 +3892,7 @@
             this.tabPage21.Location = new System.Drawing.Point(4, 22);
             this.tabPage21.Name = "tabPage21";
             this.tabPage21.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage21.Size = new System.Drawing.Size(1262, 531);
+            this.tabPage21.Size = new System.Drawing.Size(1381, 531);
             this.tabPage21.TabIndex = 4;
             this.tabPage21.Text = "Edycja danych";
             this.tabPage21.UseVisualStyleBackColor = true;
@@ -3652,7 +3903,7 @@
             this.buttonSmtEditLotSaveChanges.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.buttonSmtEditLotSaveChanges.Location = new System.Drawing.Point(3, 491);
             this.buttonSmtEditLotSaveChanges.Name = "buttonSmtEditLotSaveChanges";
-            this.buttonSmtEditLotSaveChanges.Size = new System.Drawing.Size(1256, 37);
+            this.buttonSmtEditLotSaveChanges.Size = new System.Drawing.Size(1375, 37);
             this.buttonSmtEditLotSaveChanges.TabIndex = 4;
             this.buttonSmtEditLotSaveChanges.Text = "ZAPISZ";
             this.buttonSmtEditLotSaveChanges.UseVisualStyleBackColor = false;
@@ -3666,7 +3917,7 @@
             this.dataGridViewSmtEditLot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSmtEditLot.Location = new System.Drawing.Point(3, 35);
             this.dataGridViewSmtEditLot.Name = "dataGridViewSmtEditLot";
-            this.dataGridViewSmtEditLot.Size = new System.Drawing.Size(1256, 493);
+            this.dataGridViewSmtEditLot.Size = new System.Drawing.Size(1375, 493);
             this.dataGridViewSmtEditLot.TabIndex = 2;
             this.dataGridViewSmtEditLot.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtEditLot_CellValueChanged);
             // 
@@ -3679,7 +3930,7 @@
             this.panel35.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel35.Location = new System.Drawing.Point(3, 3);
             this.panel35.Name = "panel35";
-            this.panel35.Size = new System.Drawing.Size(1256, 32);
+            this.panel35.Size = new System.Drawing.Size(1375, 32);
             this.panel35.TabIndex = 3;
             // 
             // buttonSmtEditLotRestore
@@ -3726,7 +3977,7 @@
             this.Stencile.Location = new System.Drawing.Point(4, 22);
             this.Stencile.Name = "Stencile";
             this.Stencile.Padding = new System.Windows.Forms.Padding(3);
-            this.Stencile.Size = new System.Drawing.Size(1262, 531);
+            this.Stencile.Size = new System.Drawing.Size(1381, 531);
             this.Stencile.TabIndex = 5;
             this.Stencile.Text = "Stencile";
             this.Stencile.UseVisualStyleBackColor = true;
@@ -3743,7 +3994,7 @@
             this.tableLayoutPanel12.RowCount = 1;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 463F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(1256, 463);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(1375, 463);
             this.tableLayoutPanel12.TabIndex = 0;
             // 
             // dataGridViewSmtStencilUsage
@@ -3756,7 +4007,7 @@
             this.dataGridViewSmtStencilUsage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSmtStencilUsage.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewSmtStencilUsage.Name = "dataGridViewSmtStencilUsage";
-            this.dataGridViewSmtStencilUsage.Size = new System.Drawing.Size(622, 457);
+            this.dataGridViewSmtStencilUsage.Size = new System.Drawing.Size(681, 457);
             this.dataGridViewSmtStencilUsage.TabIndex = 0;
             // 
             // panel41
@@ -3765,7 +4016,7 @@
             this.panel41.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel41.Location = new System.Drawing.Point(3, 497);
             this.panel41.Name = "panel41";
-            this.panel41.Size = new System.Drawing.Size(1256, 31);
+            this.panel41.Size = new System.Drawing.Size(1375, 31);
             this.panel41.TabIndex = 2;
             // 
             // panel40
@@ -3774,7 +4025,7 @@
             this.panel40.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel40.Location = new System.Drawing.Point(3, 3);
             this.panel40.Name = "panel40";
-            this.panel40.Size = new System.Drawing.Size(1256, 31);
+            this.panel40.Size = new System.Drawing.Size(1375, 31);
             this.panel40.TabIndex = 1;
             // 
             // tabPage28
@@ -3784,7 +4035,7 @@
             this.tabPage28.Location = new System.Drawing.Point(4, 22);
             this.tabPage28.Name = "tabPage28";
             this.tabPage28.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage28.Size = new System.Drawing.Size(1262, 531);
+            this.tabPage28.Size = new System.Drawing.Size(1381, 531);
             this.tabPage28.TabIndex = 6;
             this.tabPage28.Text = "Diody - gdzie użyte";
             this.tabPage28.UseVisualStyleBackColor = true;
@@ -3796,7 +4047,7 @@
             this.dataGridViewSmtTrace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewSmtTrace.Location = new System.Drawing.Point(3, 245);
             this.dataGridViewSmtTrace.Name = "dataGridViewSmtTrace";
-            this.dataGridViewSmtTrace.Size = new System.Drawing.Size(1256, 283);
+            this.dataGridViewSmtTrace.Size = new System.Drawing.Size(1375, 283);
             this.dataGridViewSmtTrace.TabIndex = 5;
             // 
             // panel44
@@ -3807,7 +4058,7 @@
             this.panel44.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel44.Location = new System.Drawing.Point(3, 3);
             this.panel44.Name = "panel44";
-            this.panel44.Size = new System.Drawing.Size(1256, 242);
+            this.panel44.Size = new System.Drawing.Size(1375, 242);
             this.panel44.TabIndex = 4;
             // 
             // buttonSmtTraceOK
@@ -3855,7 +4106,7 @@
             this.panelControlsSmt.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.panelControlsSmt.Location = new System.Drawing.Point(3, 3);
             this.panelControlsSmt.Name = "panelControlsSmt";
-            this.panelControlsSmt.Size = new System.Drawing.Size(1270, 29);
+            this.panelControlsSmt.Size = new System.Drawing.Size(1389, 29);
             this.panelControlsSmt.TabIndex = 2;
             // 
             // label33
@@ -3967,7 +4218,7 @@
             this.tabPage16.Location = new System.Drawing.Point(4, 25);
             this.tabPage16.Name = "tabPage16";
             this.tabPage16.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage16.Size = new System.Drawing.Size(1276, 592);
+            this.tabPage16.Size = new System.Drawing.Size(1395, 592);
             this.tabPage16.TabIndex = 5;
             this.tabPage16.Text = "TEST";
             this.tabPage16.UseVisualStyleBackColor = true;
@@ -3982,7 +4233,7 @@
             this.tabControl6.Location = new System.Drawing.Point(3, 32);
             this.tabControl6.Name = "tabControl6";
             this.tabControl6.SelectedIndex = 0;
-            this.tabControl6.Size = new System.Drawing.Size(1270, 528);
+            this.tabControl6.Size = new System.Drawing.Size(1389, 528);
             this.tabControl6.TabIndex = 3;
             // 
             // tabPage25
@@ -3991,7 +4242,7 @@
             this.tabPage25.Location = new System.Drawing.Point(4, 22);
             this.tabPage25.Name = "tabPage25";
             this.tabPage25.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage25.Size = new System.Drawing.Size(1262, 502);
+            this.tabPage25.Size = new System.Drawing.Size(1381, 502);
             this.tabPage25.TabIndex = 0;
             this.tabPage25.Text = "Raport wykonania";
             this.tabPage25.UseVisualStyleBackColor = true;
@@ -4004,7 +4255,7 @@
             this.dataGridViewTestProdReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewTestProdReport.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewTestProdReport.Name = "dataGridViewTestProdReport";
-            this.dataGridViewTestProdReport.Size = new System.Drawing.Size(1256, 496);
+            this.dataGridViewTestProdReport.Size = new System.Drawing.Size(1375, 496);
             this.dataGridViewTestProdReport.TabIndex = 2;
             this.dataGridViewTestProdReport.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTest_CellDoubleClick);
             this.dataGridViewTestProdReport.SelectionChanged += new System.EventHandler(this.dataGridViewTest_SelectionChanged);
@@ -4016,7 +4267,7 @@
             this.tabPage26.Location = new System.Drawing.Point(4, 22);
             this.tabPage26.Name = "tabPage26";
             this.tabPage26.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage26.Size = new System.Drawing.Size(1262, 502);
+            this.tabPage26.Size = new System.Drawing.Size(1381, 502);
             this.tabPage26.TabIndex = 1;
             this.tabPage26.Text = "Wydajność po modelu";
             this.tabPage26.UseVisualStyleBackColor = true;
@@ -4034,7 +4285,7 @@
             this.tableLayoutPanel11.RowCount = 1;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 467F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(1256, 467);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(1375, 467);
             this.tableLayoutPanel11.TabIndex = 4;
             // 
             // dataGridViewTestModelEfficiency
@@ -4045,7 +4296,7 @@
             this.dataGridViewTestModelEfficiency.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewTestModelEfficiency.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewTestModelEfficiency.Name = "dataGridViewTestModelEfficiency";
-            this.dataGridViewTestModelEfficiency.Size = new System.Drawing.Size(622, 461);
+            this.dataGridViewTestModelEfficiency.Size = new System.Drawing.Size(681, 461);
             this.dataGridViewTestModelEfficiency.TabIndex = 3;
             // 
             // chartTestEfficiencyModel
@@ -4055,13 +4306,13 @@
             this.chartTestEfficiencyModel.Dock = System.Windows.Forms.DockStyle.Fill;
             legend16.Name = "Legend1";
             this.chartTestEfficiencyModel.Legends.Add(legend16);
-            this.chartTestEfficiencyModel.Location = new System.Drawing.Point(631, 3);
+            this.chartTestEfficiencyModel.Location = new System.Drawing.Point(690, 3);
             this.chartTestEfficiencyModel.Name = "chartTestEfficiencyModel";
             series17.ChartArea = "ChartArea1";
             series17.Legend = "Legend1";
             series17.Name = "Series1";
             this.chartTestEfficiencyModel.Series.Add(series17);
-            this.chartTestEfficiencyModel.Size = new System.Drawing.Size(622, 461);
+            this.chartTestEfficiencyModel.Size = new System.Drawing.Size(682, 461);
             this.chartTestEfficiencyModel.TabIndex = 4;
             this.chartTestEfficiencyModel.Text = "chart1";
             // 
@@ -4074,7 +4325,7 @@
             this.panel39.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel39.Location = new System.Drawing.Point(3, 3);
             this.panel39.Name = "panel39";
-            this.panel39.Size = new System.Drawing.Size(1256, 29);
+            this.panel39.Size = new System.Drawing.Size(1375, 29);
             this.panel39.TabIndex = 5;
             // 
             // label31
@@ -4119,7 +4370,7 @@
             this.tabPage27.Location = new System.Drawing.Point(4, 22);
             this.tabPage27.Name = "tabPage27";
             this.tabPage27.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage27.Size = new System.Drawing.Size(1262, 502);
+            this.tabPage27.Size = new System.Drawing.Size(1381, 502);
             this.tabPage27.TabIndex = 2;
             this.tabPage27.Text = "Przed testem";
             this.tabPage27.UseVisualStyleBackColor = true;
@@ -4136,7 +4387,7 @@
             this.tableLayoutPanel14.RowCount = 1;
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 460F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(1256, 460);
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(1375, 460);
             this.tableLayoutPanel14.TabIndex = 7;
             // 
             // dgvTestWaitingForTest
@@ -4145,7 +4396,7 @@
             this.dgvTestWaitingForTest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTestWaitingForTest.Location = new System.Drawing.Point(3, 3);
             this.dgvTestWaitingForTest.Name = "dgvTestWaitingForTest";
-            this.dgvTestWaitingForTest.Size = new System.Drawing.Size(622, 454);
+            this.dgvTestWaitingForTest.Size = new System.Drawing.Size(681, 454);
             this.dgvTestWaitingForTest.TabIndex = 4;
             // 
             // panel45
@@ -4153,7 +4404,7 @@
             this.panel45.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel45.Location = new System.Drawing.Point(3, 3);
             this.panel45.Name = "panel45";
-            this.panel45.Size = new System.Drawing.Size(1256, 36);
+            this.panel45.Size = new System.Drawing.Size(1375, 36);
             this.panel45.TabIndex = 6;
             // 
             // tabPage19
@@ -4162,7 +4413,7 @@
             this.tabPage19.Location = new System.Drawing.Point(4, 22);
             this.tabPage19.Name = "tabPage19";
             this.tabPage19.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage19.Size = new System.Drawing.Size(1262, 502);
+            this.tabPage19.Size = new System.Drawing.Size(1381, 502);
             this.tabPage19.TabIndex = 3;
             this.tabPage19.Text = "Wykresy";
             this.tabPage19.UseVisualStyleBackColor = true;
@@ -4182,7 +4433,7 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1256, 496);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1375, 496);
             this.tableLayoutPanel4.TabIndex = 4;
             // 
             // panel50
@@ -4203,7 +4454,7 @@
             this.panel50.Location = new System.Drawing.Point(1, 1);
             this.panel50.Margin = new System.Windows.Forms.Padding(1);
             this.panel50.Name = "panel50";
-            this.panel50.Size = new System.Drawing.Size(1254, 48);
+            this.panel50.Size = new System.Drawing.Size(1373, 48);
             this.panel50.TabIndex = 0;
             // 
             // btTestStatsTable2
@@ -4337,7 +4588,7 @@
             series18.Legend = "Legend1";
             series18.Name = "Series1";
             this.chartTestStatistics.Series.Add(series18);
-            this.chartTestStatistics.Size = new System.Drawing.Size(1250, 390);
+            this.chartTestStatistics.Size = new System.Drawing.Size(1369, 390);
             this.chartTestStatistics.TabIndex = 1;
             this.chartTestStatistics.Text = "chart1";
             this.chartTestStatistics.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chartTestStatistics_MouseMove);
@@ -4348,7 +4599,7 @@
             this.panel25.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel25.Location = new System.Drawing.Point(3, 560);
             this.panel25.Name = "panel25";
-            this.panel25.Size = new System.Drawing.Size(1270, 29);
+            this.panel25.Size = new System.Drawing.Size(1389, 29);
             this.panel25.TabIndex = 1;
             // 
             // labelTest
@@ -4370,7 +4621,7 @@
             this.panel24.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel24.Location = new System.Drawing.Point(3, 3);
             this.panel24.Name = "panel24";
-            this.panel24.Size = new System.Drawing.Size(1270, 29);
+            this.panel24.Size = new System.Drawing.Size(1389, 29);
             this.panel24.TabIndex = 0;
             // 
             // buttonTestLoadData
@@ -4403,7 +4654,7 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 25);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(1276, 592);
+            this.tabPage8.Size = new System.Drawing.Size(1395, 592);
             this.tabPage8.TabIndex = 0;
             this.tabPage8.Text = "KONTROLA WZROKOWA";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -4416,7 +4667,7 @@
             this.tabPage15.Location = new System.Drawing.Point(4, 25);
             this.tabPage15.Name = "tabPage15";
             this.tabPage15.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage15.Size = new System.Drawing.Size(1276, 592);
+            this.tabPage15.Size = new System.Drawing.Size(1395, 592);
             this.tabPage15.TabIndex = 4;
             this.tabPage15.Text = "SPLITTING";
             this.tabPage15.UseVisualStyleBackColor = true;
@@ -4434,7 +4685,7 @@
             this.dataGridViewSplitting.Location = new System.Drawing.Point(3, 41);
             this.dataGridViewSplitting.Name = "dataGridViewSplitting";
             this.dataGridViewSplitting.ReadOnly = true;
-            this.dataGridViewSplitting.Size = new System.Drawing.Size(1270, 525);
+            this.dataGridViewSplitting.Size = new System.Drawing.Size(1389, 525);
             this.dataGridViewSplitting.TabIndex = 2;
             this.dataGridViewSplitting.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSplitting_CellDoubleClick);
             this.dataGridViewSplitting.SelectionChanged += new System.EventHandler(this.dataGridViewSplitting_SelectionChanged);
@@ -4469,7 +4720,7 @@
             this.panel21.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel21.Location = new System.Drawing.Point(3, 566);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(1270, 23);
+            this.panel21.Size = new System.Drawing.Size(1389, 23);
             this.panel21.TabIndex = 1;
             // 
             // labelSplittingSelectedSum
@@ -4488,7 +4739,7 @@
             this.panel20.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel20.Location = new System.Drawing.Point(3, 3);
             this.panel20.Name = "panel20";
-            this.panel20.Size = new System.Drawing.Size(1270, 38);
+            this.panel20.Size = new System.Drawing.Size(1389, 38);
             this.panel20.TabIndex = 0;
             // 
             // BOXING
@@ -4498,7 +4749,7 @@
             this.BOXING.Controls.Add(this.panel26);
             this.BOXING.Location = new System.Drawing.Point(4, 25);
             this.BOXING.Name = "BOXING";
-            this.BOXING.Size = new System.Drawing.Size(1276, 592);
+            this.BOXING.Size = new System.Drawing.Size(1395, 592);
             this.BOXING.TabIndex = 6;
             this.BOXING.Text = "BOXING";
             this.BOXING.UseVisualStyleBackColor = true;
@@ -4514,7 +4765,7 @@
             this.dataGridViewBoxing.Location = new System.Drawing.Point(0, 40);
             this.dataGridViewBoxing.Name = "dataGridViewBoxing";
             this.dataGridViewBoxing.RowHeadersVisible = false;
-            this.dataGridViewBoxing.Size = new System.Drawing.Size(1276, 520);
+            this.dataGridViewBoxing.Size = new System.Drawing.Size(1395, 520);
             this.dataGridViewBoxing.TabIndex = 3;
             this.dataGridViewBoxing.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBoxing_CellDoubleClick);
             this.dataGridViewBoxing.SelectionChanged += new System.EventHandler(this.dataGridViewBoxing_SelectionChanged);
@@ -4525,7 +4776,7 @@
             this.panel47.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel47.Location = new System.Drawing.Point(0, 560);
             this.panel47.Name = "panel47";
-            this.panel47.Size = new System.Drawing.Size(1276, 32);
+            this.panel47.Size = new System.Drawing.Size(1395, 32);
             this.panel47.TabIndex = 4;
             // 
             // labelBoxingSelectionSum
@@ -4551,7 +4802,7 @@
             this.panel26.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel26.Location = new System.Drawing.Point(0, 0);
             this.panel26.Name = "panel26";
-            this.panel26.Size = new System.Drawing.Size(1276, 40);
+            this.panel26.Size = new System.Drawing.Size(1395, 40);
             this.panel26.TabIndex = 2;
             // 
             // rbComponentsCount
@@ -4652,7 +4903,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1276, 592);
+            this.tabPage2.Size = new System.Drawing.Size(1395, 592);
             this.tabPage2.TabIndex = 7;
             this.tabPage2.Text = "GRAFIK";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -4669,7 +4920,7 @@
             this.dataGridViewGrafik.Location = new System.Drawing.Point(3, 38);
             this.dataGridViewGrafik.Name = "dataGridViewGrafik";
             this.dataGridViewGrafik.RowHeadersVisible = false;
-            this.dataGridViewGrafik.Size = new System.Drawing.Size(1270, 551);
+            this.dataGridViewGrafik.Size = new System.Drawing.Size(1389, 551);
             this.dataGridViewGrafik.TabIndex = 0;
             // 
             // panel17
@@ -4685,7 +4936,7 @@
             this.panel17.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel17.Location = new System.Drawing.Point(3, 3);
             this.panel17.Name = "panel17";
-            this.panel17.Size = new System.Drawing.Size(1270, 35);
+            this.panel17.Size = new System.Drawing.Size(1389, 35);
             this.panel17.TabIndex = 1;
             // 
             // dtpGrafikEnd
@@ -4775,29 +5026,84 @@
             // 
             this.timerBoxLoadDone.Tick += new System.EventHandler(this.timerBoxLoadDone_Tick);
             // 
-            // Column21
+            // bckWorkerStartLoadUp
             // 
-            this.Column21.HeaderText = "Nazwa";
-            this.Column21.Name = "Column21";
+            this.bckWorkerStartLoadUp.WorkerReportsProgress = true;
+            this.bckWorkerStartLoadUp.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bckWorkerStartLoadUp_DoWork);
+            this.bckWorkerStartLoadUp.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bckWorkerStartLoadUp_ProgressChanged);
+            this.bckWorkerStartLoadUp.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bckWorkerStartLoadUp_RunWorkerCompleted);
             // 
-            // Column22
+            // Column26
             // 
-            this.Column22.HeaderText = "Na godz.";
-            this.Column22.Name = "Column22";
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column26.DefaultCellStyle = dataGridViewCellStyle10;
+            this.Column26.HeaderText = "Model";
+            this.Column26.Name = "Column26";
+            this.Column26.ReadOnly = true;
             // 
-            // Column23
+            // Column27
             // 
-            this.Column23.HeaderText = "Na zmianę";
-            this.Column23.Name = "Column23";
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column27.DefaultCellStyle = dataGridViewCellStyle11;
+            this.Column27.HeaderText = "Początek";
+            this.Column27.Name = "Column27";
+            this.Column27.ReadOnly = true;
+            // 
+            // Column28
+            // 
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column28.DefaultCellStyle = dataGridViewCellStyle12;
+            this.Column28.HeaderText = "Koniec";
+            this.Column28.Name = "Column28";
+            this.Column28.ReadOnly = true;
+            // 
+            // Column33
+            // 
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column33.DefaultCellStyle = dataGridViewCellStyle13;
+            this.Column33.HeaderText = "Czas trwania";
+            this.Column33.Name = "Column33";
+            this.Column33.ReadOnly = true;
+            // 
+            // Column29
+            // 
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column29.DefaultCellStyle = dataGridViewCellStyle14;
+            this.Column29.HeaderText = "Ilość";
+            this.Column29.Name = "Column29";
+            this.Column29.ReadOnly = true;
+            // 
+            // Column32
+            // 
+            this.Column32.HeaderText = "Linia";
+            this.Column32.Name = "Column32";
+            this.Column32.ReadOnly = true;
+            // 
+            // Column31
+            // 
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column31.DefaultCellStyle = dataGridViewCellStyle15;
+            this.Column31.HeaderText = "Norma";
+            this.Column31.Name = "Column31";
+            this.Column31.ReadOnly = true;
+            // 
+            // Column30
+            // 
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column30.DefaultCellStyle = dataGridViewCellStyle16;
+            this.Column30.HeaderText = "Wydajność";
+            this.Column30.Name = "Column30";
+            this.Column30.ReadOnly = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1284, 621);
+            this.ClientSize = new System.Drawing.Size(1403, 621);
             this.Controls.Add(this.tabControl2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Produkcja elektroniki raporty";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -4927,6 +5233,14 @@
             this.panel18.PerformLayout();
             this.tabPage18.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtEfficiency)).EndInit();
+            this.tabPage23.ResumeLayout(false);
+            this.tableLayoutPanel19.ResumeLayout(false);
+            this.panel51.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSmtNorms)).EndInit();
+            this.panel52.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSmtEfficiencyOpertor)).EndInit();
+            this.panel53.ResumeLayout(false);
+            this.panel53.PerformLayout();
             this.tabPage11.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtModelStats)).EndInit();
@@ -5379,6 +5693,32 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column22;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column23;
+        private System.ComponentModel.BackgroundWorker bckWorkerStartLoadUp;
+        private System.Windows.Forms.TabPage tabPage23;
+        private System.Windows.Forms.Panel panel51;
+        private System.Windows.Forms.DataGridView dgvSmtNorms;
+        private System.Windows.Forms.ComboBox cBSmtNorms;
+        private System.Windows.Forms.ListBox lbSmtEfficiencyModelsList;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column24;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column25;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel19;
+        private System.Windows.Forms.Panel panel52;
+        private System.Windows.Forms.DataGridView dgvSmtEfficiencyOpertor;
+        private System.Windows.Forms.Panel panel53;
+        private System.Windows.Forms.ComboBox cbSmtEfficiencyOperatorsList;
+        private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.DateTimePicker dtpSmtEfficiencyEnd;
+        private System.Windows.Forms.DateTimePicker dtpSmtEfficiencyStart;
+        private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column26;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column27;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column28;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column33;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column29;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column32;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column31;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column30;
     }
 }
 
