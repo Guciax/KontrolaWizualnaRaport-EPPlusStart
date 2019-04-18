@@ -149,6 +149,7 @@
     <Compile Include="SQLoperations.cs" />
     <Compile Include="TabOperations\Test\TestOperations.cs" />
     <Compile Include="TabOperations\ViTab\VIOperations.cs" />
+    <Compile Include="TabOperations\ViTab\WasteLevelTab.cs" />
     <Compile Include="wastePerReasonStructure.cs" />
     <Compile Include="Forms\WasteReasonDetails.cs">
       <SubType>Form</SubType>

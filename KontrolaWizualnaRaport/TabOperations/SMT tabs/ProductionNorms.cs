@@ -18,9 +18,12 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
             if (!DataContainer.mesModels.TryGetValue(modelId, out modelSpec))
                 return;
             var dtModels = DataContainer.DevTools.devToolsDb.Where(m => m.nc12 == modelId+"00");
-            var pcbDimensions = MST.MES.Data_structures.DevTools.DevToolsModelsOperations.GetMPcbimensions(dtModels.First());
-
-
+            Tuple<double, double> pcbDimensions = new Tuple<double, double>(0, 0);
+            if (dtModels.Count() > 0)
+            {
+                pcbDimensions = MST.MES.Data_structures.DevTools.DevToolsModelsOperations.GetMPcbimensions(dtModels.First());
+            }
+            
             var eff = SmtEfficiencyCalculation.NewWay.CalculateModelNormPerHour(modelId, smtLine);
             grid.Rows.Clear();
 

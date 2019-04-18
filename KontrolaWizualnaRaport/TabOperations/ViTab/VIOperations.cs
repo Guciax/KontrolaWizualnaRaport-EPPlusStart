@@ -1,4 +1,5 @@
 ﻿using KontrolaWizualnaRaport.CentalDataStorage;
+using KontrolaWizualnaRaport.TabOperations.ViTab;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -98,7 +99,7 @@ namespace KontrolaWizualnaRaport
                 .Select(o => o.kitting.orderNo).Distinct().ToList();
 
             DataContainer.VisualInspection.ngByLineThenDateKey = grouppedByLineThenDate;
-            Charting.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevel();
             FillOutGridLatestLots();
         }
 

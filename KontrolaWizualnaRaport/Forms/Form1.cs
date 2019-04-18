@@ -34,14 +34,13 @@ namespace KontrolaWizualnaRaport
         {
             InitializeComponent();
             sqloperations = new SQLoperations(this, textBox1);
-            ActionOnCheck reDrawWasteLevel = new ActionOnCheck(Charting.DrawWasteLevel);
+            ActionOnCheck reDrawWasteLevel = new ActionOnCheck(WasteLevelTab.DrawWasteLevel);
             ActionOnCheck reDrawWasteReasons = new ActionOnCheck(Charting.DrawWasteReasonsCHart);
             CustomChecedListBoxStuff.SetUpListBox(tabPagePoziomOdpadu, checkedListBoxViWasteLevelSmtLines, reDrawWasteLevel);
             CustomChecedListBoxStuff.SetUpListBox(tabPagePrzyczynyOdpadu, checkedListBoxViWasteReasonsSmtLines, reDrawWasteReasons);
         }
 
         public delegate void ActionOnCheck();
-
         DataTable masterVITable = new DataTable();
         Dictionary<string, string> lotModelDictionary = new Dictionary<string, string>();
         Dictionary<string, string> planModelDictionary = new Dictionary<string, string>();
@@ -396,7 +395,7 @@ namespace KontrolaWizualnaRaport
 
         private void dateTimePickerWasteLevelBegin_ValueChanged(object sender, EventArgs e)
         {
-            Charting.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevel();
             
         }
 
@@ -424,7 +423,7 @@ namespace KontrolaWizualnaRaport
 
         private void dateTimePickerWasteLevelEnd_ValueChanged(object sender, EventArgs e)
         {
-            Charting.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevel();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -1449,7 +1448,7 @@ namespace KontrolaWizualnaRaport
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
-            Charting.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevel();
         }
 
         private void buttonSmtTraceOK_Click(object sender, EventArgs e)
@@ -1459,7 +1458,7 @@ namespace KontrolaWizualnaRaport
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            Charting.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevel();
         }
 
         private void dataGridViewReworkDailyReport_SelectionChanged_1(object sender, EventArgs e)

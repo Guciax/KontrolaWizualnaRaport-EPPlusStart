@@ -81,6 +81,18 @@ namespace KontrolaWizualnaRaport
             return result;
         }
 
+        public static dateShiftNo GetOrderOwningShift(DateTime start, DateTime end)
+        {
+            //if (start.Hour == 5)
+            //    ;
+            var startShiftInfo = whatDayShiftIsit(start);
+            var endShiftInfo = whatDayShiftIsit(end);
+            if (startShiftInfo.fixedDate == endShiftInfo.fixedDate) return startShiftInfo;
+
+            if ((endShiftInfo.fixedDate - start).TotalMinutes >= (end - endShiftInfo.fixedDate).TotalMinutes) return startShiftInfo;
+            return endShiftInfo;
+        }
+
         public class dateShiftNo
         {
             public DateTime fixedDate { get; set; }

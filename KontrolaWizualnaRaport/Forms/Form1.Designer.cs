@@ -480,6 +480,7 @@
             this.Column28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Wydajno = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column30 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -3123,6 +3124,7 @@
             this.Column28,
             this.Column33,
             this.Column29,
+            this.Wydajno,
             this.Column32,
             this.Column31,
             this.Column30});
@@ -5073,6 +5075,12 @@
             this.Column29.Name = "Column29";
             this.Column29.ReadOnly = true;
             // 
+            // Wydajno
+            // 
+            this.Wydajno.HeaderText = "Wydajność";
+            this.Wydajno.Name = "Wydajno";
+            this.Wydajno.ReadOnly = true;
+            // 
             // Column32
             // 
             this.Column32.HeaderText = "Linia";
@@ -5091,7 +5099,7 @@
             // 
             dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.Column30.DefaultCellStyle = dataGridViewCellStyle16;
-            this.Column30.HeaderText = "Wydajność";
+            this.Column30.HeaderText = "Wykonanie normy";
             this.Column30.Name = "Column30";
             this.Column30.ReadOnly = true;
             // 
@@ -5716,6 +5724,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column28;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column33;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column29;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Wydajno;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column32;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column31;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column30;

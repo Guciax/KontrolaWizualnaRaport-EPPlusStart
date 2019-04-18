@@ -256,6 +256,7 @@ namespace KontrolaWizualnaRaport
             var filteredOrders = new Dictionary<string, Dictionary<string, List<MST.MES.OrderStructureByOrderNo.OneOrderData>>>();
             var selectedLines = SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines;
 
+
             foreach (var lineEntry in DataContainer.VisualInspection.ngByLineThenDateKey)
             {
                 foreach (var dateEntry in lineEntry.Value)

@@ -65,12 +65,12 @@ namespace KontrolaWizualnaRaport
 
             var dictByDate = DataContainer.sqlDataByProcess.Smt.SelectMany(rec=>rec.Value.smtOrders).
                                                                 Where(order=>order.smtEndDate.Date >= SharedComponents.Smt.smtStartDate.Value & order.smtEndDate.Date <= SharedComponents.Smt.smtEndDate.Value).
-                                                                GroupBy(o => o.smtEndDate.Date).
+                                                                GroupBy(o => dateTools.GetOrderOwningShift(o.smtStartDate, o.smtEndDate).fixedDate.Date).
                                                                 ToDictionary(k => k.Key, v => v.ToList());
 
             foreach (var dayEntry in dictByDate)
             {
-                var dictByShift = dayEntry.Value.GroupBy(d => dateTools.whatDayShiftIsit(d.smtEndDate).shift).ToDictionary(x => x.Key, x => x.ToList());
+                var dictByShift = dayEntry.Value.GroupBy(d => dateTools.GetOrderOwningShift(d.smtStartDate, d.smtEndDate).shift).ToDictionary(x => x.Key, x => x.ToList());
                 result.Add(dayEntry.Key,new SortedDictionary<int, List<MST.MES.OrderStructureByOrderNo.SmtRecords>>(dictByShift));
             }
 

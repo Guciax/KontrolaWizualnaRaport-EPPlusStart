@@ -329,8 +329,9 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                                                              .Where(o => o.operatorSmt == operatorName)
                                                              .Where(o => o.smtStartDate.Date >= startDate & o.smtEndDate.Date <= endDate)
                                                              .Where(o => o.manufacturedQty > 0)
+                                                             .OrderByDescending(o=>o.smtEndDate)
                                                              .GroupBy(o => o.smtStartDate.Date)
-                                                             .ToDictionary(d => d.Key, o => o.ToList());
+                                                             .ToDictionary(day => day.Key, order => order.ToList());
 
                 foreach (var dayEntry in smtRecords)
                 {
@@ -357,7 +358,8 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                                       modelEntry.Select(o => o.smtEndDate).Max().ToShortTimeString(),
                                       $"{dur}",
                                       totalQuantity,
-                                      modelEntry.First().smtLine,
+                                      $"{Math.Round(totalQuantity/duration,0)} szt./h",
+                                      string.Join(", ", modelEntry.Select(m=>m.smtLine).Distinct().ToArray()),
                                       $"{norm.outputPerHour} szt/h",
                                       eff + " %");
                     }
