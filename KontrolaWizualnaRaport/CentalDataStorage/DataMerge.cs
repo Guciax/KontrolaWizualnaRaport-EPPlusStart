@@ -1,6 +1,7 @@
 ﻿using MST.MES;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,25 @@ namespace KontrolaWizualnaRaport.CentalDataStorage
                     }
 
                     DataContainer.sqlDataByOrder[smtEntry.Key].smt = smtEntry.Value;
+                }
+
+                //ordersTimeFlow
+
+                var grouppedByLine = DataContainer.sqlDataByProcess.Smt.SelectMany(o => o.Value.smtOrders)
+                                                                       .OrderBy(o => o.smtStartDate)
+                                                                       .GroupBy(o => o.smtLine)
+                                                                       .ToDictionary(l => l.Key, o => o.ToList());
+                foreach (var lineEntry in grouppedByLine)
+                {
+                    for (int i = 1; i < lineEntry.Value.Count; i++)
+                    {
+                        lineEntry.Value[i].previousOrder = lineEntry.Value[i - 1];
+                        if (i < lineEntry.Value.Count - 1) 
+                        {
+                            lineEntry.Value[i].nextOrder = lineEntry.Value[i + 1];
+                        }
+                        
+                    }
                 }
             }
 
@@ -112,24 +132,6 @@ namespace KontrolaWizualnaRaport.CentalDataStorage
             }
         }
 
-        private static void MergeSmt(Dictionary<string, SMT> newData)
-        {
-            foreach (var smtEntry in DataContainer.sqlDataByProcess.Smt)
-            {
-                if (!DataContainer.sqlDataByProcess.Kitting.ContainsKey(smtEntry.Key)) continue;
-                if (!DataContainer.sqlDataByOrder.ContainsKey(smtEntry.Key))
-                {
-                    DataContainer.sqlDataByOrder.Add(smtEntry.Key, new OneOrderData());
-                }
-
-                DataContainer.sqlDataByOrder[smtEntry.Key].smt = smtEntry.Value;
-            }
-        }
-
-        public static void AddData(object newData)
-        {
-
-        }
 
     }
 }

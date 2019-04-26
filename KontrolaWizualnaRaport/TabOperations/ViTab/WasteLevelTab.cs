@@ -23,18 +23,20 @@ namespace KontrolaWizualnaRaport.TabOperations.ViTab
         private static string[] MakeDateKeySortedCollection(DateTime startDate, DateTime endDate)
         {
             List<string> result = new List<string>();
+            DateTime localStartDate = startDate;
             do
             {
-                string dateKey = GetDateKey(startDate);
+                string dateKey = GetDateKey(localStartDate);
                 if (!result.Contains(dateKey))
                 {
                     result.Add(dateKey);
                 }
-                startDate.AddDays(1);
-            } while (startDate <= endDate);
+                localStartDate = localStartDate.AddDays(1);
+            } while (localStartDate <= endDate);
 
             return result.ToArray();
         }
+        
 
         private static string GetDateKey(DateTime inputDate)
         {
@@ -51,26 +53,19 @@ namespace KontrolaWizualnaRaport.TabOperations.ViTab
                 return inputDate.ToString("MMM").ToUpper();
             }
         }
-        public static void DrawWasteLevel()
+
+        private static Dictionary<string, Dictionary<string, wasteAndBoxing>> filterOrders(DateTime startDate, DateTime endDate, List<string> selectedLines)
         {
-            if (DataContainer.VisualInspection.ngByLineThenDateKey == null) return;
-
-            var selectedLines = SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines;
-            DateTime startDate = SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin.Value.Date;
-            DateTime endDate = SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelEnd.Value.Date;
-
-            
-
-            var filteredWasteAndBoxingKeyLineDate = new Dictionary<string, Dictionary<string, wasteAndBoxing>>();
+            Dictionary<string, Dictionary<string, wasteAndBoxing>> result = new Dictionary<string, Dictionary<string, wasteAndBoxing>>();
             string[] possibleDateKeys = MakeDateKeySortedCollection(startDate, endDate);
-            filteredWasteAndBoxingKeyLineDate.Add("Total", new Dictionary<string, wasteAndBoxing>());
-            
+            result.Add("Total", new Dictionary<string, wasteAndBoxing>());
+
             foreach (var smtLine in GlobalParameters.allLinesByHand)
             {
-                filteredWasteAndBoxingKeyLineDate.Add(smtLine, new Dictionary<string, wasteAndBoxing>());
+                result.Add(smtLine, new Dictionary<string, wasteAndBoxing>());
             }
 
-            foreach (var lineEntry in filteredWasteAndBoxingKeyLineDate)
+            foreach (var lineEntry in result)
             {
                 foreach (var dateKey in possibleDateKeys)
                 {
@@ -111,8 +106,8 @@ namespace KontrolaWizualnaRaport.TabOperations.ViTab
                     //    filteredWasteAndBoxingKeyLineDate["Total"].Add(dateKey, new wasteAndBoxing());
                     //}
 
-                    filteredWasteAndBoxingKeyLineDate[smtLine][dateKey].ngList.Add(ngInfo);
-                    filteredWasteAndBoxingKeyLineDate["Total"][dateKey].ngList.Add(ngInfo);
+                    result[smtLine][dateKey].ngList.Add(ngInfo);
+                    result["Total"][dateKey].ngList.Add(ngInfo);
                 }
 
                 foreach (var boxInfo in orderEntry.Value.ledsInBoxesList)
@@ -127,12 +122,23 @@ namespace KontrolaWizualnaRaport.TabOperations.ViTab
                     //    filteredWasteAndBoxingKeyLineDate["Total"].Add(dateKey, new wasteAndBoxing());
                     //}
 
-                    filteredWasteAndBoxingKeyLineDate[smtLine][dateKey].boxing.Add(boxInfo);
-                    filteredWasteAndBoxingKeyLineDate["Total"][dateKey].boxing.Add(boxInfo);
+                    result[smtLine][dateKey].boxing.Add(boxInfo);
+                    result["Total"][dateKey].boxing.Add(boxInfo);
                 }
             }
 
+            return result;
+        }
 
+        public static void DrawWasteLevelAndFillOutGrid()
+        {
+            if (DataContainer.VisualInspection.ngByLineThenDateKey == null) return;
+
+            var selectedLines = SharedComponents.VisualInspection.PoziomOdpaduTab.checkedListBoxViWasteLevelSmtLines.selectedLines;
+            DateTime startDate = SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin.Value.Date;
+            DateTime endDate = SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelEnd.Value.Date;
+
+            var filteredWasteAndBoxingKeyLineDate = filterOrders(startDate, endDate, selectedLines);
 
             Chart chart = SharedComponents.VisualInspection.PoziomOdpaduTab.chartWasteLevel;
 
@@ -175,7 +181,7 @@ namespace KontrolaWizualnaRaport.TabOperations.ViTab
             tagTemplate.Columns.Add("SCR");
             tagTemplate.Columns.Add("SCR_przyczyny");
 
-            if (filteredWasteAndBoxingKeyLineDate.Count() > 0)
+            if (filteredWasteAndBoxingKeyLineDate.Count() > 0) 
             {
                 foreach (var dateEntry in filteredWasteAndBoxingKeyLineDate["Total"])
                 {
@@ -188,9 +194,8 @@ namespace KontrolaWizualnaRaport.TabOperations.ViTab
 
                     foreach (var orderEntry in ngByOrder)
                     {
-
-                        ngCount += orderEntry.Value.Where(ng => ng.typeNgScrap == "ng").Count();
-                        scrCount += orderEntry.Value.Where(ng => ng.typeNgScrap == "scrap").Count();
+                        //ngCount += orderEntry.Value.Where(ng => ng.typeNgScrap == "ng").Count();
+                        //scrCount += orderEntry.Value.Where(ng => ng.typeNgScrap == "scrap").Count();
 
                         tagTable.Rows.Add(orderEntry.Key,
                             DataContainer.sqlDataByOrder[orderEntry.Key].kitting.modelId,

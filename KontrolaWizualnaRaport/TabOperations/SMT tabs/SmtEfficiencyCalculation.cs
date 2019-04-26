@@ -325,6 +325,7 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
             public static void ShowOperatorEfficiency(string operatorName, DateTime startDate, DateTime endDate, DataGridView grid)
             {
                 grid.Rows.Clear();
+
                 var smtRecords = DataContainer.sqlDataByOrder.SelectMany(o => o.Value.smt.smtOrders)
                                                              .Where(o => o.operatorSmt == operatorName)
                                                              .Where(o => o.smtStartDate.Date >= startDate & o.smtEndDate.Date <= endDate)
@@ -333,30 +334,48 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                                                              .GroupBy(o => o.smtStartDate.Date)
                                                              .ToDictionary(day => day.Key, order => order.ToList());
 
+                List<Tuple<double, double>> totalEffDuration = new List<Tuple<double, double>>();
+
                 foreach (var dayEntry in smtRecords)
                 {
                     var grouppedByModel = dayEntry.Value.OrderBy(o=>o.smtEndDate).GroupBy(o => o.orderInfo.modelId);
-                    grid.Rows.Add(dayEntry.Key.Date.ToString("dd-MM-yyyy"));
+                    grid.Rows.Add("", "", "", "", "", "", "", dayEntry.Key.Date.ToString("dd-MM-yyyy"));
                     dgvTools.SetRowColor(grid.Rows[grid.Rows.Count - 1], Color.LightSteelBlue);
                     int dayRow = grid.Rows.Count - 1;
                     List<Tuple<double, double>> effDuration = new List<Tuple<double, double>>();
                     foreach (var modelEntry in grouppedByModel)
                     {
+                        double changeOverDuration = (double)25 / 60;
+
+                        var firstOrder = modelEntry.OrderBy(o => o.smtStartDate).First();
+                        DateTime modelStartDate = modelEntry.Select(o => o.smtStartDate).Min();
+                        DateTime modelEndDate = modelEntry.Select(o => o.smtEndDate).Max();
+
+                        if(firstOrder.previousOrder != null)
+                        {
+                            if (firstOrder.orderInfo.modelId == firstOrder.previousOrder.orderInfo.modelId)
+                            {
+                                changeOverDuration = 0;
+                            }
+                        }
+                        
                         var duration = (modelEntry.Select(o => o.smtEndDate).Max() - modelEntry.Select(o => o.smtStartDate).Min()).TotalHours;
-                        if (duration > 0.5) duration -= 0.5;
+                        if (duration > changeOverDuration) duration -= changeOverDuration;
                         var totalQuantity = modelEntry.Select(o => o.manufacturedQty).Sum();
                         var norm = CalculateModelNormPerHour(modelEntry.Key, modelEntry.First().smtLine);
                         var eff = Math.Round(totalQuantity / duration / norm.outputPerHour * 100, 0);
                         effDuration.Add(new Tuple<double, double>(eff, duration));
+                        totalEffDuration.Add(new Tuple<double, double>(eff, duration));
                         string modelName = modelEntry.Key[2] == '-' ? modelEntry.Key : modelEntry.Key.Insert(4, " ").Insert(8, " ");
                         var dur = modelEntry.Select(o => o.smtEndDate).Max().Subtract(modelEntry.Select(o => o.smtStartDate).Min()).ToString((@"hh\:mm"));//.TotalMinutes;
                         //var hours = Math.Floor(dur / 60);
                         //var minutes = dur - hours * 60;
 
                         grid.Rows.Add(modelName,
-                                      modelEntry.Select(o => o.smtStartDate).Min().ToShortTimeString(),
-                                      modelEntry.Select(o => o.smtEndDate).Max().ToShortTimeString(),
+                                      modelStartDate.ToShortTimeString(),
+                                      modelEndDate.ToShortTimeString(),
                                       $"{dur}",
+                                      changeOverDuration>0?"25min":"-",
                                       totalQuantity,
                                       $"{Math.Round(totalQuantity/duration,0)} szt./h",
                                       string.Join(", ", modelEntry.Select(m=>m.smtLine).Distinct().ToArray()),
@@ -364,9 +383,15 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                                       eff + " %");
                     }
                     grid.Rows[dayRow].Cells[grid.Columns.Count - 1].Value = Math.Round(WeightedAverage(effDuration), 0) + " %";
+                    grid.Rows.Add();
+                    grid.Rows[grid.Rows.Count - 1].Height = 8;
                 }
-                dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCells);
 
+                grid.Rows.Insert(0);
+                grid.Rows[0].Height = 8;
+                grid.Rows.Insert(0, "", "", "", "", "", "", "", "Total:", Math.Round(WeightedAverage(totalEffDuration), 0) + " %");
+                dgvTools.SetRowColor(grid.Rows[0], Color.Black, Color.White);
+                dgvTools.ColumnsAutoSize(grid, DataGridViewAutoSizeColumnMode.AllCells);
             }
 
             private static double WeightedAverage(List<Tuple<double, double>> valueWeigth)

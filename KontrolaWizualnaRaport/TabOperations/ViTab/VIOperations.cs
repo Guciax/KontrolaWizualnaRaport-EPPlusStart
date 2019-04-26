@@ -99,7 +99,7 @@ namespace KontrolaWizualnaRaport
                 .Select(o => o.kitting.orderNo).Distinct().ToList();
 
             DataContainer.VisualInspection.ngByLineThenDateKey = grouppedByLineThenDate;
-            WasteLevelTab.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevelAndFillOutGrid();
             FillOutGridLatestLots();
         }
 

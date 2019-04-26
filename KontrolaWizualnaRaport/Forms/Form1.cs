@@ -34,7 +34,7 @@ namespace KontrolaWizualnaRaport
         {
             InitializeComponent();
             sqloperations = new SQLoperations(this, textBox1);
-            ActionOnCheck reDrawWasteLevel = new ActionOnCheck(WasteLevelTab.DrawWasteLevel);
+            ActionOnCheck reDrawWasteLevel = new ActionOnCheck(WasteLevelTab.DrawWasteLevelAndFillOutGrid);
             ActionOnCheck reDrawWasteReasons = new ActionOnCheck(Charting.DrawWasteReasonsCHart);
             CustomChecedListBoxStuff.SetUpListBox(tabPagePoziomOdpadu, checkedListBoxViWasteLevelSmtLines, reDrawWasteLevel);
             CustomChecedListBoxStuff.SetUpListBox(tabPagePrzyczynyOdpadu, checkedListBoxViWasteReasonsSmtLines, reDrawWasteReasons);
@@ -395,7 +395,7 @@ namespace KontrolaWizualnaRaport
 
         private void dateTimePickerWasteLevelBegin_ValueChanged(object sender, EventArgs e)
         {
-            WasteLevelTab.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevelAndFillOutGrid();
             
         }
 
@@ -423,7 +423,7 @@ namespace KontrolaWizualnaRaport
 
         private void dateTimePickerWasteLevelEnd_ValueChanged(object sender, EventArgs e)
         {
-            WasteLevelTab.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevelAndFillOutGrid();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -1448,7 +1448,7 @@ namespace KontrolaWizualnaRaport
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             string[] smtLines = checkedListBoxViWasteLevelSmtLines.CheckedItems.OfType<object>().Select(li => li.ToString()).ToArray();
-            WasteLevelTab.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevelAndFillOutGrid();
         }
 
         private void buttonSmtTraceOK_Click(object sender, EventArgs e)
@@ -1458,7 +1458,7 @@ namespace KontrolaWizualnaRaport
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            WasteLevelTab.DrawWasteLevel();
+            WasteLevelTab.DrawWasteLevelAndFillOutGrid();
         }
 
         private void dataGridViewReworkDailyReport_SelectionChanged_1(object sender, EventArgs e)
@@ -1828,6 +1828,19 @@ namespace KontrolaWizualnaRaport
                 SmtEfficiencyCalculation.NewWay.ShowOperatorEfficiency(cbSmtEfficiencyOperatorsList.Text, dtpSmtEfficiencyStart.Value.Date, dtpSmtEfficiencyEnd.Value.Date, dgvSmtEfficiencyOpertor);
             }
             else { MessageBox.Show("Brak uprawnień"); }
+        }
+
+        private void dgvSmtEfficiencyOpertor_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex >= 0 & e.ColumnIndex >= 0)
+            {
+                DataGridViewCell cell = dgvSmtEfficiencyOpertor.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    if (cell.Style.BackColor == Color.Black || cell.Style.BackColor == Color.LightSteelBlue || cell.Value == null)
+                    {
+                        e.AdvancedBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None;
+                        e.AdvancedBorderStyle.Left = DataGridViewAdvancedCellBorderStyle.None;
+                    }
+            }
         }
     }
 }

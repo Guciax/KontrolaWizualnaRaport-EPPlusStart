@@ -61,15 +61,15 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
         private static int GetTestOutputPerHour(MST.MES.Data_structures.DevToolsModelStructure model)
         {
             var pcbDimensions = MST.MES.Data_structures.DevTools.DevToolsModelsOperations.GetMPcbimensions(model);
-
             if (model.name.ToUpper().StartsWith("LIN"))
             {
-                if (pcbDimensions.Item1 < 615) return 120;
+                if (pcbDimensions.Item1 <= 610) return 120;
                 return 80;
             }
             if (model.name.ToUpper().StartsWith("REC"))
             {
-                return 120;
+                if (pcbDimensions.Item1 < 355) return 120;
+                return 80;
             }
             if (model.name.ToUpper().StartsWith("RD"))
             {
@@ -85,7 +85,5 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
 
             return 120;
         }
-
-
     }
 }
