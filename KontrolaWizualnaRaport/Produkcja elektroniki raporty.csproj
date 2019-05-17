@@ -87,6 +87,13 @@
     <Compile Include="TabOperations\Grafik\shiftStructure.cs" />
     <Compile Include="TabOperations\Grafik\ShowData.cs" />
     <Compile Include="TabOperations\Grafik\WorkerShiftStructure.cs" />
+    <Compile Include="TabOperations\Kitting\OrdersHistory.cs" />
+    <Compile Include="TabOperations\Kitting\ShowHistoryDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TabOperations\Kitting\ShowHistoryDetails.Designer.cs">
+      <DependentUpon>ShowHistoryDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="TabOperations\RunningMstOrders\ImageProgressBar.cs" />
     <Compile Include="TabOperations\RunningMstOrders\OrdersStatus.cs" />
     <Compile Include="TabOperations\SMT tabs\ChangeOversOperations.cs" />
@@ -115,7 +122,7 @@
     <Compile Include="Forms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="TabOperations\KittingOperations.cs" />
+    <Compile Include="TabOperations\Kitting\KittingOperations.cs" />
     <Compile Include="Forms\LedWasteDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +156,7 @@
     <Compile Include="SQLoperations.cs" />
     <Compile Include="TabOperations\Test\TestOperations.cs" />
     <Compile Include="TabOperations\ViTab\VIOperations.cs" />
+    <Compile Include="TabOperations\ViTab\ViResultVsReworkResult.cs" />
     <Compile Include="TabOperations\ViTab\WasteLevelTab.cs" />
     <Compile Include="wastePerReasonStructure.cs" />
     <Compile Include="Forms\WasteReasonDetails.cs">
@@ -193,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\WasteReasonDetails.resx">
       <DependentUpon>WasteReasonDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabOperations\Kitting\ShowHistoryDetails.resx">
+      <DependentUpon>ShowHistoryDetails.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />

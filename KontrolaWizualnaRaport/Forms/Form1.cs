@@ -2,6 +2,7 @@
 using KontrolaWizualnaRaport.Forms;
 using KontrolaWizualnaRaport.TabOperations;
 using KontrolaWizualnaRaport.TabOperations.Grafik;
+using KontrolaWizualnaRaport.TabOperations.Kitting;
 using KontrolaWizualnaRaport.TabOperations.SMT_tabs;
 using KontrolaWizualnaRaport.TabOperations.Test;
 using KontrolaWizualnaRaport.TabOperations.ViTab;
@@ -105,8 +106,6 @@ namespace KontrolaWizualnaRaport
             bwDevTools.DoWork += BwDevTools_DoWork;
             bwDevTools.RunWorkerCompleted += BwDevTools_RunWorkerCompleted;
             bwDevTools.RunWorkerAsync();
-
-            
         }
 
         private void BwDevTools_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -192,8 +191,9 @@ namespace KontrolaWizualnaRaport
             SharedComponents.VisualInspection.AnalizaPoModelu.chartModelLevel = chartModelLevel;
             SharedComponents.VisualInspection.AnalizaPoModelu.chartModelReasonsScrap = chartModelReasonsScrap;
             SharedComponents.VisualInspection.AnalizaPoModelu.chartModelReasonsNg = chartModelReasonsNg;
-            
-            
+            SharedComponents.VisualInspection.KontrolaWizualnaAnalizaOcen.dataGridViewViResultVeReworkResult = dataGridViewViResultVeReworkResult;
+
+
 
             SharedComponents.Boxing.cbLg = cbLg; 
             SharedComponents.Boxing.cbMst = cbMst;
@@ -233,7 +233,7 @@ namespace KontrolaWizualnaRaport
             (sender as BackgroundWorker).ReportProgress(0, "Pobieranie danych SMT");
             DataContainer.sqlDataByProcess.Smt = MST.MES.SqlDataReaderMethods.SMT.GetOrdersDateToDate(DateTime.Now.AddYears(-5), dateTimePickerTestEnd.Value.Date);
             (sender as BackgroundWorker).ReportProgress(0, "Pobieranie danych Kontrola wzrokowa");
-            DataContainer.sqlDataByProcess.VisualInspection = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecordsForTimePerdiod(SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin.Value, SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelEnd.Value);
+            DataContainer.sqlDataByProcess.VisualInspection = MST.MES.SqlDataReaderMethods.VisualInspection.GetViRecordsForTimePerdiod(SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelBegin.Value.AddDays(-500), SharedComponents.VisualInspection.PoziomOdpaduTab.dateTimePickerWasteLevelEnd.Value);
             (sender as BackgroundWorker).ReportProgress(0, "Pobieranie danych Testowanie");
             DataContainer.sqlDataByProcess.Test = MST.MES.SqlDataReaderMethods.LedTest.GetTestRecords(30, MST.MES.SqlDataReaderMethods.LedTest.TesterIdToName());
             //sqlDataByProcess.Rework = MST.MES.SqlDataReaderMethods.LedRework.GetReworkList(90);
@@ -1207,40 +1207,6 @@ namespace KontrolaWizualnaRaport
             }
         }
 
-        
-        
-        
-
-        private void checkedListBoxViReasons_MouseEnter(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void checkedListBoxViReasons_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkedListBoxViReasons_MouseLeave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridViewMstOrders_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
-        {
-            if (dataGridViewMstOrders.Rows.Count > 0)
-                { 
-            foreach (DataGridViewRow row in dataGridViewMstOrders.Rows)
-                {
-                    if (row.Cells["Kontrola wzrokowa"].Value.ToString() == "NIE")
-                    {
-                        row.Cells["Kontrola wzrokowa"].Style.BackColor = Color.Red;
-                        row.Cells["Kontrola wzrokowa"].Style.ForeColor = Color.White;
-                    }
-                }
-                dataGridViewMstOrders.FirstDisplayedCell = dataGridViewMstOrders.Rows[dataGridViewMstOrders.Rows.Count - 1].Cells[0];
-            }
-        }
 
         private void cBListViReasonAnalysesSmtLines_MouseEnter(object sender, EventArgs e)
         {
@@ -1840,6 +1806,26 @@ namespace KontrolaWizualnaRaport
                         e.AdvancedBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None;
                         e.AdvancedBorderStyle.Left = DataGridViewAdvancedCellBorderStyle.None;
                     }
+            }
+        }
+
+        private void bOrdersHistory_Click(object sender, EventArgs e)
+        {
+            OrdersHistory.FillOutGrid(dgvOrdersHistory, chBOrdersHistoryMst.Checked, chBOrdersHistoryLg.Checked, (int)numOrdersHistoryLastDays.Value);
+        }
+
+        private void dgvOrdersHistory_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.RowIndex>-1 & e.ColumnIndex > -1)
+            {
+                DataGridViewCell cell = dgvOrdersHistory.Rows[e.RowIndex].Cells[0];
+                if (cell.Tag != null)
+                {
+                    List<MST.MES.OrderStructureByOrderNo.Kitting> ordersList = (List<MST.MES.OrderStructureByOrderNo.Kitting>)cell.Tag;
+                    ShowHistoryDetails detailsForm = new ShowHistoryDetails(ordersList);
+                    detailsForm.Text = $"{dgvOrdersHistory.Rows[e.RowIndex].Cells[0].Value} - {dgvOrdersHistory.Rows[e.RowIndex].Cells[1].Value}";
+                    detailsForm.ShowDialog();
+                }
             }
         }
     }

@@ -81,6 +81,14 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea14 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend14 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea15 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend15 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -96,14 +104,6 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea18 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend17 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series18 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
             this.comboBoxViOperatorsCapa = new System.Windows.Forms.ComboBox();
             this.chartEfficiency = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -147,7 +147,6 @@
             this.NGRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SCR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SCRRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel43 = new System.Windows.Forms.Panel();
             this.checkBoxEnableZoom = new System.Windows.Forms.CheckBox();
             this.vScrollBarZoomChart = new System.Windows.Forms.VScrollBar();
@@ -215,7 +214,7 @@
             this.chartNgTypesForOneOperator = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartNgRateForOneOperator = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage22 = new System.Windows.Forms.TabPage();
-            this.dataGridViewMstOrders = new System.Windows.Forms.DataGridView();
+            this.dataGridViewViResultVeReworkResult = new System.Windows.Forms.DataGridView();
             this.panel38 = new System.Windows.Forms.Panel();
             this.tabPage29 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
@@ -266,6 +265,11 @@
             this.label38 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPage13 = new System.Windows.Forms.TabPage();
+            this.tabControl4 = new System.Windows.Forms.TabControl();
+            this.tabPage24 = new System.Windows.Forms.TabPage();
+            this.panel23 = new System.Windows.Forms.Panel();
+            this.checkBoxKittingLg = new System.Windows.Forms.CheckBox();
+            this.checkBoxKittingMst = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.panel42 = new System.Windows.Forms.Panel();
             this.comboBoxKittingModels = new System.Windows.Forms.ComboBox();
@@ -282,11 +286,23 @@
             this.panel10 = new System.Windows.Forms.Panel();
             this.label28 = new System.Windows.Forms.Label();
             this.dataGridViewKittingHistory = new System.Windows.Forms.DataGridView();
+            this.tabPage32 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvOrdersHistory = new System.Windows.Forms.DataGridView();
+            this.Column34 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column35 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column36 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column37 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column38 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel54 = new System.Windows.Forms.Panel();
+            this.bOrdersHistory = new System.Windows.Forms.Button();
+            this.label47 = new System.Windows.Forms.Label();
+            this.label46 = new System.Windows.Forms.Label();
+            this.numOrdersHistoryLastDays = new System.Windows.Forms.NumericUpDown();
+            this.chBOrdersHistoryLg = new System.Windows.Forms.CheckBox();
+            this.chBOrdersHistoryMst = new System.Windows.Forms.CheckBox();
             this.panel22 = new System.Windows.Forms.Panel();
             this.labelKittingSelectedSum = new System.Windows.Forms.Label();
-            this.panel23 = new System.Windows.Forms.Panel();
-            this.checkBoxKittingLg = new System.Windows.Forms.CheckBox();
-            this.checkBoxKittingMst = new System.Windows.Forms.CheckBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage10 = new System.Windows.Forms.TabPage();
@@ -309,6 +325,16 @@
             this.lbSmtEfficiencyModelsList = new System.Windows.Forms.ListBox();
             this.panel52 = new System.Windows.Forms.Panel();
             this.dgvSmtEfficiencyOpertor = new System.Windows.Forms.DataGridView();
+            this.Column26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colChangeOver = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Wydajno = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column30 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel53 = new System.Windows.Forms.Panel();
             this.label45 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
@@ -340,18 +366,18 @@
             this.tabPage20 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.dataGridViewSmtLedDropped = new System.Windows.Forms.DataGridView();
             this.panel30 = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
-            this.dataGridViewSmtLedDropped = new System.Windows.Forms.DataGridView();
             this.dataGridViewSmtLedWasteTotalPerLine = new System.Windows.Forms.DataGridView();
             this.panel34 = new System.Windows.Forms.Panel();
             this.comboBoxSmtLedWasteModels = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.dataGridViewSmtLedWasteByModel = new System.Windows.Forms.DataGridView();
             this.panel33 = new System.Windows.Forms.Panel();
             this.label14 = new System.Windows.Forms.Label();
             this.comboBoxSmtLedWasteLine = new System.Windows.Forms.ComboBox();
-            this.dataGridViewSmtLedWasteByModel = new System.Windows.Forms.DataGridView();
             this.dataGridViewSmtWasteTotal = new System.Windows.Forms.DataGridView();
             this.panel32 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
@@ -476,16 +502,7 @@
             this.timerBoxLoadDone = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.bckWorkerStartLoadUp = new System.ComponentModel.BackgroundWorker();
-            this.Column26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colChangeOver = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Wydajno = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column30 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.chartEfficiency)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -509,7 +526,6 @@
             this.contextMenuStripPrintPoziomOdpadu.SuspendLayout();
             this.panel27.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWasteLevel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel43.SuspendLayout();
             this.panel5.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -547,7 +563,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartNgTypesForOneOperator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartNgRateForOneOperator)).BeginInit();
             this.tabPage22.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMstOrders)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewViResultVeReworkResult)).BeginInit();
             this.tabPage29.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReworkDailyReport)).BeginInit();
@@ -574,6 +590,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOrdersStatus)).BeginInit();
             this.panel48.SuspendLayout();
             this.tabPage13.SuspendLayout();
+            this.tabControl4.SuspendLayout();
+            this.tabPage24.SuspendLayout();
+            this.panel23.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
             this.panel42.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKittingReadyLots)).BeginInit();
@@ -581,8 +600,12 @@
             this.panel7.SuspendLayout();
             this.panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKittingHistory)).BeginInit();
+            this.tabPage32.SuspendLayout();
+            this.tableLayoutPanel20.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOrdersHistory)).BeginInit();
+            this.panel54.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numOrdersHistoryLastDays)).BeginInit();
             this.panel22.SuspendLayout();
-            this.panel23.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPage10.SuspendLayout();
@@ -618,16 +641,16 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.panel30.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedDropped)).BeginInit();
+            this.panel30.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteTotalPerLine)).BeginInit();
             this.panel34.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
-            this.panel33.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteByModel)).BeginInit();
+            this.panel33.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtWasteTotal)).BeginInit();
             this.panel32.SuspendLayout();
             this.panel31.SuspendLayout();
@@ -672,6 +695,7 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrafik)).BeginInit();
             this.panel17.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBoxViOperatorsCapa
@@ -1176,16 +1200,6 @@
             this.SCRRate.DefaultCellStyle = dataGridViewCellStyle5;
             this.SCRRate.HeaderText = "SCR%";
             this.SCRRate.Name = "SCRRate";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pictureBox1.Image = global::KontrolaWizualnaRaport.Properties.Resources.wasteChartLegend;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 426);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(221, 95);
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
             // 
             // panel43
             // 
@@ -2020,27 +2034,26 @@
             // 
             // tabPage22
             // 
-            this.tabPage22.Controls.Add(this.dataGridViewMstOrders);
+            this.tabPage22.Controls.Add(this.dataGridViewViResultVeReworkResult);
             this.tabPage22.Controls.Add(this.panel38);
             this.tabPage22.Location = new System.Drawing.Point(4, 22);
             this.tabPage22.Name = "tabPage22";
             this.tabPage22.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage22.Size = new System.Drawing.Size(1381, 560);
             this.tabPage22.TabIndex = 8;
-            this.tabPage22.Text = "Zlecenia MST";
+            this.tabPage22.Text = "Kontrola wizualna analiza oceny";
             this.tabPage22.UseVisualStyleBackColor = true;
             // 
-            // dataGridViewMstOrders
+            // dataGridViewViResultVeReworkResult
             // 
-            this.dataGridViewMstOrders.AllowUserToAddRows = false;
-            this.dataGridViewMstOrders.AllowUserToDeleteRows = false;
-            this.dataGridViewMstOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewMstOrders.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewMstOrders.Location = new System.Drawing.Point(3, 38);
-            this.dataGridViewMstOrders.Name = "dataGridViewMstOrders";
-            this.dataGridViewMstOrders.Size = new System.Drawing.Size(1375, 519);
-            this.dataGridViewMstOrders.TabIndex = 1;
-            this.dataGridViewMstOrders.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridViewMstOrders_DataBindingComplete);
+            this.dataGridViewViResultVeReworkResult.AllowUserToAddRows = false;
+            this.dataGridViewViResultVeReworkResult.AllowUserToDeleteRows = false;
+            this.dataGridViewViResultVeReworkResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewViResultVeReworkResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewViResultVeReworkResult.Location = new System.Drawing.Point(3, 38);
+            this.dataGridViewViResultVeReworkResult.Name = "dataGridViewViResultVeReworkResult";
+            this.dataGridViewViResultVeReworkResult.Size = new System.Drawing.Size(1375, 519);
+            this.dataGridViewViResultVeReworkResult.TabIndex = 1;
             // 
             // panel38
             // 
@@ -2257,7 +2270,7 @@
             // radioButton7
             // 
             this.radioButton7.AutoSize = true;
-            this.radioButton7.Location = new System.Drawing.Point(526, 8);
+            this.radioButton7.Location = new System.Drawing.Point(90, 9);
             this.radioButton7.Name = "radioButton7";
             this.radioButton7.Size = new System.Drawing.Size(83, 17);
             this.radioButton7.TabIndex = 1;
@@ -2268,7 +2281,7 @@
             // 
             this.radioButtonReworkVsNgDaily.AutoSize = true;
             this.radioButtonReworkVsNgDaily.Checked = true;
-            this.radioButtonReworkVsNgDaily.Location = new System.Drawing.Point(448, 8);
+            this.radioButtonReworkVsNgDaily.Location = new System.Drawing.Point(12, 9);
             this.radioButtonReworkVsNgDaily.Name = "radioButtonReworkVsNgDaily";
             this.radioButtonReworkVsNgDaily.Size = new System.Drawing.Size(66, 17);
             this.radioButtonReworkVsNgDaily.TabIndex = 0;
@@ -2634,9 +2647,8 @@
             // 
             // tabPage13
             // 
-            this.tabPage13.Controls.Add(this.tableLayoutPanel9);
+            this.tabPage13.Controls.Add(this.tabControl4);
             this.tabPage13.Controls.Add(this.panel22);
-            this.tabPage13.Controls.Add(this.panel23);
             this.tabPage13.Location = new System.Drawing.Point(4, 25);
             this.tabPage13.Name = "tabPage13";
             this.tabPage13.Padding = new System.Windows.Forms.Padding(3);
@@ -2644,6 +2656,63 @@
             this.tabPage13.TabIndex = 2;
             this.tabPage13.Text = "KITTING";
             this.tabPage13.UseVisualStyleBackColor = true;
+            // 
+            // tabControl4
+            // 
+            this.tabControl4.Controls.Add(this.tabPage24);
+            this.tabControl4.Controls.Add(this.tabPage32);
+            this.tabControl4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl4.Location = new System.Drawing.Point(3, 3);
+            this.tabControl4.Name = "tabControl4";
+            this.tabControl4.SelectedIndex = 0;
+            this.tabControl4.Size = new System.Drawing.Size(1389, 558);
+            this.tabControl4.TabIndex = 4;
+            // 
+            // tabPage24
+            // 
+            this.tabPage24.Controls.Add(this.panel23);
+            this.tabPage24.Controls.Add(this.tableLayoutPanel9);
+            this.tabPage24.Location = new System.Drawing.Point(4, 22);
+            this.tabPage24.Name = "tabPage24";
+            this.tabPage24.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage24.Size = new System.Drawing.Size(1381, 532);
+            this.tabPage24.TabIndex = 0;
+            this.tabPage24.Text = "tabPage24";
+            this.tabPage24.UseVisualStyleBackColor = true;
+            // 
+            // panel23
+            // 
+            this.panel23.Controls.Add(this.checkBoxKittingLg);
+            this.panel23.Controls.Add(this.checkBoxKittingMst);
+            this.panel23.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel23.Location = new System.Drawing.Point(3, 3);
+            this.panel23.Name = "panel23";
+            this.panel23.Size = new System.Drawing.Size(1375, 39);
+            this.panel23.TabIndex = 3;
+            // 
+            // checkBoxKittingLg
+            // 
+            this.checkBoxKittingLg.AutoSize = true;
+            this.checkBoxKittingLg.Checked = true;
+            this.checkBoxKittingLg.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxKittingLg.Location = new System.Drawing.Point(64, 11);
+            this.checkBoxKittingLg.Name = "checkBoxKittingLg";
+            this.checkBoxKittingLg.Size = new System.Drawing.Size(40, 17);
+            this.checkBoxKittingLg.TabIndex = 1;
+            this.checkBoxKittingLg.Text = "LG";
+            this.checkBoxKittingLg.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxKittingMst
+            // 
+            this.checkBoxKittingMst.AutoSize = true;
+            this.checkBoxKittingMst.Checked = true;
+            this.checkBoxKittingMst.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxKittingMst.Location = new System.Drawing.Point(9, 11);
+            this.checkBoxKittingMst.Name = "checkBoxKittingMst";
+            this.checkBoxKittingMst.Size = new System.Drawing.Size(49, 17);
+            this.checkBoxKittingMst.TabIndex = 0;
+            this.checkBoxKittingMst.Text = "MST";
+            this.checkBoxKittingMst.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel9
             // 
@@ -2658,12 +2727,12 @@
             this.tableLayoutPanel9.Controls.Add(this.panel10, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.dataGridViewKittingHistory, 2, 1);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 42);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 2;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(1389, 519);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1375, 526);
             this.tableLayoutPanel9.TabIndex = 2;
             // 
             // panel42
@@ -2671,9 +2740,9 @@
             this.panel42.Controls.Add(this.comboBoxKittingModels);
             this.panel42.Controls.Add(this.label8);
             this.panel42.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel42.Location = new System.Drawing.Point(929, 3);
+            this.panel42.Location = new System.Drawing.Point(919, 3);
             this.panel42.Name = "panel42";
-            this.panel42.Size = new System.Drawing.Size(457, 29);
+            this.panel42.Size = new System.Drawing.Size(453, 29);
             this.panel42.TabIndex = 5;
             // 
             // comboBoxKittingModels
@@ -2701,10 +2770,10 @@
             this.dataGridViewKittingReadyLots.AllowUserToResizeRows = false;
             this.dataGridViewKittingReadyLots.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewKittingReadyLots.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewKittingReadyLots.Location = new System.Drawing.Point(466, 38);
+            this.dataGridViewKittingReadyLots.Location = new System.Drawing.Point(461, 38);
             this.dataGridViewKittingReadyLots.Name = "dataGridViewKittingReadyLots";
             this.dataGridViewKittingReadyLots.ReadOnly = true;
-            this.dataGridViewKittingReadyLots.Size = new System.Drawing.Size(457, 478);
+            this.dataGridViewKittingReadyLots.Size = new System.Drawing.Size(452, 485);
             this.dataGridViewKittingReadyLots.TabIndex = 1;
             this.dataGridViewKittingReadyLots.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKittingReadyLots_CellDoubleClick);
             // 
@@ -2724,7 +2793,7 @@
             this.dataGridViewKitting.Name = "dataGridViewKitting";
             this.dataGridViewKitting.ReadOnly = true;
             this.dataGridViewKitting.RowHeadersVisible = false;
-            this.dataGridViewKitting.Size = new System.Drawing.Size(457, 478);
+            this.dataGridViewKitting.Size = new System.Drawing.Size(452, 485);
             this.dataGridViewKitting.TabIndex = 0;
             this.dataGridViewKitting.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewKitting_CellDoubleClick);
             this.dataGridViewKitting.SelectionChanged += new System.EventHandler(this.dataGridViewKitting_SelectionChanged);
@@ -2763,9 +2832,9 @@
             // 
             this.panel7.Controls.Add(this.label29);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel7.Location = new System.Drawing.Point(466, 3);
+            this.panel7.Location = new System.Drawing.Point(461, 3);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(457, 29);
+            this.panel7.Size = new System.Drawing.Size(452, 29);
             this.panel7.TabIndex = 2;
             // 
             // label29
@@ -2783,7 +2852,7 @@
             this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel10.Location = new System.Drawing.Point(3, 3);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(457, 29);
+            this.panel10.Size = new System.Drawing.Size(452, 29);
             this.panel10.TabIndex = 3;
             // 
             // label28
@@ -2799,10 +2868,176 @@
             // 
             this.dataGridViewKittingHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewKittingHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewKittingHistory.Location = new System.Drawing.Point(929, 38);
+            this.dataGridViewKittingHistory.Location = new System.Drawing.Point(919, 38);
             this.dataGridViewKittingHistory.Name = "dataGridViewKittingHistory";
-            this.dataGridViewKittingHistory.Size = new System.Drawing.Size(457, 478);
+            this.dataGridViewKittingHistory.Size = new System.Drawing.Size(453, 485);
             this.dataGridViewKittingHistory.TabIndex = 4;
+            // 
+            // tabPage32
+            // 
+            this.tabPage32.Controls.Add(this.tableLayoutPanel20);
+            this.tabPage32.Controls.Add(this.panel54);
+            this.tabPage32.Location = new System.Drawing.Point(4, 22);
+            this.tabPage32.Name = "tabPage32";
+            this.tabPage32.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage32.Size = new System.Drawing.Size(1381, 532);
+            this.tabPage32.TabIndex = 1;
+            this.tabPage32.Text = "Historia";
+            this.tabPage32.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel20
+            // 
+            this.tableLayoutPanel20.ColumnCount = 2;
+            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel20.Controls.Add(this.dgvOrdersHistory, 0, 0);
+            this.tableLayoutPanel20.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel20.Location = new System.Drawing.Point(3, 42);
+            this.tableLayoutPanel20.Name = "tableLayoutPanel20";
+            this.tableLayoutPanel20.RowCount = 1;
+            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 487F));
+            this.tableLayoutPanel20.Size = new System.Drawing.Size(1375, 487);
+            this.tableLayoutPanel20.TabIndex = 5;
+            // 
+            // dgvOrdersHistory
+            // 
+            this.dgvOrdersHistory.AllowUserToAddRows = false;
+            this.dgvOrdersHistory.AllowUserToDeleteRows = false;
+            this.dgvOrdersHistory.AllowUserToResizeColumns = false;
+            this.dgvOrdersHistory.AllowUserToResizeRows = false;
+            this.dgvOrdersHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvOrdersHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column34,
+            this.Column35,
+            this.Column36,
+            this.Column37,
+            this.Column38});
+            this.dgvOrdersHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvOrdersHistory.Location = new System.Drawing.Point(3, 3);
+            this.dgvOrdersHistory.Name = "dgvOrdersHistory";
+            this.dgvOrdersHistory.ReadOnly = true;
+            this.dgvOrdersHistory.Size = new System.Drawing.Size(681, 481);
+            this.dgvOrdersHistory.TabIndex = 0;
+            this.dgvOrdersHistory.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrdersHistory_CellDoubleClick);
+            // 
+            // Column34
+            // 
+            this.Column34.HeaderText = "Model ID";
+            this.Column34.Name = "Column34";
+            this.Column34.ReadOnly = true;
+            // 
+            // Column35
+            // 
+            this.Column35.HeaderText = "Nazwa";
+            this.Column35.Name = "Column35";
+            this.Column35.ReadOnly = true;
+            // 
+            // Column36
+            // 
+            this.Column36.HeaderText = "Ilość zleceń";
+            this.Column36.Name = "Column36";
+            this.Column36.ReadOnly = true;
+            // 
+            // Column37
+            // 
+            this.Column37.HeaderText = "Ilość wyrobów";
+            this.Column37.Name = "Column37";
+            this.Column37.ReadOnly = true;
+            // 
+            // Column38
+            // 
+            this.Column38.HeaderText = "MB";
+            this.Column38.Name = "Column38";
+            this.Column38.ReadOnly = true;
+            // 
+            // panel54
+            // 
+            this.panel54.Controls.Add(this.bOrdersHistory);
+            this.panel54.Controls.Add(this.label47);
+            this.panel54.Controls.Add(this.label46);
+            this.panel54.Controls.Add(this.numOrdersHistoryLastDays);
+            this.panel54.Controls.Add(this.chBOrdersHistoryLg);
+            this.panel54.Controls.Add(this.chBOrdersHistoryMst);
+            this.panel54.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel54.Location = new System.Drawing.Point(3, 3);
+            this.panel54.Name = "panel54";
+            this.panel54.Size = new System.Drawing.Size(1375, 39);
+            this.panel54.TabIndex = 4;
+            // 
+            // bOrdersHistory
+            // 
+            this.bOrdersHistory.Location = new System.Drawing.Point(351, 7);
+            this.bOrdersHistory.Name = "bOrdersHistory";
+            this.bOrdersHistory.Size = new System.Drawing.Size(75, 23);
+            this.bOrdersHistory.TabIndex = 5;
+            this.bOrdersHistory.Text = "Odśwież";
+            this.bOrdersHistory.UseVisualStyleBackColor = true;
+            this.bOrdersHistory.Click += new System.EventHandler(this.bOrdersHistory_Click);
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(310, 13);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(21, 13);
+            this.label47.TabIndex = 4;
+            this.label47.Text = "dni";
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(148, 13);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(96, 13);
+            this.label46.TabIndex = 3;
+            this.label46.Text = "Historia z ostatnich";
+            // 
+            // numOrdersHistoryLastDays
+            // 
+            this.numOrdersHistoryLastDays.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numOrdersHistoryLastDays.Location = new System.Drawing.Point(250, 11);
+            this.numOrdersHistoryLastDays.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numOrdersHistoryLastDays.Name = "numOrdersHistoryLastDays";
+            this.numOrdersHistoryLastDays.Size = new System.Drawing.Size(54, 20);
+            this.numOrdersHistoryLastDays.TabIndex = 2;
+            this.numOrdersHistoryLastDays.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
+            // chBOrdersHistoryLg
+            // 
+            this.chBOrdersHistoryLg.AutoSize = true;
+            this.chBOrdersHistoryLg.Checked = true;
+            this.chBOrdersHistoryLg.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chBOrdersHistoryLg.Location = new System.Drawing.Point(64, 11);
+            this.chBOrdersHistoryLg.Name = "chBOrdersHistoryLg";
+            this.chBOrdersHistoryLg.Size = new System.Drawing.Size(40, 17);
+            this.chBOrdersHistoryLg.TabIndex = 1;
+            this.chBOrdersHistoryLg.Text = "LG";
+            this.chBOrdersHistoryLg.UseVisualStyleBackColor = true;
+            // 
+            // chBOrdersHistoryMst
+            // 
+            this.chBOrdersHistoryMst.AutoSize = true;
+            this.chBOrdersHistoryMst.Checked = true;
+            this.chBOrdersHistoryMst.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chBOrdersHistoryMst.Location = new System.Drawing.Point(9, 11);
+            this.chBOrdersHistoryMst.Name = "chBOrdersHistoryMst";
+            this.chBOrdersHistoryMst.Size = new System.Drawing.Size(49, 17);
+            this.chBOrdersHistoryMst.TabIndex = 0;
+            this.chBOrdersHistoryMst.Text = "MST";
+            this.chBOrdersHistoryMst.UseVisualStyleBackColor = true;
             // 
             // panel22
             // 
@@ -2823,40 +3058,6 @@
             this.labelKittingSelectedSum.TabIndex = 0;
             this.labelKittingSelectedSum.Text = "Suma zaznaczonych: ";
             this.labelKittingSelectedSum.MouseClick += new System.Windows.Forms.MouseEventHandler(this.labelKittingSelectedSum_MouseClick);
-            // 
-            // panel23
-            // 
-            this.panel23.Controls.Add(this.checkBoxKittingLg);
-            this.panel23.Controls.Add(this.checkBoxKittingMst);
-            this.panel23.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel23.Location = new System.Drawing.Point(3, 3);
-            this.panel23.Name = "panel23";
-            this.panel23.Size = new System.Drawing.Size(1389, 39);
-            this.panel23.TabIndex = 3;
-            // 
-            // checkBoxKittingLg
-            // 
-            this.checkBoxKittingLg.AutoSize = true;
-            this.checkBoxKittingLg.Checked = true;
-            this.checkBoxKittingLg.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxKittingLg.Location = new System.Drawing.Point(64, 11);
-            this.checkBoxKittingLg.Name = "checkBoxKittingLg";
-            this.checkBoxKittingLg.Size = new System.Drawing.Size(40, 17);
-            this.checkBoxKittingLg.TabIndex = 1;
-            this.checkBoxKittingLg.Text = "LG";
-            this.checkBoxKittingLg.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxKittingMst
-            // 
-            this.checkBoxKittingMst.AutoSize = true;
-            this.checkBoxKittingMst.Checked = true;
-            this.checkBoxKittingMst.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxKittingMst.Location = new System.Drawing.Point(9, 11);
-            this.checkBoxKittingMst.Name = "checkBoxKittingMst";
-            this.checkBoxKittingMst.Size = new System.Drawing.Size(49, 17);
-            this.checkBoxKittingMst.TabIndex = 0;
-            this.checkBoxKittingMst.Text = "MST";
-            this.checkBoxKittingMst.UseVisualStyleBackColor = true;
             // 
             // tabPage9
             // 
@@ -3139,6 +3340,82 @@
             this.dgvSmtEfficiencyOpertor.Size = new System.Drawing.Size(925, 493);
             this.dgvSmtEfficiencyOpertor.TabIndex = 4;
             this.dgvSmtEfficiencyOpertor.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvSmtEfficiencyOpertor_CellPainting);
+            // 
+            // Column26
+            // 
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column26.DefaultCellStyle = dataGridViewCellStyle10;
+            this.Column26.HeaderText = "Model";
+            this.Column26.Name = "Column26";
+            this.Column26.ReadOnly = true;
+            // 
+            // Column27
+            // 
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column27.DefaultCellStyle = dataGridViewCellStyle11;
+            this.Column27.HeaderText = "Początek";
+            this.Column27.Name = "Column27";
+            this.Column27.ReadOnly = true;
+            // 
+            // Column28
+            // 
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column28.DefaultCellStyle = dataGridViewCellStyle12;
+            this.Column28.HeaderText = "Koniec";
+            this.Column28.Name = "Column28";
+            this.Column28.ReadOnly = true;
+            // 
+            // Column33
+            // 
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column33.DefaultCellStyle = dataGridViewCellStyle13;
+            this.Column33.HeaderText = "Czas trwania";
+            this.Column33.Name = "Column33";
+            this.Column33.ReadOnly = true;
+            // 
+            // colChangeOver
+            // 
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colChangeOver.DefaultCellStyle = dataGridViewCellStyle14;
+            this.colChangeOver.HeaderText = "Przestawienie";
+            this.colChangeOver.Name = "colChangeOver";
+            this.colChangeOver.ReadOnly = true;
+            // 
+            // Column29
+            // 
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column29.DefaultCellStyle = dataGridViewCellStyle15;
+            this.Column29.HeaderText = "Ilość";
+            this.Column29.Name = "Column29";
+            this.Column29.ReadOnly = true;
+            // 
+            // Wydajno
+            // 
+            this.Wydajno.HeaderText = "Wydajność";
+            this.Wydajno.Name = "Wydajno";
+            this.Wydajno.ReadOnly = true;
+            // 
+            // Column32
+            // 
+            this.Column32.HeaderText = "Linia";
+            this.Column32.Name = "Column32";
+            this.Column32.ReadOnly = true;
+            // 
+            // Column31
+            // 
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column31.DefaultCellStyle = dataGridViewCellStyle16;
+            this.Column31.HeaderText = "Norma";
+            this.Column31.Name = "Column31";
+            this.Column31.ReadOnly = true;
+            // 
+            // Column30
+            // 
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column30.DefaultCellStyle = dataGridViewCellStyle17;
+            this.Column30.HeaderText = "Wykonanie normy";
+            this.Column30.Name = "Column30";
+            this.Column30.ReadOnly = true;
             // 
             // panel53
             // 
@@ -3493,24 +3770,6 @@
             this.splitContainer2.SplitterDistance = 445;
             this.splitContainer2.TabIndex = 4;
             // 
-            // panel30
-            // 
-            this.panel30.Controls.Add(this.label13);
-            this.panel30.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel30.Location = new System.Drawing.Point(0, 0);
-            this.panel30.Name = "panel30";
-            this.panel30.Size = new System.Drawing.Size(445, 24);
-            this.panel30.TabIndex = 3;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(9, 6);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(136, 13);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Dzienny odpad po linii SMT";
-            // 
             // dataGridViewSmtLedDropped
             // 
             this.dataGridViewSmtLedDropped.AllowUserToAddRows = false;
@@ -3534,6 +3793,24 @@
             this.dataGridViewSmtLedDropped.Size = new System.Drawing.Size(445, 204);
             this.dataGridViewSmtLedDropped.TabIndex = 0;
             this.dataGridViewSmtLedDropped.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedDropped_CellDoubleClick);
+            // 
+            // panel30
+            // 
+            this.panel30.Controls.Add(this.label13);
+            this.panel30.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel30.Location = new System.Drawing.Point(0, 0);
+            this.panel30.Name = "panel30";
+            this.panel30.Size = new System.Drawing.Size(445, 24);
+            this.panel30.TabIndex = 3;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(9, 6);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(136, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Dzienny odpad po linii SMT";
             // 
             // dataGridViewSmtLedWasteTotalPerLine
             // 
@@ -3606,6 +3883,29 @@
             this.splitContainer3.SplitterDistance = 286;
             this.splitContainer3.TabIndex = 4;
             // 
+            // dataGridViewSmtLedWasteByModel
+            // 
+            this.dataGridViewSmtLedWasteByModel.AllowUserToAddRows = false;
+            this.dataGridViewSmtLedWasteByModel.AllowUserToDeleteRows = false;
+            this.dataGridViewSmtLedWasteByModel.AllowUserToResizeColumns = false;
+            this.dataGridViewSmtLedWasteByModel.AllowUserToResizeRows = false;
+            this.dataGridViewSmtLedWasteByModel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle20.BackColor = System.Drawing.Color.SeaShell;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewSmtLedWasteByModel.DefaultCellStyle = dataGridViewCellStyle20;
+            this.dataGridViewSmtLedWasteByModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewSmtLedWasteByModel.Location = new System.Drawing.Point(0, 24);
+            this.dataGridViewSmtLedWasteByModel.Name = "dataGridViewSmtLedWasteByModel";
+            this.dataGridViewSmtLedWasteByModel.RowHeadersVisible = false;
+            this.dataGridViewSmtLedWasteByModel.Size = new System.Drawing.Size(286, 204);
+            this.dataGridViewSmtLedWasteByModel.TabIndex = 1;
+            this.dataGridViewSmtLedWasteByModel.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedWasteByModel_CellDoubleClick);
+            // 
             // panel33
             // 
             this.panel33.Controls.Add(this.label14);
@@ -3633,29 +3933,6 @@
             this.comboBoxSmtLedWasteLine.Size = new System.Drawing.Size(121, 21);
             this.comboBoxSmtLedWasteLine.TabIndex = 0;
             this.comboBoxSmtLedWasteLine.SelectedIndexChanged += new System.EventHandler(this.comboBoxSmtLedWasteLine_SelectedIndexChanged);
-            // 
-            // dataGridViewSmtLedWasteByModel
-            // 
-            this.dataGridViewSmtLedWasteByModel.AllowUserToAddRows = false;
-            this.dataGridViewSmtLedWasteByModel.AllowUserToDeleteRows = false;
-            this.dataGridViewSmtLedWasteByModel.AllowUserToResizeColumns = false;
-            this.dataGridViewSmtLedWasteByModel.AllowUserToResizeRows = false;
-            this.dataGridViewSmtLedWasteByModel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle20.BackColor = System.Drawing.Color.SeaShell;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewSmtLedWasteByModel.DefaultCellStyle = dataGridViewCellStyle20;
-            this.dataGridViewSmtLedWasteByModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewSmtLedWasteByModel.Location = new System.Drawing.Point(0, 24);
-            this.dataGridViewSmtLedWasteByModel.Name = "dataGridViewSmtLedWasteByModel";
-            this.dataGridViewSmtLedWasteByModel.RowHeadersVisible = false;
-            this.dataGridViewSmtLedWasteByModel.Size = new System.Drawing.Size(286, 204);
-            this.dataGridViewSmtLedWasteByModel.TabIndex = 1;
-            this.dataGridViewSmtLedWasteByModel.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSmtLedWasteByModel_CellDoubleClick);
             // 
             // dataGridViewSmtWasteTotal
             // 
@@ -5040,81 +5317,15 @@
             this.bckWorkerStartLoadUp.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bckWorkerStartLoadUp_ProgressChanged);
             this.bckWorkerStartLoadUp.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bckWorkerStartLoadUp_RunWorkerCompleted);
             // 
-            // Column26
+            // pictureBox1
             // 
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column26.DefaultCellStyle = dataGridViewCellStyle10;
-            this.Column26.HeaderText = "Model";
-            this.Column26.Name = "Column26";
-            this.Column26.ReadOnly = true;
-            // 
-            // Column27
-            // 
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column27.DefaultCellStyle = dataGridViewCellStyle11;
-            this.Column27.HeaderText = "Początek";
-            this.Column27.Name = "Column27";
-            this.Column27.ReadOnly = true;
-            // 
-            // Column28
-            // 
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column28.DefaultCellStyle = dataGridViewCellStyle12;
-            this.Column28.HeaderText = "Koniec";
-            this.Column28.Name = "Column28";
-            this.Column28.ReadOnly = true;
-            // 
-            // Column33
-            // 
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column33.DefaultCellStyle = dataGridViewCellStyle13;
-            this.Column33.HeaderText = "Czas trwania";
-            this.Column33.Name = "Column33";
-            this.Column33.ReadOnly = true;
-            // 
-            // colChangeOver
-            // 
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.colChangeOver.DefaultCellStyle = dataGridViewCellStyle14;
-            this.colChangeOver.HeaderText = "Przestawienie";
-            this.colChangeOver.Name = "colChangeOver";
-            this.colChangeOver.ReadOnly = true;
-            // 
-            // Column29
-            // 
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column29.DefaultCellStyle = dataGridViewCellStyle15;
-            this.Column29.HeaderText = "Ilość";
-            this.Column29.Name = "Column29";
-            this.Column29.ReadOnly = true;
-            // 
-            // Wydajno
-            // 
-            this.Wydajno.HeaderText = "Wydajność";
-            this.Wydajno.Name = "Wydajno";
-            this.Wydajno.ReadOnly = true;
-            // 
-            // Column32
-            // 
-            this.Column32.HeaderText = "Linia";
-            this.Column32.Name = "Column32";
-            this.Column32.ReadOnly = true;
-            // 
-            // Column31
-            // 
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column31.DefaultCellStyle = dataGridViewCellStyle16;
-            this.Column31.HeaderText = "Norma";
-            this.Column31.Name = "Column31";
-            this.Column31.ReadOnly = true;
-            // 
-            // Column30
-            // 
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column30.DefaultCellStyle = dataGridViewCellStyle17;
-            this.Column30.HeaderText = "Wykonanie normy";
-            this.Column30.Name = "Column30";
-            this.Column30.ReadOnly = true;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pictureBox1.Image = global::KontrolaWizualnaRaport.Properties.Resources.wasteChartLegend;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 426);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(221, 95);
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
             // 
             // Form1
             // 
@@ -5154,7 +5365,6 @@
             this.contextMenuStripPrintPoziomOdpadu.ResumeLayout(false);
             this.panel27.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWasteLevel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel43.ResumeLayout(false);
             this.panel43.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -5199,7 +5409,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartNgTypesForOneOperator)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartNgRateForOneOperator)).EndInit();
             this.tabPage22.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMstOrders)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewViResultVeReworkResult)).EndInit();
             this.tabPage29.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReworkDailyReport)).EndInit();
@@ -5230,6 +5440,10 @@
             this.panel48.ResumeLayout(false);
             this.panel48.PerformLayout();
             this.tabPage13.ResumeLayout(false);
+            this.tabControl4.ResumeLayout(false);
+            this.tabPage24.ResumeLayout(false);
+            this.panel23.ResumeLayout(false);
+            this.panel23.PerformLayout();
             this.tableLayoutPanel9.ResumeLayout(false);
             this.panel42.ResumeLayout(false);
             this.panel42.PerformLayout();
@@ -5240,10 +5454,14 @@
             this.panel10.ResumeLayout(false);
             this.panel10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKittingHistory)).EndInit();
+            this.tabPage32.ResumeLayout(false);
+            this.tableLayoutPanel20.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOrdersHistory)).EndInit();
+            this.panel54.ResumeLayout(false);
+            this.panel54.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numOrdersHistoryLastDays)).EndInit();
             this.panel22.ResumeLayout(false);
             this.panel22.PerformLayout();
-            this.panel23.ResumeLayout(false);
-            this.panel23.PerformLayout();
             this.tabPage9.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             this.tabPage10.ResumeLayout(false);
@@ -5285,9 +5503,9 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedDropped)).EndInit();
             this.panel30.ResumeLayout(false);
             this.panel30.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedDropped)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteTotalPerLine)).EndInit();
             this.panel34.ResumeLayout(false);
             this.panel34.PerformLayout();
@@ -5295,9 +5513,9 @@
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteByModel)).EndInit();
             this.panel33.ResumeLayout(false);
             this.panel33.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtLedWasteByModel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSmtWasteTotal)).EndInit();
             this.panel32.ResumeLayout(false);
             this.panel32.PerformLayout();
@@ -5354,6 +5572,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrafik)).EndInit();
             this.panel17.ResumeLayout(false);
             this.panel17.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -5533,7 +5752,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePickerViOperatorEfiiciencyStart;
         private System.Windows.Forms.DateTimePicker dateTimePickerViOperatorEfiiciencyEnd;
         private System.Windows.Forms.TabPage tabPage22;
-        private System.Windows.Forms.DataGridView dataGridViewMstOrders;
+        private System.Windows.Forms.DataGridView dataGridViewViResultVeReworkResult;
         private System.Windows.Forms.Panel panel38;
         private System.Windows.Forms.CheckedListBox cBListViModelAnalysesSmtLines;
         private System.Windows.Forms.CheckedListBox cBListViReasonAnalysesSmtLines;
@@ -5742,6 +5961,23 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column32;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column31;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column30;
+        private System.Windows.Forms.TabControl tabControl4;
+        private System.Windows.Forms.TabPage tabPage24;
+        private System.Windows.Forms.TabPage tabPage32;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel20;
+        private System.Windows.Forms.DataGridView dgvOrdersHistory;
+        private System.Windows.Forms.Panel panel54;
+        private System.Windows.Forms.Button bOrdersHistory;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.NumericUpDown numOrdersHistoryLastDays;
+        private System.Windows.Forms.CheckBox chBOrdersHistoryLg;
+        private System.Windows.Forms.CheckBox chBOrdersHistoryMst;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column34;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column35;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column36;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column37;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column38;
     }
 }
 

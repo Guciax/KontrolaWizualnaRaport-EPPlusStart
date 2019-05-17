@@ -97,16 +97,17 @@ namespace KontrolaWizualnaRaport.TabOperations.ViTab
                 foreach (var ngInfo in orderEntry.Value.visualInspection.ngScrapList)
                 {
                     string dateKey = GetDateKey(ngInfo.ngRegistrationDate);
-                    //if (!filteredWasteAndBoxingKeyLineDate[smtLine].ContainsKey(dateKey))
-                    //{
-                    //    filteredWasteAndBoxingKeyLineDate[smtLine].Add(dateKey, new wasteAndBoxing());
-                    //}
-                    //if (!filteredWasteAndBoxingKeyLineDate["Total"].ContainsKey(dateKey))
-                    //{
-                    //    filteredWasteAndBoxingKeyLineDate["Total"].Add(dateKey, new wasteAndBoxing());
-                    //}
+                    if (!result[smtLine].ContainsKey(dateKey)) continue;
+                        //if (!filteredWasteAndBoxingKeyLineDate[smtLine].ContainsKey(dateKey))
+                        //{
+                        //    filteredWasteAndBoxingKeyLineDate[smtLine].Add(dateKey, new wasteAndBoxing());
+                        //}
+                        //if (!filteredWasteAndBoxingKeyLineDate["Total"].ContainsKey(dateKey))
+                        //{
+                        //    filteredWasteAndBoxingKeyLineDate["Total"].Add(dateKey, new wasteAndBoxing());
+                        //}
 
-                    result[smtLine][dateKey].ngList.Add(ngInfo);
+                        result[smtLine][dateKey].ngList.Add(ngInfo);
                     result["Total"][dateKey].ngList.Add(ngInfo);
                 }
 

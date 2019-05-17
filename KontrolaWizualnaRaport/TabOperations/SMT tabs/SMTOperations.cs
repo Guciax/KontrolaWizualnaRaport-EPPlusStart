@@ -428,9 +428,9 @@ namespace KontrolaWizualnaRaport
                 List<string> lotsList = new List<string>();
                 //94MWS59R80JZ3E-139693
                 
-
                 foreach (var head in splitByheads)
                 {
+                    if (string.IsNullOrEmpty(head)) continue;
                     string[] leds = head.Split('|');
                     foreach (var led in leds)
                     {
@@ -465,7 +465,6 @@ namespace KontrolaWizualnaRaport
             }
 
             var notFoundLots = SQLoperations.GetZlecenieString(notFoundList);
-
             foreach (DataRow row in sourceTable.Rows)
             {
                 if (row["LOT"].ToString()=="Nieznane")
@@ -480,20 +479,18 @@ namespace KontrolaWizualnaRaport
                     }
                 }
             }
-                
-                //foreach (DataRow gridRow in sourceTable.Rows)
-                //{
-                //    string lotNo = gridRow["LOT"].ToString();
-                //    if (lotsList.Contains(lotNo) || lotNo == "") continue;
-                //    List<string> serials = SQLoperations.lotToPcbSerialNo(lotNo);
-                //    gridRow["Box"] = string.Join("|", SQLoperations.GetBoxPalletIdFromPcb(serials).ToArray());
-                //    lotsList.Add(lotNo);
 
-                //}
+            //foreach (DataRow gridRow in sourceTable.Rows)
+            //{
+            //    string lotNo = gridRow["LOT"].ToString();
+            //    if (lotsList.Contains(lotNo) || lotNo == "") continue;
+            //    List<string> serials = SQLoperations.lotToPcbSerialNo(lotNo);
+            //    gridRow["Box"] = string.Join("|", SQLoperations.GetBoxPalletIdFromPcb(serials).ToArray());
+            //    lotsList.Add(lotNo);
 
-                grid.DataSource = sourceTable;
+            //}
 
-            
+            grid.DataSource = sourceTable;
         }
 
         public static void FillOutStencilTable( DataGridView grid, Dictionary<string, ModelInfo.ModelSpecification> mesModels)

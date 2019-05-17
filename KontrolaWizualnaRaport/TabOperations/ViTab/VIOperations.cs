@@ -20,7 +20,7 @@ namespace KontrolaWizualnaRaport
 {
     class VIOperations
     {
-        public static List<excelOperations.order12NC> mstOrders = new List<excelOperations.order12NC>();
+
         public static DataTable masterVITable = new DataTable();
         public static Dictionary<string, string> lotToSmtLine = new Dictionary<string, string>();
 

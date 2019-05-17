@@ -150,6 +150,10 @@ namespace KontrolaWizualnaRaport
                 public static Chart chartServiceVsNg;
             }
 
+            public class KontrolaWizualnaAnalizaOcen
+            {
+                public static DataGridView dataGridViewViResultVeReworkResult;
+            }
             
         }
         public class Boxing

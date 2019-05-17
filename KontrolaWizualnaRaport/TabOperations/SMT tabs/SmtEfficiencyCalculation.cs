@@ -190,8 +190,7 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                 ModelInfo.ModelSpecification modelSpec;
                 Tuple<double, double>  mbDimensionsLWmm = new Tuple<double, double>(0, 0);
                 if (!DataContainer.mesModels.TryGetValue(modelId, out modelSpec)) {
-                    
-                    return null;
+                   return null;
                         }
 
                 Dictionary<string, SmtLineConfiguration> lineConfiguration = new Dictionary<string, SmtLineConfiguration>
@@ -265,6 +264,7 @@ namespace KontrolaWizualnaRaport.TabOperations.SMT_tabs
                 if (model.StartsWith("33")) return new Tuple<double, double>(270, 270);
                 if (model.StartsWith("22")) return new Tuple<double, double>(250, 250);
                 if (model.StartsWith("32")) return new Tuple<double, double>(272, 230);
+                if (model.StartsWith("53")) return new Tuple<double, double>(540, 270);
                 return new Tuple<double, double>(600, 350);
             }
 

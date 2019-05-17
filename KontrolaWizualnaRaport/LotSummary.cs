@@ -78,6 +78,7 @@ namespace KontrolaWizualnaRaport
         private static void FillOutViGrid(OrderStructureByOrderNo.VisualInspection viData, DataGridView viGrid, double totalManufactured)
         {
             viGrid.Rows.Clear();
+            viGrid.Rows.Add("Operator:", string.Join(", ", viData.ngScrapList.Select(ng => ng.firstViOperator).Distinct()));
             viGrid.Rows.Add("Ilość NG:", viData.ngCount);
             viGrid.Rows.Add("Odpad NG:", Math.Round((double)viData.ngCount / totalManufactured * 100, 2) + "%");
             viGrid.Rows.Add("Ilość SCR:", viData.scrapCount);
